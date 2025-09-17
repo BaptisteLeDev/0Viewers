@@ -1,0 +1,32 @@
+/* StreamerList Component Styles */
+.streamer-list {
+  width: 100%;
+}
+
+.streamers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 25px;
+  margin-top: 20px;
+}
+
+.empty-list {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .streamers-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 400px) {
+  .streamers-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+}
