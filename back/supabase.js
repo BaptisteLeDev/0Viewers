@@ -22,4 +22,16 @@ async function getUsers() {
     }
 }
 
+async function getUser(){
+    //Récupération de l'utilisateur actuellement connecté
+    const { data: { user }, error } = await supabase.auth.getUser();
+
+    if (error) {
+        console.error('Erreur lors de la récupération de l’utilisateur :', error);
+    } else {
+        console.log('Utilisateur connecté :', user);
+    }
+}
+
 getUsers();
+getUser();
