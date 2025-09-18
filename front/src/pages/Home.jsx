@@ -5,6 +5,7 @@ import ZeroViewersStreamerCard from "../components/streamers/ZeroViewersStreamer
 import { useZeroViewersStreamers } from "../hooks/useZeroViewersStreamers";
 import { ROUTES } from "../utils/constants";
 import "./Home.css";
+import "../components/streamers/StreamerList.css";
 
 const Home = () => {
   const { streamers, loading, error, refresh } = useZeroViewersStreamers();
@@ -96,7 +97,14 @@ const Home = () => {
         <div className="container">
           <div className="stats-grid">
             <div className="stat-card">
-              <div className="stat-icon">🇫🇷</div>
+              <div className="stat-icon">
+                <img 
+                  src="https://images.emojiterra.com/twitter/v14.0/256px/1f1eb-1f1f7.png" 
+                  alt="Drapeau français" 
+                  width="48" 
+                  height="48"
+                />
+              </div>
               <h3 className="stat-title">Streamers français</h3>
               <p className="stat-description">
                 Découvrez des talents de la communauté française
@@ -115,8 +123,7 @@ const Home = () => {
               <div className="stat-icon">🚀</div>
               <h3 className="stat-title">En direct</h3>
               <p className="stat-description">
-                <span className="stat-number">{streamers.length}</span>{" "}
-                streamers français en live actuellement
+                <span className="stat-number">{streamers.length}</span> streamers français qui ont besoin de votre aide sur 0Viewers !
               </p>
             </div>
           </div>

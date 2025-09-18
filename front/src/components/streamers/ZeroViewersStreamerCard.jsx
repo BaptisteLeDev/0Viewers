@@ -54,8 +54,15 @@ const ZeroViewersStreamerCard = ({ streamer, featured = false, showEmbed = false
           />
           <div className="streamer-details">
             <h3 className="streamer-name">{streamer.display_name}</h3>
-            <p className="streamer-login">@{streamer.login}</p>
-            <p className="game-name">{streamer.game_name || 'Jeu non spécifié'}</p>
+            <p 
+              className="game-name" 
+              title={streamer.game_name || 'Jeu non spécifié'}
+            >
+              {streamer.game_name && streamer.game_name.length > 20 
+                ? `${streamer.game_name.substring(0, 20)}...` 
+                : streamer.game_name || 'Jeu non spécifié'
+              }
+            </p>
           </div>
         </div>
 
@@ -83,15 +90,6 @@ const ZeroViewersStreamerCard = ({ streamer, featured = false, showEmbed = false
           >
             🎥 Regarder sur Twitch
           </button>
-          
-          {!showEmbed && (
-            <button 
-              onClick={() => window.location.href = `https://twitch.tv/${streamer.login}`}
-              className="profile-btn"
-            >
-              👤 Profil
-            </button>
-          )}
         </div>
       </div>
     </div>

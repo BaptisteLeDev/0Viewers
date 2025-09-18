@@ -1,46 +1,103 @@
 /* StreamerCard Component Styles - utilise les variables globales */
 .streamer-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 88, 228, 0.2);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(255, 88, 228, 0.05);
   overflow: hidden;
   transition: all var(--transition-base);
+  backdrop-filter: blur(10px);
+  position: relative;
+  
+  /* Responsive width instead of fixed max-width */
+  width: 100%;
+  min-width: 280px;
+  max-width: 400px;
+  margin: 15px auto;
+  
+  /* Flex properties for better layout */
+  flex: 1 1 auto;
+}
+
+.home-page .streamer-card {
+  width: 800px;
+  margin: 0 auto;
+}
+
+.streamer-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #18a0fb, #ff58e4, #ffd749);
+  opacity: 0.6;
+  transition: opacity var(--transition-base);
 }
 
 .streamer-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--accent-purple);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(24, 160, 251, 0.1),
+    0 4px 16px rgba(255, 88, 228, 0.1), 0 2px 8px rgba(255, 215, 73, 0.05);
+  border-color: rgba(255, 88, 228, 0.4);
+}
+
+.streamer-card:hover::before {
+  opacity: 1;
 }
 
 .streamer-card.featured {
-  border: 2px solid var(--accent-purple);
-  box-shadow: var(--shadow-lg);
+  border: 2px solid rgba(255, 88, 228, 0.4);
+  background: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 12px 40px rgba(24, 160, 251, 0.15),
+    0 6px 20px rgba(255, 88, 228, 0.15);
+}
+
+.streamer-card.featured::before {
+  height: 3px;
+  opacity: 1;
 }
 
 /* Styles pour l'iframe Twitch */
 .twitch-embed {
   border-radius: var(--radius-sm);
   background: var(--bg-primary);
+  border: 1px solid rgba(255, 88, 228, 0.1);
 }
 
 /* Styles pour le thumbnail de profil */
 .profile-thumbnail {
   position: relative;
-  height: 248px;
-  background: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-purple-hover) 100%);
+  height: 200px;
+  background: radial-gradient(
+      ellipse at top,
+      rgba(24, 160, 251, 0.15),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse at bottom,
+      rgba(255, 88, 228, 0.15),
+      transparent 70%
+    ),
+    linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.95));
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .profile-image {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   border-radius: var(--radius-full);
-  border: 4px solid var(--text-primary);
-  box-shadow: var(--shadow-sm);
+  border: 3px solid rgba(255, 215, 73, 0.6);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 215, 73, 0.2);
+  transition: all var(--transition-base);
+}
+
+.streamer-card:hover .profile-image {
+  border-color: rgba(255, 215, 73, 1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 25px rgba(255, 215, 73, 0.3);
 }
 
 /* Contenu de la carte */
@@ -201,16 +258,16 @@
   .streamer-card-content {
     padding: var(--spacing-md);
   }
-  
+
   .profile-image {
     width: 100px;
     height: 100px;
   }
-  
+
   .profile-thumbnail {
     height: 200px;
   }
-  
+
   .action-buttons {
     flex-direction: column;
   }
@@ -236,7 +293,7 @@
   position: absolute;
   bottom: 10px;
   right: 10px;
-  background: rgba(0,0,0,0.8);
+  background: rgba(0, 0, 0, 0.8);
   color: white;
   padding: 4px 8px;
   border-radius: 4px;
@@ -265,13 +322,17 @@
 .streamer-details h3 {
   margin: 0 0 5px 0;
   font-size: 1.2rem;
-  color: #2c3e50;
+  color: #fbfbf5;
 }
 
 .game-name {
   margin: 0;
   color: #7f8c8d;
   font-size: 0.9rem;
+      background: linear-gradient(135deg, #18A0FB 0%, #FF58E4 50%, #FFD749 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .stream-content {
@@ -343,9 +404,91 @@
   .streamer-card {
     margin-bottom: 20px;
   }
-  
+
   .stream-stats {
     flex-direction: column;
     gap: 5px;
+  }
+}
+
+/* Styles pour le contenu texte - Fix overflow issues */
+.streamer-name {
+  font-size: var(--font-xl);
+  font-weight: 600;
+  margin: 0 0 var(--spacing-xs) 0;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.streamer-login {
+  color: var(--text-muted);
+  font-size: var(--font-sm);
+  margin: var(--spacing-xs) 0;
+  font-style: italic;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.game-name {
+  color: var(--accent-yellow);
+  font-weight: 600;
+  font-size: var(--font-sm);
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stream-title {
+  color: var(--text-secondary);
+  font-size: var(--font-base);
+  margin: var(--spacing-sm) 0;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-wrap: break-word;
+}
+
+.streamer-description {
+  color: var(--text-muted);
+  font-size: var(--font-sm);
+  margin: var(--spacing-sm) 0;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  word-wrap: break-word;
+}
+
+.viewer-count,
+.followers {
+  font-size: var(--font-sm);
+  white-space: nowrap;
+}
+
+/* Responsive text adjustments */
+@media (max-width: 480px) {
+  .streamer-name {
+    font-size: var(--font-lg);
+  }
+  
+  .stream-title {
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+  }
+  
+  .streamer-description {
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
   }
 }

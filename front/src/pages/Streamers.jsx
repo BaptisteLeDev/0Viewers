@@ -3,6 +3,7 @@ import ZeroViewersStreamerCard from '../components/streamers/ZeroViewersStreamer
 import Loading from '../components/common/Loading';
 import { useZeroViewersStreamers } from '../hooks/useZeroViewersStreamers';
 import './Streamers.css';
+import '../components/streamers/StreamerList.css';
 
 const Streamers = () => {
   const { streamers, loading, error, refresh, lastUpdated } = useZeroViewersStreamers();
@@ -49,7 +50,7 @@ const Streamers = () => {
   return (
     <div className="streamers-page">
       <header className="page-header">
-        <h1>🇫� Streamers français à découvrir</h1>
+        <h1>🇫🇷 Streamers français à découvrir</h1>
         <p>Découvrez {streamers.length} streamers français en live qui méritent votre attention</p>
         {lastUpdated && (
           <p className="last-updated">
