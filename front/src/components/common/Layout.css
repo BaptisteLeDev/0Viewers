@@ -1,25 +1,27 @@
-/* Layout Styles */
+/* Layout Styles - utilise les variables globales */
 .layout {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  /* Le background est maintenant dans global.css sur body */
 }
 
 .main-content {
   flex: 1;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
   width: 100%;
+  padding: 0;
+  margin: 0;
   box-sizing: border-box;
 }
 
 .footer {
-  background: #2c3e50;
-  color: white;
+  background: var(--bg-glass);
+  color: var(--text-secondary);
   text-align: center;
-  padding: 20px;
+  padding: var(--spacing-xl);
   margin-top: auto;
+  border-top: 1px solid var(--border-purple);
+  backdrop-filter: blur(10px);
 }
 
 .footer p {
@@ -29,6 +31,6 @@
 
 @media (max-width: 768px) {
   .main-content {
-    padding: 15px;
+    padding: var(--spacing-md);
   }
 }

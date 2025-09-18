@@ -1,57 +1,196 @@
-/* Account Page Styles */
+/* Account Page Styles - utilise les variables globales */
 .account-page {
-  max-width: 800px;
+  max-width: var(--content-small);
   margin: 0 auto;
+  padding: var(--spacing-xl) 0;
 }
 
 .page-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: var(--spacing-3xl);
 }
 
 .page-header h1 {
-  font-size: 2.5rem;
-  color: #2c3e50;
-  margin-bottom: 10px;
+  font-size: var(--font-4xl);
+  margin-bottom: var(--spacing-sm);
 }
 
 .page-header p {
-  font-size: 1.2rem;
-  color: #7f8c8d;
+  font-size: var(--font-xl);
+  color: var(--text-secondary);
   margin: 0;
 }
 
 .account-content {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: var(--spacing-3xl);
 }
 
 /* Stats Section */
 .stats-section h2 {
-  font-size: 1.8rem;
-  color: #2c3e50;
-  margin-bottom: 25px;
+  font-size: var(--font-3xl);
+  margin-bottom: var(--spacing-xl);
   text-align: center;
 }
 
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 20px;
+  gap: var(--spacing-xl);
 }
 
 .stat-card {
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-md);
   text-align: center;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  transition: transform 0.3s ease;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-base);
 }
 
 .stat-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.stat-card h3 {
+  font-size: var(--font-lg);
+  margin-bottom: var(--spacing-md);
+  color: var(--accent-purple);
+}
+
+.stat-card .stat-number {
+  font-size: var(--font-4xl);
+  font-weight: bold;
+  color: var(--accent-yellow);
+  margin-bottom: var(--spacing-sm);
+}
+
+.stat-card p {
+  color: var(--text-secondary);
+  margin: 0;
+  font-size: var(--font-sm);
+}
+
+/* Preferences Section */
+.preferences-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-xl);
+}
+
+.preferences-section h2 {
+  font-size: var(--font-3xl);
+  margin-bottom: var(--spacing-xl);
+  text-align: center;
+}
+
+.preference-group {
+  margin-bottom: var(--spacing-lg);
+}
+
+.preference-group:last-child {
+  margin-bottom: 0;
+}
+
+.preference-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: var(--spacing-sm);
+  color: var(--text-primary);
+}
+
+.preference-group select,
+.preference-group input {
+  width: 100%;
+  padding: var(--spacing-md);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: var(--font-base);
+}
+
+.preference-group select:focus,
+.preference-group input:focus {
+  outline: none;
+  border-color: var(--accent-purple);
+}
+
+/* Action Buttons */
+.account-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: var(--spacing-xl);
+}
+
+.btn-account {
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  border: none;
+  font-size: var(--font-base);
+}
+
+.btn-primary {
+  background: var(--accent-purple);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--accent-purple-hover);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 2px solid var(--border-subtle);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-purple-light);
+  border-color: var(--accent-purple);
+  color: var(--accent-purple);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+  
+  .account-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .btn-account {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header h1 {
+    font-size: var(--font-3xl);
+  }
+  
+  .stat-card {
+    padding: var(--spacing-md);
+  }
+  
+  .preferences-section {
+    padding: var(--spacing-md);
+  }
 }
 
 .stat-number {

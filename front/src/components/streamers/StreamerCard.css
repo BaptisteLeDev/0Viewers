@@ -1,21 +1,111 @@
-/* StreamerCard Component Styles */
+/* StreamerCard Component Styles - utilise les variables globales */
 .streamer-card {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
   overflow: hidden;
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
+  transition: all var(--transition-base);
 }
 
 .streamer-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  box-shadow: var(--shadow-md);
+  border-color: var(--accent-purple);
 }
 
 .streamer-card.featured {
-  border: 2px solid #667eea;
-  box-shadow: 0 8px 30px rgba(102, 126, 234, 0.2);
+  border: 2px solid var(--accent-purple);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Styles pour l'iframe Twitch */
+.twitch-embed {
+  border-radius: var(--radius-sm);
+  background: var(--bg-primary);
+}
+
+/* Styles pour le thumbnail de profil */
+.profile-thumbnail {
+  position: relative;
+  height: 248px;
+  background: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-purple-hover) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-image {
+  width: 120px;
+  height: 120px;
+  border-radius: var(--radius-full);
+  border: 4px solid var(--text-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Contenu de la carte */
+.streamer-card-content {
+  padding: var(--spacing-lg);
+}
+
+.streamer-name {
+  font-size: var(--font-xl);
+  font-weight: 600;
+  margin-bottom: var(--spacing-xs);
+  color: var(--text-primary);
+}
+
+.streamer-login {
+  color: var(--text-muted);
+  font-size: var(--font-sm);
+  margin: var(--spacing-xs) 0;
+  font-style: italic;
+}
+
+.streamer-title {
+  color: var(--text-secondary);
+  font-size: var(--font-base);
+  margin: var(--spacing-sm) 0;
+  line-height: 1.4;
+}
+
+.streamer-game {
+  color: var(--accent-yellow);
+  font-weight: 600;
+  font-size: var(--font-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+/* Stats du stream */
+.stream-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: var(--spacing-md) 0;
+  padding: var(--spacing-sm) 0;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.stream-stat {
+  text-align: center;
+  flex: 1;
+}
+
+.stream-stat-value {
+  font-size: var(--font-lg);
+  font-weight: bold;
+  color: var(--accent-purple);
+}
+
+.stream-stat-label {
+  font-size: var(--font-xs);
+  color: var(--text-muted);
+  margin-top: var(--spacing-xs);
+}
+
+.followers {
+  color: var(--green-primary) !important;
 }
 
 /* Thumbnail */
@@ -24,13 +114,106 @@
   width: 100%;
   height: 200px;
   overflow: hidden;
+  background: var(--bg-primary);
 }
 
 .thumbnail-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  transition: transform var(--transition-base);
+}
+
+.streamer-card:hover .thumbnail-image {
+  transform: scale(1.05);
+}
+
+/* Badges */
+.live-badge {
+  position: absolute;
+  top: var(--spacing-sm);
+  left: var(--spacing-sm);
+  background: var(--red-live);
+  color: white;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.viewers-count {
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-xs);
+  backdrop-filter: blur(10px);
+}
+
+/* Boutons d'action */
+.action-buttons {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
+}
+
+.card-btn {
+  flex: 1;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  text-decoration: none;
+  text-align: center;
+  border: none;
+}
+
+.btn-watch {
+  background: var(--accent-purple);
+  color: white;
+}
+
+.btn-watch:hover {
+  background: var(--accent-purple-hover);
+  transform: translateY(-2px);
+}
+
+.btn-profile {
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+}
+
+.btn-profile:hover {
+  background: var(--bg-purple-light);
+  border-color: var(--accent-purple);
+  color: var(--accent-purple);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .streamer-card-content {
+    padding: var(--spacing-md);
+  }
+  
+  .profile-image {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .profile-thumbnail {
+    height: 200px;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
 }
 
 .streamer-card:hover .thumbnail-image {

@@ -55,41 +55,6 @@ export const twitchQueries = {
     }
   },
 
-  /**
-   * Récupère les informations détaillées d'un utilisateur
-   */
-  getUserInfo: async (userId) => {
-    try {
-      const response = await api.get(API_ENDPOINTS.USERS, {
-        params: {
-          id: userId
-        }
-      });
-
-      return response.data.data[0];
-    } catch (error) {
-      console.error('Erreur lors de la récupération des infos utilisateur:', error);
-      throw error;
-    }
-  },
-
-  /**
-   * Récupère les informations d'un jeu
-   */
-  getGameInfo: async (gameId) => {
-    try {
-      const response = await api.get(API_ENDPOINTS.GAMES, {
-        params: {
-          id: gameId
-        }
-      });
-
-      return response.data.data[0];
-    } catch (error) {
-      console.error('Erreur lors de la récupération des infos du jeu:', error);
-      throw error;
-    }
-  },
 
   /**
    * Recherche de streams par jeu avec 0 viewers
@@ -117,3 +82,22 @@ export const twitchQueries = {
     }
   }
 };
+
+
+@RequestLine("GET /streams?after={after}&before={before}&first={first}&game_id={game_id}&language={language}&user_id={user_id}&user_login={user_login}")
+@Headers("Authorization: Bearer {token}")
+HystrixCommand<StreamList> getStreams(
+    @Param("token") String authToken,
+    @Param("after") String after,
+    @Param("before") String before,
+    @Param("first") Integer limit,
+    @Param("game_id") List<String> gameIds,
+    @Param("language") List<String> language,
+    @Param("user_id") List<String> userIds,
+    @Param("user_login") List<String> userLogins
+);
+
+StreamList resultList = twitchClient.getHelix().getStreams(null, null, null, 5, null, null, null, null).execute();
+resultList.getStreams().forEach(stream -> {
+    System.out.println("ID: " + stream.getId() + " - Title: " + stream.getTitle());
+});

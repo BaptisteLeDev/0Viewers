@@ -1,16 +1,24 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import StreamerCard from '../components/streamers/StreamerCard';
-import Loading from '../components/common/Loading';
-import { useTwitchStreams } from '../hooks/useTwitchStreams';
-import { ROUTES } from '../utils/constants';
-import './Home.css';
+import React from "react";
+import { Link } from "react-router-dom";
+import Loading from "../components/common/Loading";
+import ZeroViewersStreamerCard from "../components/streamers/ZeroViewersStreamerCard";
+import { useZeroViewersStreamers } from "../hooks/useZeroViewersStreamers";
+import { ROUTES } from "../utils/constants";
+import "./Home.css";
 
 const Home = () => {
-  const { randomStream, loading, error, refreshRandomStream } = useTwitchStreams();
+  const { streamers, loading, error, refresh } = useZeroViewersStreamers();
+
+  // Sélectionner un streamer aléatoire pour la mise en avant
+  const featuredStreamer =
+    streamers.length > 0
+      ? streamers[Math.floor(Math.random() * streamers.length)]
+      : null;
 
   if (loading) {
-    return <Loading message="Recherche d'un streamer à découvrir..." />;
+    return (
+      <Loading message="Recherche d'un streamer français à découvrir..." />
+    );
   }
 
   if (error) {
@@ -18,7 +26,8 @@ const Home = () => {
       <div className="error-container">
         <h2>Oops ! 😅</h2>
         <p>Impossible de charger les streamers pour le moment.</p>
-        <button onClick={refreshRandomStream} className="retry-btn">
+        <p className="error-detail">{error}</p>
+        <button onClick={refresh} className="retry-btn">
           Réessayer
         </button>
       </div>
@@ -27,66 +36,89 @@ const Home = () => {
 
   return (
     <div className="home-page">
+      {/* Hero Section */}
       <section className="hero-section">
-        <h1 className="hero-title">
-          Découvrez les <span className="highlight">vrais talents</span>
-        </h1>
-        <p className="hero-subtitle">
-          Des streamers passionnés qui méritent votre attention, 
-          même s'ils n'ont pas encore trouvé leur public.
-        </p>
+        <div className="container">
+          <div className="hero-card">
+            <h1 className="hero-title">
+              Découvrez les{" "}
+              <span className="highlight">vrais talents français</span>
+            </h1>
+            <p className="hero-subtitle">
+              Des streamers français passionnés qui méritent votre attention,
+              même s'ils n'ont pas encore trouvé leur public.
+            </p>
+          </div>
+        </div>
       </section>
 
-      <section className="featured-streamer">
-        <h2 className="section-title">
-          🎯 Streamer du moment
-        </h2>
-        
-        {randomStream ? (
-          <div className="featured-content">
-            <StreamerCard 
-              stream={randomStream} 
-              featured={true}
-            />
-            <div className="featured-actions">
-              <button 
-                onClick={refreshRandomStream}
-                className="refresh-btn"
-              >
-                🎲 Découvrir un autre streamer
-              </button>
+      {/* Featured Streamer */}
+      <section className="featured-section">
+        <div className="container">
+          <div className="section-header">
+            <span className="section-icon">🎯</span>
+            <h2 className="section-title">Streamer français du moment</h2>
+          </div>
+
+          {featuredStreamer ? (
+            <div className="featured-content">
+              <ZeroViewersStreamerCard 
+                key={featuredStreamer.id} 
+                streamer={featuredStreamer}
+                featured={true}
+                showEmbed={true}
+              />
+              {/* Action Buttons */}
+              <div className="action-buttons">
+                <button onClick={refresh} className="refresh-btn">
+                  🎲 Découvrir un autre streamer
+                </button>
+                <Link to={ROUTES.STREAMERS} className="explore-btn">
+                  🔍 Voir tous les streamers français
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <div className="no-streams">
+              <div className="no-streams-icon">🤔</div>
+              <h3>Aucun streamer français à 0 viewers en ce moment</h3>
+              <p>Revenez plus tard ou explorez notre liste complète !</p>
               <Link to={ROUTES.STREAMERS} className="explore-btn">
-                🔍 Voir tous les streamers
+                🔍 Voir tous les streamers français
               </Link>
             </div>
-          </div>
-        ) : (
-          <div className="no-streams">
-            <p>Aucun streamer à 0 viewers en ce moment 🤔</p>
-            <p>Revenez plus tard ou explorez notre liste complète !</p>
-            <Link to={ROUTES.STREAMERS} className="explore-btn">
-              Voir tous les streamers
-            </Link>
-          </div>
-        )}
+          )}
+        </div>
       </section>
 
+      {/* Stats Section */}
       <section className="stats-section">
-        <div className="stats-grid">
-          <div className="stat-card">
-            <span className="stat-number">🎮</span>
-            <h3>Nouveaux talents</h3>
-            <p>Découvrez chaque jour de nouveaux streamers</p>
-          </div>
-          <div className="stat-card">
-            <span className="stat-number">❤️</span>
-            <h3>Communauté</h3>
-            <p>Aidez les petits streamers à grandir</p>
-          </div>
-          <div className="stat-card">
-            <span className="stat-number">🚀</span>
-            <h3>En direct</h3>
-            <p>Tous les streams sont en live actuellement</p>
+        <div className="container">
+          <div className="stats-grid">
+            <div className="stat-card">
+              <div className="stat-icon">🇫🇷</div>
+              <h3 className="stat-title">Streamers français</h3>
+              <p className="stat-description">
+                Découvrez des talents de la communauté française
+              </p>
+            </div>
+
+            <div className="stat-card">
+              <div className="stat-icon">❤️</div>
+              <h3 className="stat-title">Communauté</h3>
+              <p className="stat-description">
+                Aidez les petits streamers français à grandir
+              </p>
+            </div>
+
+            <div className="stat-card">
+              <div className="stat-icon">🚀</div>
+              <h3 className="stat-title">En direct</h3>
+              <p className="stat-description">
+                <span className="stat-number">{streamers.length}</span>{" "}
+                streamers français en live actuellement
+              </p>
+            </div>
           </div>
         </div>
       </section>

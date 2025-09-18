@@ -5,7 +5,6 @@ import Home from './pages/Home';
 import Streamers from './pages/Streamers';
 import Account from './pages/Account';
 import {ROUTES} from './utils/constants';
-import './App.css'
 import Auth from "./pages/Auth.jsx";
 import SignIn from "./components/Register/SignIn.jsx";
 import SignUp from "./components/Register/SignUp.jsx";
