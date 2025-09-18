@@ -4,6 +4,7 @@ require('dotenv').config();
 
 // Import des routes
 const { router: apiRoutes } = require('./src/routes/api');
+const dashboardRoutes = require('./src/routes/dashboard');
 
 // Import des services
 const CacheService = require('./src/services/cacheService');
@@ -30,6 +31,7 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/api', apiRoutes);
+app.use('/dashboard', dashboardRoutes);
 
 // Route de base
 app.get('/', (req, res) => {
@@ -39,7 +41,12 @@ app.get('/', (req, res) => {
         endpoints: {
             health: '/api/health',
             streamers: '/api/streamers/zero-viewers',
-            refresh: '/api/streamers/refresh'
+            refresh: '/api/streamers/refresh',
+            dashboard: '/dashboard'
+        },
+        dashboard: {
+            web: '/dashboard',
+            api: '/dashboard/api'
         },
         timestamp: new Date().toISOString()
     });
