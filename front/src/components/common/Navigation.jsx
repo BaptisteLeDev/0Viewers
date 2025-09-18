@@ -3,7 +3,6 @@ import { Link, useLocation } from "react-router-dom";
 import { ROUTES } from "../../utils/constants";
 import "./Navigation.css";
 import  supabase  from "../../../../back/supabase";
-import { useEffect, useState } from "react";
 
 const user = supabase.auth.getUser();
 const Navigation = () => {
