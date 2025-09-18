@@ -1,7 +1,22 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import './Account.css';
 import { handleSignOut } from "../components/Register/authform.jsx";
+import { getProfil } from "../../../back/auth.js";
+
+
+
 const Account = () => {
+
+    const [profil, setProfil] = useState(null);
+    useEffect(() => {
+        // Récupération du profil de manière asynchrone
+        async function fetchProfil() {
+            const data = await getProfil();
+            setProfil(data);
+        }
+        fetchProfil();
+    }, []);
+
   // Pour le moment, page statique - à connecter plus tard avec l'auth Twitch
   const mockStats = {
     streamsWatched: 42,
@@ -15,9 +30,14 @@ const Account = () => {
       {/* Hero Section avec informations du compte */}
       <section className="hero-section">
         <div className="hero-card">
+            {profil?(
           <h1 className="hero-title">
-            👤 Mon <span className="highlight">Compte</span>
-          </h1>
+            👤 Bienvenue <span className="highlight">{profil[0].pseudo}</span>
+          </h1>):(
+                <h1 className="hero-title">
+                    👤 Mon <span className="highlight">Compte</span>
+                </h1>
+                )}
           <p className="hero-subtitle">
             Vos statistiques de découverte de streamers et votre impact sur la communauté
           </p>
