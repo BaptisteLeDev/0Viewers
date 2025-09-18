@@ -1,6 +1,6 @@
 import React from 'react';
 import './Account.css';
-
+import { handleSignOut } from "../components/Register/authform.jsx";
 const Account = () => {
   // Pour le moment, page statique - à connecter plus tard avec l'auth Twitch
   const mockStats = {
@@ -16,6 +16,11 @@ const Account = () => {
         <h1>👤 Mon Compte</h1>
         <p>Vos statistiques de découverte de streamers</p>
       </header>
+        <div>
+            <button className="logout-button" onClick={handleSignOut}>
+                Se déconnecter
+            </button>
+        </div>
 
       <div className="account-content">
         <section className="stats-section">

@@ -2,6 +2,19 @@
 import { useState } from "react";
 import { signUp, signIn, signOut, getCurrentUser } from "../../../../back/auth.js";
 
+
+// Déconnexion
+// eslint-disable-next-line react-refresh/only-export-components
+export async function handleSignOut() {
+    const { error } = await signOut();
+    if (error) {
+        console.error("Erreur déconnexion :", error.message);
+        return;
+    }
+    console.log("Déconnecté");
+    // Ici tu peux aussi forcer un reload ou une redirection
+    window.location.href = "/";
+}
 export default function AuthForm() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -25,14 +38,6 @@ export default function AuthForm() {
         if (error) return setMessage(error.message);
         setMessage("Connexion réussie !");
         setUser(data.user);
-    }
-
-    // Déconnexion
-    async function handleSignOut() {
-        const { error } = await signOut();
-        if (error) return setMessage(error.message);
-        setMessage("Déconnecté");
-        setUser(null);
     }
 
     // Vérification utilisateur connecté
