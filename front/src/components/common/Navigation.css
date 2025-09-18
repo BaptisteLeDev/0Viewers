@@ -8,6 +8,8 @@
   z-index: var(--z-nav);
   box-shadow: var(--shadow-nav);
   border-radius: 0 0 var(--radius-md) var(--radius-md);
+  max-width: var(--nav-width);
+  margin: 0 auto;
 }
 
 .nav-container {
@@ -17,7 +19,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: var(--nav-height);
+  height: calc(var(--nav-height) + 20px);
+  gap: var(--spacing-3xl);
 }
 
 .nav-logo {
@@ -63,7 +66,7 @@
 }
 
 .logo-text {
-  font-size: var(--font-xl);
+  font-size: var(--font-3xl);
   font-weight: bold;
   background: linear-gradient(
     135deg, 
@@ -75,7 +78,6 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   letter-spacing: -0.02em;
-  font-family: system-ui, -apple-system, sans-serif;
   transition: all var(--transition-base);
 }
 
@@ -95,7 +97,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  gap: var(--spacing-md);
+  gap: var(--spacing-xl);
 }
 
 .nav-item {
@@ -105,7 +107,7 @@
 .nav-link {
   color: var(--text-secondary);
   text-decoration: none;
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
   border-radius: var(--radius-sm);
   transition: all var(--transition-base);
   font-weight: 500;
@@ -116,14 +118,35 @@
 
 .nav-link:hover {
   color: var(--accent-yellow);
-  background: var(--bg-purple-light);
   transform: translateY(-2px);
 }
 
 .nav-link.active {
-  color: var(--accent-yellow);
-  background: var(--bg-purple-dark);
-  font-weight: 600;
+  background: linear-gradient(
+    135deg, 
+    #18A0FB 0%, 
+    #FF58E4 50%, 
+    #FFD749 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+}
+
+/* Style spécial pour le hover sur un lien actif */
+.nav-link.active:hover {
+  background: linear-gradient(
+    135deg, 
+    #18A0FB 0%, 
+    #FF58E4 50%, 
+    #FFD749 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: brightness(1.2) saturate(1.1);
+  transform: translateY(-2px);
 }
 
 @media (max-width: 768px) {
