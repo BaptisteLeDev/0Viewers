@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { ROUTES } from "../../utils/constants";
 import "./Navigation.css";
 
+const user = supabase.auth.getUser();
 const Navigation = () => {
   const location = useLocation();
 
@@ -162,6 +163,14 @@ const Navigation = () => {
             <Link
               to={ROUTES.ACCOUNT}
               className={`nav-link ${isActive(ROUTES.ACCOUNT) ? "active" : ""}`}
+            >
+              👤 Mon Compte
+            </Link>
+          </li>
+            <li className="nav-item">
+            <Link
+              to={ROUTES.REGISTER}
+              className={`nav-link ${isActive(ROUTES.REGISTER) ? 'active' : ''}`}
             >
               👤 Mon Compte
             </Link>
