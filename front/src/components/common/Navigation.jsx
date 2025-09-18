@@ -2,6 +2,8 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ROUTES } from "../../utils/constants";
 import "./Navigation.css";
+import  supabase  from "../../../../back/supabase";
+import { useEffect, useState } from "react";
 
 const user = supabase.auth.getUser();
 const Navigation = () => {
@@ -44,8 +46,8 @@ const Navigation = () => {
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 200 200"
-              width="40"
-              height="40"
+              width="25"
+              height="25"
               className="logo-svg"
             >
               <g clipPath="url(#cs_clip_1_flower-3)">
