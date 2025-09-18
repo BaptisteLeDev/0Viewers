@@ -1,5 +1,24 @@
 import supabase from './supabase.js';
 
+
+export async function getProfil() {
+    try {
+        // Récupérer toutes les lignes de la table "users"
+        const { data, error } = await supabase
+            .from('profil')      // nom de ta table
+            .select('*');       // '*' pour tout récupérer, ou 'id, name' pour des colonnes spécifiques
+
+        if (error) {
+            throw error;
+        }
+
+        console.log(data);
+        return data;
+    } catch (err) {
+        console.error('Erreur lors de la récupération:', err);
+    }
+}
+
 // Inscription d'un nouvel utilisateur
 export async function signUp(email, password, pseudo) {
     // 1. Création dans Supabase Auth
