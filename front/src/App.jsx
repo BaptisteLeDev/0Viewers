@@ -5,7 +5,6 @@ import Home from './pages/Home';
 import Streamers from './pages/Streamers';
 import Account from './pages/Account';
 import { ROUTES } from './utils/constants';
-import './App.css'
 
 function App() {
   return (

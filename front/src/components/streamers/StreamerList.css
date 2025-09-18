@@ -1,4 +1,4 @@
-/* StreamerList Component Styles */
+/* StreamerList Component Styles - utilise les variables globales */
 .streamer-list {
   width: 100%;
 }
@@ -6,27 +6,27 @@
 .streamers-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 25px;
-  margin-top: 20px;
+  gap: var(--spacing-xl);
+  margin-top: var(--spacing-xl);
 }
 
 .empty-list {
   text-align: center;
-  padding: 60px 20px;
-  color: #666;
-  font-size: 1.1rem;
+  padding: var(--spacing-3xl) var(--spacing-xl);
+  color: var(--text-secondary);
+  font-size: var(--font-lg);
 }
 
 @media (max-width: 768px) {
   .streamers-grid {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: var(--spacing-xl);
   }
 }
 
 @media (max-width: 400px) {
   .streamers-grid {
     grid-template-columns: 1fr;
-    gap: 15px;
+    gap: var(--spacing-lg);
   }
 }

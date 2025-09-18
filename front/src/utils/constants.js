@@ -6,11 +6,19 @@ export const TWITCH_CONFIG = {
   AUTH_URL: 'https://id.twitch.tv/oauth2/token'
 };
 
+// Configuration du backend local
+export const BACKEND_CONFIG = {
+  BASE_URL: 'http://localhost:3001',
+  API_BASE: '/api'
+};
+
 // Endpoints API
 export const API_ENDPOINTS = {
   STREAMS: '/streams',
   USERS: '/users',
-  GAMES: '/games'
+  GAMES: '/games',
+  // Backend endpoints
+  ZERO_STREAMERS: '/zero-streamers'
 };
 
 // Paramètres par défaut pour les requêtes
