@@ -24,5 +24,7 @@ export const ROUTES = {
     HOME: '/',
     STREAMERS: '/streamers',
     ACCOUNT: '/account',
-    REGISTER: '/register'
+    SIGNIN:'/signIn',
+    SIGNUP:'/signUp',
+    AUTH: 'auth',
 };

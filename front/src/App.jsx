@@ -6,7 +6,9 @@ import Streamers from './pages/Streamers';
 import Account from './pages/Account';
 import {ROUTES} from './utils/constants';
 import './App.css'
-import Register from "./components/Register/Register.jsx";
+import Auth from "./pages/Auth.jsx";
+import SignIn from "./components/Register/SignIn.jsx";
+import SignUp from "./components/Register/SignUp.jsx";
 
 function App() {
     return (
@@ -16,7 +18,9 @@ function App() {
                     <Route path={ROUTES.HOME} element={<Home/>}/>
                     <Route path={ROUTES.STREAMERS} element={<Streamers/>}/>
                     <Route path={ROUTES.ACCOUNT} element={<Account/>}/>
-                    <Route path={ROUTES.REGISTER} element={<Register/>}/>
+                    <Route path={ROUTES.SIGNIN} element={<SignIn/>}/>
+                    <Route path={ROUTES.SIGNUP} element={<SignUp/>}/>
+                    <Route path={ROUTES.AUTH} element={<Auth/>}/>
                 </Routes>
             </Layout>
         </Router>

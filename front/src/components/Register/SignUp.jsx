@@ -1,34 +1,45 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {signUp} from "../../../../back/auth.js";
 
-const Register = () => {
+const SignUp = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        username: '',
+        pseudo: '',
         email: '',
         password: '',
         confirmPassword: '',
     });
 
+    const [message, setMessage] = useState('');
+
     // Mise à jour des champs du formulaire
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setFormData({...formData, [e.target.name]: e.target.value});
     };
 
     // Soumission du formulaire
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => { // <-- ajouter async
         e.preventDefault();
 
         if (formData.password !== formData.confirmPassword) {
-            alert("Les mots de passe ne correspondent pas");
+            setMessage("Les mots de passe ne correspondent pas");
             return;
         }
 
-        // Ici tu appellerais ton API pour créer l'utilisateur
-        console.log("Données d'inscription :", formData);
+        try {
+            const { data, error } = await signUp(formData.email, formData.password, formData.pseudo);
+            if (error) {
+                setMessage(`Erreur: ${error.message}`);
+                return;
+            }
+            setMessage("Inscription réussie ! Vérifie tes emails pour confirmer ton compte.");
 
-        // Redirection vers la page de connexion ou accueil après inscription
-        navigate('/');
+            // Redirection après un léger délai pour permettre à l'utilisateur de lire le message
+            setTimeout(() => navigate('/'), 1500);
+        } catch (err) {
+            setMessage(`Erreur inattendue: ${err.message}`);
+        }
     };
 
     return (
@@ -37,9 +48,9 @@ const Register = () => {
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"
-                    name="username"
+                    name="pseudo"
                     placeholder="Nom d'utilisateur"
-                    value={formData.username}
+                    value={formData.pseudo}
                     onChange={handleChange}
                     required
                 />
@@ -73,4 +84,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default SignUp;
