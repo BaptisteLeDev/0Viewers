@@ -72,41 +72,50 @@ async function startServer() {
         console.log('🔄 Initialisation du service de cache...');
         await cacheService.initialize();
         
-        // Démarrer le serveur
-        app.listen(PORT, () => {
-            console.log(`🚀 Serveur 0Viewers démarré sur le port ${PORT}`);
-            console.log(`📱 Frontend autorisé: ${process.env.FRONTEND_URL || 'http://localhost:5173'}`);
-            console.log(`🔗 API disponible sur: http://localhost:${PORT}`);
-            console.log(`❤️  Prêt à découvrir des streamers français !`);
-        });
+        // Démarrer le serveur seulement en mode développement local
+        if (process.env.NODE_ENV !== 'production') {
+            app.listen(PORT, () => {
+                console.log(`🚀 Serveur 0Viewers démarré sur le port ${PORT}`);
+                console.log(`📱 Frontend autorisé: ${process.env.FRONTEND_URL || 'http://localhost:5173'}`);
+                console.log(`🔗 API disponible sur: http://localhost:${PORT}`);
+                console.log(`❤️  Prêt à découvrir des streamers français !`);
+            });
+        }
         
     } catch (error) {
         console.error('❌ Erreur lors du démarrage du serveur:', error);
-        process.exit(1);
+        if (process.env.NODE_ENV !== 'production') {
+            process.exit(1);
+        }
     }
 }
 
-// Gestion propre de l'arrêt du serveur
-process.on('SIGTERM', () => {
-    console.log('📴 Arrêt du serveur...');
-    process.exit(0);
-});
-
-process.on('SIGINT', () => {
-    console.log('📴 Arrêt du serveur...');
-    process.exit(0);
-});
-
-// Gestion des erreurs non capturées
-process.on('uncaughtException', (error) => {
-    console.error('❌ Erreur non capturée:', error);
-    process.exit(1);
-});
-
-process.on('unhandledRejection', (reason, promise) => {
-    console.error('❌ Promise rejetée non gérée à:', promise, 'raison:', reason);
-    process.exit(1);
-});
-
-// Démarrer le serveur
+// Initialiser le cache au démarrage
 startServer();
+
+// Gestion propre de l'arrêt du serveur (seulement en développement)
+if (process.env.NODE_ENV !== 'production') {
+    process.on('SIGTERM', () => {
+        console.log('📴 Arrêt du serveur...');
+        process.exit(0);
+    });
+
+    process.on('SIGINT', () => {
+        console.log('📴 Arrêt du serveur...');
+        process.exit(0);
+    });
+
+    // Gestion des erreurs non capturées
+    process.on('uncaughtException', (error) => {
+        console.error('❌ Erreur non capturée:', error);
+        process.exit(1);
+    });
+
+    process.on('unhandledRejection', (reason, promise) => {
+        console.error('❌ Promise rejetée non gérée à:', promise, 'raison:', reason);
+        process.exit(1);
+    });
+}
+
+// Export pour Vercel
+module.exports = app;

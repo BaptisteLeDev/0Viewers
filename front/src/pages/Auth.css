@@ -58,7 +58,7 @@
 
 /* Header */
 .auth-header {
-  margin-bottom: var(--spacing-3xl);
+  margin-bottom: var(--spacing-xl);
 }
 
 .auth-title {
@@ -305,13 +305,6 @@
   .user-actions {
     gap: var(--spacing-sm);
   }
-}
-
-/* GitHub Icon */
-.github-icon {
-  width: 16px;
-  height: 16px;
-  fill: currentColor;
 }
 
 /* Accessibility */

@@ -31,7 +31,7 @@ export const truncateText = (text, maxLength = 100) => {
 /**
  * Génère l'URL de l'avatar de l'utilisateur
  */
-export const getAvatarUrl = (profileImageUrl, size = 150) => {
+export const getAvatarUrl = (profileImageUrl, size = 120) => {
   if (!profileImageUrl) return '/default-avatar.png';
   return profileImageUrl.replace('{width}', size).replace('{height}', size);
 };

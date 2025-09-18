@@ -28,7 +28,7 @@ const Home = () => {
         <h2>Oops ! 😅</h2>
         <p>Impossible de charger les streamers pour le moment.</p>
         <p className="error-detail">{error}</p>
-        <button onClick={refresh} className="retry-btn">
+        <button onClick={refresh} className="btn-style">
           Réessayer
         </button>
       </div>
@@ -71,10 +71,10 @@ const Home = () => {
               />
               {/* Action Buttons */}
               <div className="action-buttons">
-                <button onClick={refresh} className="refresh-btn">
+                <button onClick={refresh} className="btn-style">
                   🎲 Découvrir un autre streamer
                 </button>
-                <Link to={ROUTES.STREAMERS} className="explore-btn">
+                <Link to={ROUTES.STREAMERS} className="btn-style btn-secondary">
                   🔍 Voir tous les streamers français
                 </Link>
               </div>
@@ -123,7 +123,7 @@ const Home = () => {
               <div className="stat-icon">🚀</div>
               <h3 className="stat-title">En direct</h3>
               <p className="stat-description">
-                <span className="stat-number">{streamers.length}</span> streamers français qui ont besoin de votre aide sur 0Viewers !
+                <span className="stat-number">{streamers.length}</span> streamers français qui ont besoin de votre aide sur <span className="iceland-regular">0Viewers</span> !
               </p>
             </div>
           </div>

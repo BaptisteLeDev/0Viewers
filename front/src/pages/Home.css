@@ -9,7 +9,6 @@
 /* Hero Section */
 .hero-section {
   padding: var(--spacing-3xl) 0;
-  margin-bottom: var(--spacing-2xl);
 }
 
 .hero-card {
@@ -67,7 +66,7 @@
 /* Featured Section */
 .featured-section {
   padding: var(--spacing-xl) 0;
-  margin-bottom: var(--spacing-3xl);
+  margin-bottom: var(--spacing-xl);
 }
 
 .section-header {
@@ -284,7 +283,7 @@
 }
 
 .stat-card {
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.75);
   border: 1px solid rgba(255, 88, 228, 0.2);
   border-radius: var(--radius-md);
   backdrop-filter: blur(10px);
@@ -309,7 +308,6 @@
 
 .stat-card:hover {
   transform: translateY(-3px);
-  background: rgba(0, 0, 0, 0.75);
   border-color: rgba(255, 88, 228, 0.4);
   box-shadow: 
     0 8px 32px rgba(24, 160, 251, 0.1),

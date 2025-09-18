@@ -4,6 +4,7 @@ import {
   truncateText, 
   getTwitchStreamUrl 
 } from '../../utils/helpers';
+import TwitchEmbed from './TwitchEmbed';
 import './StreamerCard.css';
 
 const ZeroViewersStreamerCard = ({ streamer, featured = false, showEmbed = false }) => {
@@ -11,22 +12,17 @@ const ZeroViewersStreamerCard = ({ streamer, featured = false, showEmbed = false
     window.open(getTwitchStreamUrl(streamer.login), '_blank');
   };
 
-  // URL pour l'iframe Twitch
-  const embedUrl = `https://player.twitch.tv/?channel=${streamer.login}&parent=localhost&autoplay=false&muted=true`;
-
   return (
     <div className={`streamer-card ${featured ? 'featured' : ''}`}>
-      {/* Iframe Twitch ou image de profil */}
+      {/* Twitch Embed interactif (seulement pour featured sur Home) ou image de profil */}
       <div className="stream-thumbnail">
-        {showEmbed ? (
-          <iframe
-            src={embedUrl}
+        {showEmbed && featured ? (
+          <TwitchEmbed 
+            channel={streamer.login}
             width="100%"
-            height="248"
-            frameBorder="0"
-            allowFullScreen
-            title={`Stream de ${streamer.display_name}`}
-            className="twitch-embed"
+            height={featured ? 394 : 248}
+            autoplay={false}
+            muted={true}
           />
         ) : (
           <div className="profile-thumbnail">
@@ -86,7 +82,7 @@ const ZeroViewersStreamerCard = ({ streamer, featured = false, showEmbed = false
         <div className="action-buttons">
           <button 
             onClick={handleWatchStream}
-            className="watch-btn"
+            className="btn-style"
           >
             🎥 Regarder sur Twitch
           </button>

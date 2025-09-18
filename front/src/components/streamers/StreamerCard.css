@@ -19,11 +19,6 @@
   flex: 1 1 auto;
 }
 
-.home-page .streamer-card {
-  width: 800px;
-  margin: 0 auto;
-}
-
 .streamer-card::before {
   content: "";
   position: absolute;
@@ -52,6 +47,8 @@
   background: rgba(0, 0, 0, 0.8);
   box-shadow: 0 12px 40px rgba(24, 160, 251, 0.15),
     0 6px 20px rgba(255, 88, 228, 0.15);
+  max-width: 700px;
+  width: 100%;
 }
 
 .streamer-card.featured::before {
@@ -60,10 +57,66 @@
 }
 
 /* Styles pour l'iframe Twitch */
+.twitch-embed-container {
+  position: relative;
+  height: 248px;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+}
+
+/* Hauteur spéciale pour les cartes featured (ratio 16:9 pour 700px) */
+.streamer-card.featured .twitch-embed-container {
+  height: 394px;
+}
+
 .twitch-embed {
   border-radius: var(--radius-sm);
   background: var(--bg-primary);
   border: 1px solid rgba(255, 88, 228, 0.1);
+  pointer-events: none; /* Désactive l'interaction avec l'iframe */
+}
+
+/* Overlay pour rendre l'embed non-interactif */
+.embed-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+}
+
+.embed-overlay:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.play-button {
+  background: rgba(255, 88, 228, 0.9);
+  color: white;
+  padding: 12px 24px;
+  border-radius: var(--radius-full);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 16px rgba(255, 88, 228, 0.3);
+  backdrop-filter: blur(10px);
+  transform: scale(0.9);
+  transition: all var(--transition-base);
+}
+
+.embed-overlay:hover .play-button {
+  transform: scale(1);
+  background: rgba(255, 88, 228, 1);
 }
 
 /* Styles pour le thumbnail de profil */
@@ -316,7 +369,7 @@
   height: 50px;
   border-radius: 50%;
   margin-right: 15px;
-  border: 2px solid #f0f0f0;
+  border: 2px solid #fbbf24;
 }
 
 .streamer-details h3 {
@@ -388,7 +441,11 @@
 
 /* Featured card adjustments */
 .featured .stream-thumbnail {
-  height: 250px;
+  height: 394px; /* Ratio 16:9 pour 700px de largeur */
+}
+
+.featured .profile-thumbnail {
+  height: 394px; /* Même hauteur pour cohérence */
 }
 
 .featured .streamer-info {
@@ -408,6 +465,17 @@
   .stream-stats {
     flex-direction: column;
     gap: 5px;
+  }
+  
+  /* Ajustements pour les cartes featured sur mobile */
+  .streamer-card.featured {
+    max-width: 100%;
+  }
+  
+  .featured .stream-thumbnail,
+  .featured .profile-thumbnail,
+  .featured .twitch-embed-container {
+    height: 280px; /* Ratio ajusté pour mobile */
   }
 }
 

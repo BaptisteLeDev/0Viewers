@@ -81,9 +81,9 @@ export default function AuthForm() {
                         </h1>
                         <p className="auth-subtitle">
                             {user
-                                ? "Gérez votre compte 0Viewers"
+                                ? <>Gérez votre compte <span className="iceland-regular">0Viewers</span></>
                                 : isSignUp
-                                    ? "Rejoignez la communauté 0Viewers"
+                                    ? <>Rejoignez la communauté <span className="iceland-regular">0Viewers</span></>
                                     : "Connectez-vous à votre compte"
                             }
                         </p>

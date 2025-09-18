@@ -10,7 +10,7 @@ const Layout = ({ children }) => {
         {children}
       </main>
       <footer className="footer">
-        <p>&copy; 2025 0Viewers - Donnez une chance aux petits streamers ❤️</p>
+        <p>&copy; 2025 <span className="iceland-regular">0Viewers</span> - Donnez une chance aux petits streamers ❤️</p>
       </footer>
     </div>
   );

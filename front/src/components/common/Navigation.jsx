@@ -4,7 +4,6 @@ import { ROUTES } from "../../utils/constants";
 import "./Navigation.css";
 import  supabase  from "../../../../back/supabase";
 
-const user = supabase.auth.getUser();
 const Navigation = () => {
     const location = useLocation();
 
@@ -162,7 +161,7 @@ const Navigation = () => {
                 </filter>
               </defs>
             </svg>
-            <span className="logo-text">0Viewers</span>
+            <span className="logo-text iceland-regular">0Viewers</span>
                     </div>
 
                 </Link>

@@ -12,15 +12,22 @@ const Account = () => {
 
   return (
     <div className="account-page">
-      <header className="page-header">
-        <h1>👤 Mon Compte</h1>
-        <p>Vos statistiques de découverte de streamers</p>
-      </header>
-        <div>
-            <button className="logout-button" onClick={handleSignOut}>
-                Se déconnecter
+      {/* Hero Section avec informations du compte */}
+      <section className="hero-section">
+        <div className="hero-card">
+          <h1 className="hero-title">
+            👤 Mon <span className="highlight">Compte</span>
+          </h1>
+          <p className="hero-subtitle">
+            Vos statistiques de découverte de streamers et votre impact sur la communauté
+          </p>
+          <div className="account-actions">
+            <button className="btn-style" onClick={handleSignOut}>
+              Se déconnecter
             </button>
+          </div>
         </div>
+      </section>
 
       <div className="account-content">
         <section className="stats-section">
