@@ -37,7 +37,7 @@ const StreamerCard = ({ stream, featured = false }) => {
           />
           <div className="streamer-details">
             <h3 className="streamer-name">{stream.user_name}</h3>
-            <p className="game-name">{stream.game_name || 'Jeu non spécifié'}</p>
+            <p className="game-name">{stream.game_name || 'Non spécifié'}</p>
           </div>
         </div>
 

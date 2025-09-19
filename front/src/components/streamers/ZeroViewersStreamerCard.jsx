@@ -52,11 +52,11 @@ const ZeroViewersStreamerCard = ({ streamer, featured = false, showEmbed = false
             <h3 className="streamer-name">{streamer.display_name}</h3>
             <p 
               className="game-name" 
-              title={streamer.game_name || 'Jeu non spécifié'}
+              title={streamer.game_name || 'Non spécifié'}
             >
               {streamer.game_name && streamer.game_name.length > 20 
                 ? `${streamer.game_name.substring(0, 20)}...` 
-                : streamer.game_name || 'Jeu non spécifié'
+                : streamer.game_name || 'Non spécifié'
               }
             </p>
           </div>
