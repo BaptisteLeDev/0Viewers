@@ -80,6 +80,21 @@
   gap: var(--spacing-3xl);
 }
 
+/* Section Avatar */
+.avatar-section-account {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-2xl);
+  backdrop-filter: blur(10px);
+}
+
+.avatar-section-account h2 {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+  color: var(--text-primary);
+  font-size: var(--font-2xl);
+}
 
 .stats-section {
   padding: var(--spacing-xl) 0;

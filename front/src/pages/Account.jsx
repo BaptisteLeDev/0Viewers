@@ -1,7 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import './Account.css';
 import {handleSignOut} from "../components/Register/authform.jsx";
 import {getProfil} from "../../../back/auth.js";
+import AvatarUpload from "../components/common/AvatarUpload.jsx";
 
 
 const Account = () => {
@@ -50,6 +51,12 @@ const Account = () => {
             </section>
 
             <div className="account-content">
+                {/* Section Avatar */}
+                <section className="avatar-section-account">
+                    <h2>👤 Photo de profil</h2>
+                    <AvatarUpload />
+                </section>
+
                 <section className="stats-section">
                     <h2>📊 Vos statistiques</h2>
                     <div className="stats-grid">

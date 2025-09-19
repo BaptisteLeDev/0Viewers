@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import ZeroViewersStreamerCard from '../components/streamers/ZeroViewersStreamerCard';
 import Loading from '../components/common/Loading';
 import { useZeroViewersStreamers } from '../hooks/useZeroViewersStreamers';

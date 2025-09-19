@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 const TwitchEmbed = ({ channel, width = "100%", height = 400, autoplay = false, muted = true }) => {
   const playerRef = useRef(null);
