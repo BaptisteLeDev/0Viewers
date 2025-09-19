@@ -1,6 +1,6 @@
-/* Streamers Page Styles */
 
-/* Utility classes for line clamping */
+
+
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -9,7 +9,7 @@
   overflow: hidden;
 }
 
-/* Custom scrollbar for search input */
+
 .search-input::-webkit-scrollbar {
   width: 4px;
 }
@@ -28,7 +28,7 @@
   background: rgba(139, 92, 246, 0.7);
 }
 
-/* Animation for loading dots */
+
 @keyframes bounce {
   0%,
   80%,
@@ -40,24 +40,24 @@
   }
 }
 
-/* Custom focus styles */
+
 .focus-ring:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
 }
 
-/* Smooth transitions for all interactive elements */
+
 .transition-smooth {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Glass morphism effect enhancement */
+
 .glass-effect {
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
 }
 
-/* Custom gradient text */
+
 .gradient-text {
   background: linear-gradient(135deg, #8b5cf6, #ec4899, #fbbf24);
   -webkit-background-clip: text;
@@ -65,7 +65,7 @@
   background-clip: text;
 }
 
-/* Search Section dans hero-card */
+
 .search-section {
   display: flex;
   flex-direction: column;
@@ -112,7 +112,7 @@
   text-align: center;
 }
 
-/* Responsive pour la search section */
+
 @media (max-width: 768px) {
   .search-section {
     flex-direction: column;
@@ -120,7 +120,7 @@
   }
 }
 
-/* Load More Section Styles - remplacer l'ancien */
+
 .load-more-section {
   display: flex;
   flex-direction: column;

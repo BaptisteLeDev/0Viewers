@@ -1,4 +1,4 @@
-/* Loading Component Styles - utilise les variables globales */
+
 .loading-container {
   display: flex;
   flex-direction: column;

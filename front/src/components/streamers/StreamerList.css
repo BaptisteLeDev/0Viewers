@@ -1,4 +1,4 @@
-/* StreamerList Component Styles - utilise les variables globales */
+
 .streamer-list {
   width: 100%;
 }
@@ -11,7 +11,7 @@
   margin: var(--spacing-xl);
 }
 
-/* Responsive flexbox layout - better than grid for dynamic sizing */
+
 @media (max-width: 480px) {
   .streamers-grid {
     justify-content: center;

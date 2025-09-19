@@ -1,9 +1,9 @@
-/* Layout Styles - utilise les variables globales */
+
 .layout {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  /* Le background est maintenant dans global.css sur body */
+  
 }
 
 .main-content {

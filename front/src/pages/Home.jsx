@@ -74,7 +74,7 @@ const Home = () => {
                 <button onClick={refresh} className="btn-style">
                   🎲 Découvrir un autre streamer
                 </button>
-                <Link to={ROUTES.STREAMERS} className="btn-style btn-secondary">
+                <Link to={ROUTES.STREAMERS} className="btn-style">
                   🔍 Voir tous les streamers français
                 </Link>
               </div>

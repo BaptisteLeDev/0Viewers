@@ -1,4 +1,4 @@
-/* Home Page Styles - utilise les variables globales */
+
 
 .home-page {
   min-height: 100vh;
@@ -6,7 +6,7 @@
   padding: var(--spacing-xl) 0;
 }
 
-/* Hero Section */
+
 .hero-section {
   padding: var(--spacing-3xl) 0;
 }
@@ -63,7 +63,7 @@
   font-weight: 400;
 }
 
-/* Featured Section */
+
 .featured-section {
   padding: var(--spacing-xl) 0;
   margin-bottom: var(--spacing-xl);
@@ -110,7 +110,7 @@
   transform: translateY(-4px);
 }
 
-/* Video Container */
+
 .video-container {
   position: relative;
   aspect-ratio: 16 / 9;
@@ -177,7 +177,7 @@
   backdrop-filter: blur(10px);
 }
 
-/* Streamer Info */
+
 .streamer-info {
   padding: var(--spacing-xl);
 }
@@ -236,7 +236,7 @@
   flex-wrap: wrap;
 }
 
-/* Action Buttons */
+
 .action-buttons {
   display: flex;
   gap: var(--spacing-md);
@@ -244,7 +244,7 @@
   flex-wrap: wrap;
 }
 
-/* No Streams State */
+
 .no-streams {
   text-align: center;
   padding: var(--spacing-3xl) var(--spacing-xl);
@@ -271,7 +271,7 @@
   line-height: 1.5;
 }
 
-/* Stats Section */
+
 .stats-section {
   padding: var(--spacing-3xl) 0;
 }
@@ -358,7 +358,7 @@
   background-clip: text;
 }
 
-/* Action Buttons */
+
 .action-buttons {
   display: flex;
   gap: var(--spacing-md);
@@ -367,7 +367,7 @@
   margin-top: var(--spacing-xl);
 }
 
-/* Loading and Error States */
+
 .error-container {
   text-align: center;
   padding: var(--spacing-3xl) var(--spacing-xl);
@@ -395,7 +395,7 @@
   opacity: 0.8;
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
   .hero-title {
     font-size: var(--font-3xl);

@@ -1,11 +1,11 @@
-/* Account Page Styles - utilise les variables globales */
+
 .account-page {
   min-height: 100vh;
   color: var(--text-primary);
   padding: var(--spacing-xl) 0;
 }
 
-/* Hero Section - même style que Home.css */
+
 .hero-section {
   padding: var(--spacing-3xl) 0;
 }
@@ -80,7 +80,7 @@
   gap: var(--spacing-3xl);
 }
 
-/* Stats Section */
+
 .stats-section {
   padding: var(--spacing-xl) 0;
 }
@@ -165,7 +165,7 @@
   margin-top: var(--spacing-xs);
 }
 
-/* Impact Section */
+
 .impact-section {
   padding: var(--spacing-xl) 0;
   margin: 0 auto;
@@ -225,7 +225,7 @@
   background-clip: text;
 }
 
-/* Settings Section */
+
 .settings-section {
   max-width: 1000px;
   margin: 0 auto;
@@ -280,7 +280,7 @@
   color: var(--accent-yellow);
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
   .hero-title {
     font-size: var(--font-3xl);

@@ -1,4 +1,4 @@
-/* Navigation Styles - utilise les variables globales */
+
 .navigation {
   background: var(--bg-glass);
   border-bottom: 1px solid var(--border-purple);
@@ -134,7 +134,7 @@
   font-weight: 700;
 }
 
-/* Style spécial pour le hover sur un lien actif */
+
 .nav-link.active:hover {
   background: linear-gradient(
     135deg, 

@@ -1,4 +1,4 @@
-/* Auth Page Styles - inspiré de Home.css avec glass morphism */
+
 
 .auth-page {
   min-height: 100vh;
@@ -56,7 +56,7 @@
     0 6px 20px rgba(255, 88, 228, 0.15);
 }
 
-/* Header */
+
 .auth-header {
   margin-bottom: var(--spacing-xl);
 }
@@ -79,7 +79,7 @@
   line-height: 1.5;
 }
 
-/* Form */
+
 .auth-form {
   display: flex;
   flex-direction: column;
@@ -127,7 +127,7 @@
   cursor: not-allowed;
 }
 
-/* Buttons */
+
 .auth-button {
   padding: var(--spacing-md) var(--spacing-xl);
   border: none;
@@ -179,7 +179,7 @@
   box-shadow: 0 4px 16px rgba(255, 88, 228, 0.2);
 }
 
-/* Divider */
+
 .auth-divider {
   position: relative;
   margin: var(--spacing-xl) 0;
@@ -208,7 +208,7 @@
   transform: translateX(-50%);
 }
 
-/* Mode Toggle */
+
 .auth-mode-toggle {
   margin-top: var(--spacing-xl);
   text-align: center;
@@ -232,7 +232,7 @@
   text-decoration: underline;
 }
 
-/* Loading Spinner */
+
 .loading-spinner {
   width: 16px;
   height: 16px;
@@ -248,7 +248,7 @@
   }
 }
 
-/* Success/Error Messages */
+
 .auth-message {
   padding: var(--spacing-md);
   border-radius: var(--radius-sm);
@@ -269,7 +269,7 @@
   color: #ef4444;
 }
 
-/* User Info Display */
+
 .user-info {
   text-align: center;
   padding: var(--spacing-xl) 0;
@@ -288,7 +288,7 @@
   gap: var(--spacing-md);
 }
 
-/* Responsive Design */
+
 @media (max-width: 480px) {
   .auth-container {
     padding: var(--spacing-md);
@@ -307,7 +307,7 @@
   }
 }
 
-/* Accessibility */
+
 .visually-hidden {
   position: absolute;
   width: 1px;
