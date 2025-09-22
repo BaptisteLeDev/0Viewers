@@ -1,0 +1,249 @@
+/* Import des polices Google - doit être en premier */
+@import url('https://fonts.googleapis.com/css2?family=Iceland&family=Share+Tech+Mono&display=swap');
+
+/* Thème personnalisé 0Viewers inspiré du design du site */
+
+:root {
+  /* Couleurs inspirées du site */
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #1a1a1a;
+  --bg-card: #1e1e1e;
+  
+  --text-primary: #ffffff;
+  --text-secondary: #b3b3b3;
+  --text-muted: #666666;
+  
+  --accent-yellow: #fbbf24;
+  --accent-purple: #8b5cf6;
+  --accent-blue: #646cff;
+  --green-primary: #10b981;
+  
+  /* Polices du site */
+  --font-logo: "Iceland", sans-serif;
+  --font-primary: "Share Tech Mono", monospace;
+  
+  /* Rayons et espacements */
+  --radius-sm: 0.5rem;
+  --radius-md: 1rem;
+  --radius-full: 1000px;
+  
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.3s ease;
+}
+
+/* Background principal avec les mêmes dégradés que le site */
+.slidev-layout {
+  background: radial-gradient(
+      ellipse 70% 55% at 50% 50%,
+      rgba(255, 20, 147, 0.15),
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse 160% 130% at 10% 10%,
+      rgba(0, 255, 255, 0.12),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 160% 130% at 90% 90%,
+      rgba(138, 43, 226, 0.18),
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 110% 50% at 80% 30%,
+      rgba(255, 215, 0, 0.08),
+      transparent 40%
+    ),
+    #000000;
+  
+  font-family: var(--font-primary);
+  color: var(--text-primary);
+}
+
+/* Styles pour les titres */
+h1, h2, h3, h4 {
+  font-family: var(--font-logo);
+  color: var(--text-primary);
+  font-weight: 400;
+}
+
+h1 {
+  font-size: 4rem;
+  background: linear-gradient(135deg, #18a0fb, #ff58e4, #ffd749);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: gradientShift 4s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+h2 {
+  font-size: 2.5rem;
+  color: var(--text-primary);
+}
+
+h3 {
+  font-size: 2rem;
+  color: var(--accent-yellow);
+}
+
+/* Boutons avec l'effet du site */
+.slidev-layout button,
+.slidev-layout a.btn,
+.explore-btn,
+.watch-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.7em 1.4em;
+  border: 2px solid #ffd749;
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: var(--font-primary);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  text-decoration: none;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  backdrop-filter: blur(10px);
+  gap: 0.5rem;
+}
+
+.slidev-layout button:hover,
+.slidev-layout a.btn:hover,
+.explore-btn:hover,
+.watch-btn:hover {
+  border: 2px solid transparent;
+  background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)) padding-box,
+    linear-gradient(135deg, #18a0fb, #ff58e4, #ffd749) border-box;
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(24, 160, 251, 0.15),
+    0 4px 15px rgba(255, 88, 228, 0.15), 
+    0 2px 8px rgba(255, 215, 73, 0.2);
+}
+
+/* Animations pour v-click avec style du site */
+.slidev-vclick-target {
+  transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slidev-vclick-hidden {
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  filter: blur(2px);
+}
+
+/* Cartes avec effet glassmorphism */
+.card, .grid > div {
+  background: rgba(30, 30, 30, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  backdrop-filter: blur(20px);
+  padding: 1.5rem;
+  transition: all var(--transition-base);
+}
+
+.card:hover, .grid > div:hover {
+  transform: translateY(-5px);
+  border-color: rgba(139, 92, 246, 0.3);
+  box-shadow: 0 8px 32px rgba(139, 92, 246, 0.1);
+}
+
+/* Code blocks avec style tech */
+.slidev-layout pre {
+  background: rgba(26, 26, 26, 0.9) !important;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: var(--radius-md);
+  backdrop-filter: blur(10px);
+}
+
+/* Émojis avec animation de pulsation */
+.text-6xl, .text-4xl {
+  display: inline-block;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* Navigation avec effet glassmorphism */
+.slidev-nav {
+  background: rgba(0, 0, 0, 0.8) !important;
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Liens avec effet du site */
+a {
+  color: var(--accent-blue);
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--accent-yellow);
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
+}
+
+/* Effet spécial pour les layouts two-cols */
+.slidev-layout.two-cols {
+  gap: 2rem;
+}
+
+.slidev-layout.two-cols .col-left,
+.slidev-layout.two-cols .col-right {
+  background: rgba(30, 30, 30, 0.3);
+  border-radius: var(--radius-md);
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Mermaid diagrams avec style sombre */
+.mermaid {
+  background: transparent !important;
+}
+
+.mermaid .node rect,
+.mermaid .node circle,
+.mermaid .node polygon {
+  stroke: rgba(139, 92, 246, 0.5) !important;
+  stroke-width: 2px !important;
+}
+
+/* Animations d'entrée pour les éléments */
+.slidev-layout .animate-in {
+  animation: slideInUp 0.6s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 2rem; }
+  h3 { font-size: 1.5rem; }
+  
+  .slidev-layout.two-cols .col-left,
+  .slidev-layout.two-cols .col-right {
+    padding: 1rem;
+  }
+}

@@ -82,18 +82,39 @@
 
 /* Section Avatar */
 .avatar-section-account {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
+  background: 
+    radial-gradient(ellipse at top, rgba(24, 160, 251, 0.15), transparent 50%),
+    radial-gradient(ellipse at bottom, rgba(255, 88, 228, 0.15), transparent 50%),
+    rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 88, 228, 0.3);
   border-radius: var(--radius-lg);
-  padding: var(--spacing-2xl);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(15px);
+  padding: var(--spacing-3xl);
+  text-align: center;
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.4),
+    0 4px 16px rgba(255, 88, 228, 0.1);
+  position: relative;
+  overflow: hidden;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.avatar-section-account::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #18A0FB, #FF58E4, #FFD749);
 }
 
 .avatar-section-account h2 {
-  text-align: center;
   margin-bottom: var(--spacing-xl);
   color: var(--text-primary);
   font-size: var(--font-2xl);
+  font-weight: 700;
 }
 
 .stats-section {

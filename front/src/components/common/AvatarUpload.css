@@ -4,11 +4,11 @@
   flex-direction: column;
   align-items: center;
   gap: var(--spacing-lg);
-  padding: var(--spacing-lg);
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  backdrop-filter: blur(10px);
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  backdrop-filter: none;
 }
 
 /* Section avatar principale */
@@ -195,18 +195,19 @@
 
 /* Instructions */
 .avatar-instructions {
-  background: var(--bg-purple-dark);
-  border: 1px solid var(--border-purple);
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-sm);
   padding: var(--spacing-md);
   text-align: center;
-  max-width: 300px;
+  max-width: 400px;
+  backdrop-filter: blur(5px);
 }
 
 .avatar-instructions p {
   margin-bottom: var(--spacing-xs);
-  font-size: var(--font-xs);
-  color: var(--text-secondary);
+  font-size: var(--font-sm);
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .avatar-instructions p:last-child {
@@ -215,6 +216,7 @@
 
 .avatar-instructions strong {
   color: var(--text-primary);
+  font-weight: 600;
 }
 
 /* Responsive */
