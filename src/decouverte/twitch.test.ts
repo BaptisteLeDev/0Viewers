@@ -1,10 +1,20 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { fetchFrenchStreams, fetchUsers } from "@/decouverte/twitch";
+import { fetchAppToken, fetchFrenchStreams, fetchUsers } from "@/decouverte/twitch";
 
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
 
-beforeEach(() => vi.stubEnv("TWITCH_CLIENT_ID", "cid"));
+beforeEach(() => {
+  vi.stubEnv("TWITCH_CLIENT_ID", "cid");
+  vi.stubEnv("TWITCH_CLIENT_SECRET", "secret");
+});
 afterEach(() => vi.unstubAllEnvs());
+
+describe("fetchAppToken", () => {
+  it("throws when access_token is missing in response", async () => {
+    const fake = vi.fn().mockResolvedValue(json({}));
+    await expect(fetchAppToken(fake)).rejects.toThrow("Twitch token missing");
+  });
+});
 
 describe("fetchFrenchStreams", () => {
   it("follows the cursor until Twitch stops paginating", async () => {

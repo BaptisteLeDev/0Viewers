@@ -21,7 +21,8 @@ export async function fetchAppToken(fetchImpl: Fetch = fetch): Promise<string> {
     }),
   });
   if (!res.ok) throw new Error(`Twitch token ${res.status}`);
-  const body = (await res.json()) as { access_token: string };
+  const body = (await res.json()) as { access_token?: string };
+  if (!body.access_token) throw new Error("Twitch token missing");
   return body.access_token;
 }
 
@@ -44,6 +45,7 @@ export async function fetchFrenchStreams(token: string, fetchImpl: Fetch = fetch
     cursor = body.pagination.cursor;
     if (!cursor || body.data.length === 0) break;
   }
+  if (cursor) console.warn(`Twitch pagination capped at ${MAX_PAGES} pages, lowest-viewer streams may be missing`);
   return streams;
 }
 
