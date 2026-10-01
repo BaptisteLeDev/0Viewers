@@ -14,6 +14,7 @@ describe("matchesQuery", () => {
     expect(matchesQuery(s, "pokemon ecarlate")).toBe(true);
     expect(matchesQuery(s, "détente")).toBe(true);
   });
+  it("does not strip ASCII symbols", () => expect(matchesQuery(s, "^")).toBe(false));
   it("searches name, title and game", () => {
     expect(matchesQuery(s, "speedrun")).toBe(true);
     expect(matchesQuery(s, "minecraft")).toBe(false);

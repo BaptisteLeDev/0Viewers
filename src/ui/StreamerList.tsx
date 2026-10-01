@@ -25,7 +25,7 @@ export function StreamerList({ streamers }: { streamers: Streamer0V[] }) {
         <ul className={styles.grid}>
           {shown.map((s) => (
             <li key={s.id}>
-              <StreamerCard streamer={s} active={activeId === s.id} onActivate={() => setActiveId(s.id)} />
+              <StreamerCard headingLevel="h2" streamer={s} active={activeId === s.id} onActivate={() => setActiveId(s.id)} />
             </li>
           ))}
         </ul>

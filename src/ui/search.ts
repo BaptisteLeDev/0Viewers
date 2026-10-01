@@ -1,6 +1,6 @@
 import type { Streamer0V } from "@/decouverte/types";
 
-const fold = (text: string) => text.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
+const fold = (text: string) => text.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
 
 export function matchesQuery(s: Streamer0V, query: string): boolean {
   const q = fold(query.trim());
