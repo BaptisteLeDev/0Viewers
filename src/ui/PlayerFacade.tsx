@@ -14,18 +14,27 @@ type Props = {
 
 export function PlayerFacade({ streamer, active, onActivate, autoplayWhenFits = false }: Props) {
   const box = useRef<HTMLDivElement>(null);
+  const activateRef = useRef(onActivate);
+
   // never active during SSR, so window is safe here
   const host = active ? window.location.hostname : null;
 
   useEffect(() => {
-    if (!autoplayWhenFits || !box.current) return;
+    activateRef.current = onActivate;
+  });
+
+  useEffect(() => {
+    if (active || !autoplayWhenFits || !box.current) return;
     const el = box.current;
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && canAutoplay(el.getBoundingClientRect())) onActivate();
+      if (entry.isIntersecting && canAutoplay(el.getBoundingClientRect())) {
+        observer.disconnect();
+        activateRef.current();
+      }
     });
     observer.observe(el);
     return () => observer.disconnect();
-  }, [autoplayWhenFits, onActivate]);
+  }, [autoplayWhenFits, active]);
 
   return (
     <div ref={box} className={styles.player}>
@@ -34,6 +43,7 @@ export function PlayerFacade({ streamer, active, onActivate, autoplayWhenFits = 
           className={styles.frame}
           src={twitchPlayerSrc(streamer.login, host, true)}
           title={`Live Twitch de ${streamer.displayName}`}
+          allow="autoplay; fullscreen"
           allowFullScreen
         />
       ) : (
