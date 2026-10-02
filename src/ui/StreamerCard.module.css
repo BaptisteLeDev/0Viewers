@@ -28,7 +28,6 @@
     transition: opacity var(--duration);
   }
 }
-.card::before { content: ""; position: absolute; inset: 0 0 auto; z-index: 1; height: 2px; background: var(--gradient-bar); }
 .card:hover, .card:focus-within { transform: translateY(var(--lift)); box-shadow: var(--glow-pink); }
 .card:hover::after, .card:focus-within::after { opacity: 1; }
 .card:active { transform: scale(var(--press)); }

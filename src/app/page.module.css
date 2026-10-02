@@ -5,7 +5,6 @@
   background: var(--glass-bg);
   border-block: 1px solid var(--glass-border);
 }
-.stats::before { content: ""; position: absolute; inset: 0 0 auto; height: 2px; background: var(--gradient-bar); }
 .stats p { margin: 0; max-width: 46rem; font-size: var(--text-lg); line-height: 1.5; color: var(--color-text-muted); }
 .stats strong {
   font-family: var(--font-display);
