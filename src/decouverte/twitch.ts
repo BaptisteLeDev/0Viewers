@@ -35,18 +35,18 @@ async function helix<T>(path: string, token: string, fetchImpl: Fetch): Promise<
 }
 
 export async function fetchFrenchStreams(token: string, fetchImpl: Fetch = fetch): Promise<HelixStream[]> {
-  const streams: HelixStream[] = [];
+  const streams = new Map<string, HelixStream>();
   let cursor: string | undefined;
   for (let page = 0; page < MAX_PAGES; page++) {
     const query = new URLSearchParams({ language: "fr", first: "100" });
     if (cursor) query.set("after", cursor);
     const body = await helix<{ data: HelixStream[]; pagination: { cursor?: string } }>(`/streams?${query}`, token, fetchImpl);
-    streams.push(...body.data);
+    for (const s of body.data) if (!streams.has(s.user_id)) streams.set(s.user_id, s);
     cursor = body.pagination.cursor;
     if (!cursor || body.data.length === 0) break;
   }
   if (cursor) console.warn(`Twitch pagination capped at ${MAX_PAGES} pages, lowest-viewer streams may be missing`);
-  return streams;
+  return [...streams.values()];
 }
 
 export async function fetchUsers(ids: string[], token: string, fetchImpl: Fetch = fetch): Promise<Map<string, HelixUser>> {

@@ -27,6 +27,14 @@ describe("fetchFrenchStreams", () => {
     expect(fake.mock.calls[0][0]).toContain("language=fr");
   });
 
+  it("keeps the first stream when a user_id repeats across pages", async () => {
+    const fake = vi.fn()
+      .mockResolvedValueOnce(json({ data: [{ user_id: "1", viewer_count: 5 }], pagination: { cursor: "c1" } }))
+      .mockResolvedValueOnce(json({ data: [{ user_id: "1", viewer_count: 4 }], pagination: {} }));
+    const streams = await fetchFrenchStreams("tok", fake);
+    expect(streams).toEqual([{ user_id: "1", viewer_count: 5 }]);
+  });
+
   it("throws on Twitch error instead of returning an empty list", async () => {
     const fake = vi.fn().mockResolvedValue(json({}, 503));
     await expect(fetchFrenchStreams("tok", fake)).rejects.toThrow("503");
