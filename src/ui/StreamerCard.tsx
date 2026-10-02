@@ -18,7 +18,7 @@ export function StreamerCard({ streamer, active = false, onActivate, autoplayWhe
           <span className={streamer.viewerCount === 0 ? styles.zero : styles.badge}>{viewerLabel(streamer.viewerCount)}</span>
           <span>{streamer.gameName}</span>
         </p>
-        <a className={styles.link} href={`https://www.twitch.tv/${streamer.login}`} target="_blank" rel="noopener noreferrer">
+        <a className={`btn btn-ghost ${styles.link}`} href={`https://www.twitch.tv/${streamer.login}`} target="_blank" rel="noopener noreferrer">
           Ouvrir sur Twitch<span className="visually-hidden"> (nouvel onglet)</span>
         </a>
       </div>
