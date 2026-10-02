@@ -13,15 +13,20 @@ const subscribeWide = (onChange: () => void) => {
   return () => query.removeEventListener("change", onChange);
 };
 
-type Props = { streamer: Streamer0V | null; onClose: () => void; onNext?: () => void };
+type Props = { streamer: Streamer0V | null; onClose: () => void; onNext?: () => void; chatFirst?: boolean };
 
-export function Theater({ streamer, onClose, onNext }: Props) {
+export function Theater({ streamer, onClose, onNext, chatFirst = false }: Props) {
   const dialog = useRef<HTMLDialogElement>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   const headingId = useId();
-  const [chatOpen, setChatOpen] = useState(false);
+  const [chatOpen, setChatOpen] = useState(chatFirst);
   const wide = useSyncExternalStore(subscribeWide, () => window.matchMedia(WIDE).matches, () => false);
   const id = streamer?.id;
+  const [shownId, setShownId] = useState(id);
+  if (id !== shownId) {
+    setShownId(id);
+    setChatOpen(chatFirst);
+  }
 
   useEffect(() => {
     const el = dialog.current;

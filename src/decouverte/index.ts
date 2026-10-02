@@ -5,6 +5,7 @@ import { fetchAppToken, fetchFrenchStreams, fetchUsers } from "./twitch";
 import type { Streamer0V } from "./types";
 
 export type { Streamer0V } from "./types";
+export { MAX_VIEWERS, MIN_LIVE_MINUTES } from "./rule";
 
 export async function getZeroViewersStreamers(): Promise<Streamer0V[]> {
   const now = new Date();

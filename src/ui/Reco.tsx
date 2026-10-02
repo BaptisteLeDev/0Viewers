@@ -3,47 +3,110 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import type { Streamer0V } from "@/decouverte/types";
-import { pickOther } from "./random";
+import { formatLiveDuration } from "./duration";
+import { PlayerFacade } from "./PlayerFacade";
+import { nextIndex, pickOther } from "./random";
+import { viewerLabel } from "./search";
 import { StreamerCard } from "./StreamerCard";
 import { Theater } from "./Theater";
 import styles from "./Reco.module.css";
 
-export function Reco({ streamers }: { streamers: Streamer0V[] }) {
+const GRID_SIZE = 6;
+
+type Props = { streamers: Streamer0V[]; renderedAt: number; children: React.ReactNode };
+
+export function Reco({ streamers, renderedAt, children }: Props) {
   const [index, setIndex] = useState(0);
+  const [now, setNow] = useState(renderedAt);
   const [active, setActive] = useState(false);
-  const [theater, setTheater] = useState(false);
   const [autoplay, setAutoplay] = useState(true);
+  const [theater, setTheater] = useState<{ id: string; chat: boolean } | null>(null);
   const activate = useCallback(() => setActive(true), []);
 
   useEffect(() => {
     // random pick after hydration keeps ISR HTML identical for everyone
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setIndex(Math.floor(Math.random() * streamers.length));
+    setNow(Date.now());
   }, [streamers.length]);
 
   const reroll = () => {
     setActive(false);
+    setAutoplay(true);
+    setNow(Date.now());
     setIndex((i) => pickOther(streamers.length, i));
   };
 
-  const openTheater = () => {
+  const openTheater = (id: string, chat = false) => {
     setActive(false);
     setAutoplay(false);
-    setTheater(true);
+    setTheater({ id, chat });
   };
 
-  const streamer = streamers[index % streamers.length];
+  const streamer = streamers.length > 0 ? streamers[index % streamers.length] : undefined;
+  const others = streamers.filter((s) => s.id !== streamer?.id).slice(0, GRID_SIZE);
+  const theaterIndex = theater ? streamers.findIndex((s) => s.id === theater.id) : -1;
+  const listLabel = streamers.length > 1 ? `Voir les ${streamers.length} streamers` : "Voir la liste";
+
   return (
-    <div className={styles.reco}>
-      <StreamerCard key={streamer.id} streamer={streamer} active={active} onActivate={activate} autoplayWhenFits={autoplay} headingLevel="h3" />
-      <div className={styles.actions}>
-        <button type="button" className="btn btn-ghost" onClick={openTheater}>Mode cinéma</button>
-        {streamers.length > 1 && (
-          <button type="button" className="btn" onClick={reroll}>Autre streamer</button>
+    <>
+      <section className={`container ${styles.hero}`} aria-labelledby="hero-title">
+        <div className={styles.pitch}>
+          {children}
+          <div className={styles.ctas}>
+            {streamer && (
+              <button type="button" className="btn" onClick={() => openTheater(streamer.id)}>Regarder maintenant</button>
+            )}
+            <Link href="/streamers" className="btn btn-ghost">{listLabel}</Link>
+          </div>
+        </div>
+        {streamer ? (
+          <div className={styles.media}>
+            <PlayerFacade key={streamer.id} streamer={streamer} active={active} onActivate={activate} autoplayWhenFits={autoplay} />
+            <div className={styles.strip}>
+              <p className={styles.who} aria-live="polite">
+                <span className={styles.name}>{streamer.displayName}</span>
+                <span>{streamer.gameName}</span>
+              </p>
+              <p className={styles.meta}>
+                <span>en live depuis {formatLiveDuration(streamer.startedAt, now)}</span>
+                <span className={streamer.viewerCount === 0 ? styles.zero : styles.badge}>{viewerLabel(streamer.viewerCount)}</span>
+              </p>
+              <div className={styles.actions}>
+                {streamers.length > 1 && (
+                  <button type="button" className="btn btn-ghost" onClick={reroll}>Autre streamer</button>
+                )}
+                <button type="button" className="btn btn-ghost" onClick={() => openTheater(streamer.id, true)}>Rejoindre le chat</button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <p className={styles.empty}>Aucun streamer français à 0 spectateur en ce moment. Repasse dans quelques minutes.</p>
         )}
-        <Link href="/streamers" className="btn btn-ghost">Voir tous les streamers</Link>
-      </div>
-      <Theater streamer={theater ? streamer : null} onClose={() => setTheater(false)} onNext={streamers.length > 1 ? reroll : undefined} />
-    </div>
+      </section>
+      {streamer && (
+        <section className={`container ${styles.live}`} aria-labelledby="live-title">
+          <h2 id="live-title">En direct maintenant</h2>
+          {others.length > 0 ? (
+            <ul className={styles.grid}>
+              {others.map((s) => (
+                <li key={s.id}>
+                  <StreamerCard streamer={s} onActivate={() => openTheater(s.id)} />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>Pas d&apos;autre streamer en live pour l&apos;instant. Repasse dans quelques minutes.</p>
+          )}
+          {others.length > 0 && <Link href="/streamers" className="btn btn-ghost">{listLabel}</Link>}
+        </section>
+      )}
+      <Theater
+        streamer={streamers[theaterIndex] ?? null}
+        chatFirst={theater?.chat}
+        onClose={() => setTheater(null)}
+        onNext={streamers.length > 1 ? () => setTheater((t) => t && { ...t, id: streamers[nextIndex(streamers.length, theaterIndex)].id }) : undefined}
+      />
+    </>
   );
 }
