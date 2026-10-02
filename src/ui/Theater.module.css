@@ -1,0 +1,58 @@
+.theater {
+  width: calc(100% - 2 * var(--space-2));
+  height: calc(100dvh - 2 * var(--space-2));
+  max-width: none;
+  max-height: none;
+  margin: auto;
+  padding: var(--space-3);
+  overflow-y: auto;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-filter);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  color: var(--color-text);
+}
+.theater[open] { display: flex; flex-direction: column; gap: var(--space-3); }
+.theater::backdrop { background: rgba(5, 5, 8, 0.8); backdrop-filter: var(--glass-filter); }
+
+@media (prefers-reduced-transparency: reduce) {
+  .theater::backdrop { background: var(--color-bg); }
+}
+
+.head { display: flex; align-items: center; gap: var(--space-3); }
+.avatar { flex: none; border-radius: var(--radius-full); border: 2px solid var(--color-pink); }
+.who { flex: 1; min-width: 0; }
+.name { margin: 0; font-size: var(--text-xl); color: var(--color-pink); overflow-wrap: anywhere; }
+.meta { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-text-muted); }
+.badge, .zero { padding: 0 var(--space-2); border-radius: var(--radius-full); border: 1px solid var(--color-blue); color: var(--color-blue); }
+.zero { border-color: var(--color-yellow); color: var(--color-yellow); }
+.close { flex: none; }
+
+.player { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; border-radius: var(--radius-sm); background: var(--color-card); }
+.chatToggle { align-self: flex-start; }
+.chat { flex: 1 0 24rem; width: 100%; border: 0; border-radius: var(--radius-sm); background: var(--color-card); }
+.foot { display: flex; flex-wrap: wrap; gap: var(--space-3); justify-content: flex-end; }
+
+@media (min-width: 1024px) {
+  .theater { width: calc(100% - 2 * var(--space-5)); height: calc(100dvh - 2 * var(--space-5)); overflow: hidden; }
+  .theater[open] {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-areas: "head head" "stage chat" "foot foot";
+  }
+  .head { grid-area: head; }
+  /* size container: player keeps 16:9 inside whatever width and height remain */
+  .stage { grid-area: stage; min-height: 0; container-type: size; display: grid; place-items: center; }
+  .player { width: min(100cqw, 100cqh * 16 / 9); }
+  .chat { grid-area: chat; height: 100%; }
+  .foot { grid-area: foot; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .theater[open] { animation: theater-in var(--duration) ease-out; }
+  .theater[open]::backdrop { animation: backdrop-in var(--duration) ease-out; }
+}
+@keyframes theater-in { from { opacity: 0; transform: translateY(1rem) scale(0.98); } }
+@keyframes backdrop-in { from { opacity: 0; } }

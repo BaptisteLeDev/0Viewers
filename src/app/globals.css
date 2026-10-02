@@ -66,6 +66,7 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 html { color-scheme: dark; }
+html:has(dialog[open]) { overflow: hidden; }
 
 body {
   margin: 0;

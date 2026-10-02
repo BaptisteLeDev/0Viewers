@@ -5,9 +5,9 @@ import { PlayerFacade } from "./PlayerFacade";
 import { viewerLabel } from "./search";
 import styles from "./StreamerCard.module.css";
 
-type Props = { streamer: Streamer0V; active: boolean; onActivate: () => void; autoplayWhenFits?: boolean; headingLevel?: "h2" | "h3" };
+type Props = { streamer: Streamer0V; active?: boolean; onActivate: () => void; autoplayWhenFits?: boolean; headingLevel?: "h2" | "h3" };
 
-export function StreamerCard({ streamer, active, onActivate, autoplayWhenFits, headingLevel: Heading = "h3" }: Props) {
+export function StreamerCard({ streamer, active = false, onActivate, autoplayWhenFits, headingLevel: Heading = "h3" }: Props) {
   return (
     <article className={styles.card}>
       <PlayerFacade streamer={streamer} active={active} onActivate={onActivate} autoplayWhenFits={autoplayWhenFits} />

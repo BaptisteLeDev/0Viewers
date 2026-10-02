@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { pickOther } from "@/ui/random";
+import { nextIndex, pickOther } from "@/ui/random";
 
 describe("pickOther", () => {
   it("returns 0 for a single item", () => expect(pickOther(1, 0, () => 0.9)).toBe(0));
@@ -13,4 +13,11 @@ describe("pickOther", () => {
       expect(i).toBeLessThan(5);
     }
   });
+});
+
+describe("nextIndex", () => {
+  it("moves to the following item", () => expect(nextIndex(3, 0)).toBe(1));
+  it("wraps around after the last item", () => expect(nextIndex(3, 2)).toBe(0));
+  it("stays on a single item", () => expect(nextIndex(1, 0)).toBe(0));
+  it("starts at 0 when current is not in the list", () => expect(nextIndex(4, -1)).toBe(0));
 });

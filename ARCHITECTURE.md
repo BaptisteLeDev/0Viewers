@@ -8,7 +8,7 @@ Une app Next.js (App Router, TypeScript). Contexte et choix : [ADR 0001](docs/de
 |---|---|---|
 | `src/app` | Pages, métadonnées SEO, `sitemap`, `robots`, image OpenGraph (`opengraph-image.tsx`, générée par `next/og`) | Serveur |
 | `src/decouverte` | Contexte Découverte : appels Twitch, règle de sélection, fixtures | Serveur (`server-only`) |
-| `src/ui` | Composants interactifs (Reco, recherche, lecteur Twitch à la demande) | Client |
+| `src/ui` | Composants interactifs (Reco, recherche, lecteur Twitch, mode cinéma) | Client |
 
 Les dépendances vont dans un seul sens : `app` utilise `decouverte` et `ui`, `ui` ne connaît que le type `Streamer0V`.
 

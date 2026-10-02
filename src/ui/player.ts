@@ -13,3 +13,7 @@ export function twitchPlayerSrc(channel: string, parent: string, autoplay: boole
 export function thumbnailSrc(template: string, width: number, height: number): string {
   return template.replace("{width}", String(width)).replace("{height}", String(height));
 }
+
+export function twitchChatSrc(channel: string, parent: string): string {
+  return `https://www.twitch.tv/embed/${encodeURIComponent(channel)}/chat?${new URLSearchParams({ parent })}&darkpopout`;
+}
