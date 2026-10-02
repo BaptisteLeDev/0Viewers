@@ -21,7 +21,7 @@
   background: var(--gradient-bar);
 }
 
-.hero h1 { margin: 0 0 var(--space-3); font-size: var(--text-2xl); }
+.hero h1 { margin: 0 0 var(--space-3); font-size: clamp(2rem, 8vw, var(--text-2xl)); }
 
 .hero p { max-width: 40rem; margin: 0 auto; font-size: var(--text-lg); color: var(--color-text-muted); }
 
@@ -32,3 +32,4 @@
 .section > :not(h2) { margin-inline: auto; }
 
 .stats { text-align: center; color: var(--color-text-muted); }
+.stats strong { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 400; color: var(--color-text); }

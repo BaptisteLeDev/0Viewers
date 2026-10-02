@@ -5,7 +5,7 @@ import { Header } from "@/ui/Header";
 import { SITE_DESCRIPTION, SITE_NAME, isIndexable, siteUrl } from "@/site";
 import "./globals.css";
 
-const heading = Iceland({ weight: "400", subsets: ["latin"], variable: "--font-heading", display: "swap" });
+const display = Iceland({ weight: "400", subsets: ["latin"], variable: "--font-display", display: "swap" });
 const body = Geist({ subsets: ["latin"], variable: "--font-body", display: "swap" });
 const mono = Share_Tech_Mono({ weight: "400", subsets: ["latin"], variable: "--font-mono", display: "swap", preload: false });
 
@@ -25,7 +25,7 @@ export const viewport: Viewport = { themeColor: "#050508" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${heading.variable} ${body.variable} ${mono.variable}`}>
+    <html lang="fr" className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body>
         <a href="#contenu" className="skip-link">Aller au contenu</a>
         <Backdrop />
