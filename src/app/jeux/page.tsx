@@ -3,7 +3,6 @@ import { MAX_VIEWERS, getZeroViewersStreamers, groupByGame } from "@/decouverte"
 import { GameLinks } from "@/ui/GameLinks";
 import styles from "./jeux.module.css";
 
-export const revalidate = 60;
 export const maxDuration = 60;
 
 export const metadata: Metadata = {

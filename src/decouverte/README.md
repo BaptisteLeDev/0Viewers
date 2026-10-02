@@ -11,7 +11,7 @@ Contexte qui trouve les streamers Twitch français en live devant (presque) pers
 
 ## API publique
 
-`getZeroViewersStreamers(): Promise<Streamer0V[]>` dans `index.ts`, réservé au serveur, un crawl partagé entre pages (`unstable_cache`, 240 s, tag `streams`) et mémoïsé par rendu (`React.cache`). Le type `Streamer0V` est ré-exporté, ainsi que `groupByGame` et `slugifyGame` (purs, `games.ts`, aussi importables côté client). Le reste du dossier est interne.
+`getCrawl(): Promise<{ streamers, crawledAt }>` dans `index.ts`, réservé au serveur : un crawl partagé entre pages (`"use cache"`, `cacheLife` stale 60 s / revalidate 240 s / expire 1 h, tag `streams`). `crawledAt` sert d'heure de référence aux pages (durées de live, filtres, sitemap). `getZeroViewersStreamers()` en renvoie juste la liste. Le type `Streamer0V` est ré-exporté, ainsi que `groupByGame` et `slugifyGame` (purs, `games.ts`, aussi importables côté client). Le reste du dossier est interne.
 
 ## Invariants
 

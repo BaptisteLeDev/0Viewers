@@ -1,8 +1,6 @@
 import { MAX_VIEWERS, MIN_LIVE_MINUTES } from "@/decouverte";
 import { SITE_DESCRIPTION, SITE_NAME, siteUrl } from "@/site";
 
-export const dynamic = "force-static";
-
 export function GET() {
   const url = siteUrl();
   const body = `# ${SITE_NAME}

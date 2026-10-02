@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { MAX_VIEWERS, MIN_LIVE_MINUTES, getZeroViewersStreamers, groupByGame } from "@/decouverte";
+import { MAX_VIEWERS, MIN_LIVE_MINUTES, getCrawl, groupByGame } from "@/decouverte";
 import Link from "next/link";
 import { GameLinks } from "@/ui/GameLinks";
 import { Reco } from "@/ui/Reco";
 import styles from "./page.module.css";
 
-export const revalidate = 60;
 export const maxDuration = 60;
 
 export const metadata: Metadata = {
@@ -18,15 +17,12 @@ const plural = (n: number, word: string) => `${word}${n > 1 ? "s" : ""}`;
 const TOP_GAMES = 8;
 
 export default async function Home() {
-  const streamers = await getZeroViewersStreamers();
+  const { streamers, crawledAt } = await getCrawl();
   const zeros = streamers.filter((s) => s.viewerCount === 0).length;
   const games = groupByGame(streamers);
-  // server render, once per ISR window: hydration then moves it to client time
-  // eslint-disable-next-line react-hooks/purity
-  const renderedAt = Date.now();
   return (
     <>
-      <Reco streamers={streamers} renderedAt={renderedAt}>
+      <Reco streamers={streamers} renderedAt={crawledAt}>
         <h1 id="hero-title">Découvre les streamers Twitch français à <span className="highlight">0 spectateur</span></h1>
         <p>Un clic pour lancer leur live, un mot dans le chat, et tu deviens leur premier spectateur.</p>
       </Reco>

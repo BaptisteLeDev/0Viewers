@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import { MAX_VIEWERS, MIN_LIVE_MINUTES, getZeroViewersStreamers } from "@/decouverte";
+import { MAX_VIEWERS, MIN_LIVE_MINUTES, getCrawl } from "@/decouverte";
 import { jsonLd } from "@/site";
 import { twitchChannelUrl } from "@/ui/player";
 import { StreamerList } from "@/ui/StreamerList";
 
-export const revalidate = 60;
 export const maxDuration = 60;
 
 export const metadata: Metadata = {
@@ -15,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 export default async function StreamersPage() {
-  const streamers = await getZeroViewersStreamers();
+  const { streamers, crawledAt } = await getCrawl();
   const listLd = jsonLd({
     "@type": "ItemList",
     name: "Streamers Twitch français en live à 0 spectateur",
@@ -30,7 +29,7 @@ export default async function StreamersPage() {
       {streamers.length === 0 ? (
         <p>Aucun streamer français à 0 spectateur en ce moment. Repasse dans quelques minutes.</p>
       ) : (
-        <StreamerList streamers={streamers} />
+        <StreamerList streamers={streamers} renderedAt={crawledAt} />
       )}
     </section>
   );

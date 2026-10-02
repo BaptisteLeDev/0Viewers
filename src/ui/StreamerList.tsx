@@ -10,7 +10,7 @@ import { nextIndex } from "./random";
 import { Theater } from "./Theater";
 import styles from "./StreamerList.module.css";
 
-type Props = { streamers: Streamer0V[]; gamePage?: boolean };
+type Props = { streamers: Streamer0V[]; renderedAt: number; gamePage?: boolean };
 
 const VIEWER_CHOICES: [Filters["viewers"], string][] = [["", "Tous"], ["0", "0"], ["1-2", "1 à 2"], ["3-5", "3 à 5"]];
 const DURATION_CHOICES: [Filters["duration"], string][] = [["", "Toutes"], ["moins-1h", "Moins d'1 h"], ["1-3h", "1 à 3 h"], ["plus-3h", "Plus de 3 h"]];
@@ -38,7 +38,7 @@ const writeUrl = (f: Filters) => {
   window.history.replaceState(null, "", search ? `?${search}` : window.location.pathname);
 };
 
-function FilterableList({ streamers, gamePage = false, params }: Props & { params: { get(name: string): string | null } }) {
+function FilterableList({ streamers, renderedAt: now, gamePage = false, params }: Props & { params: { get(name: string): string | null } }) {
   const games = useMemo(() => groupByGame(streamers), [streamers]);
   const f = useMemo(() => parseFilters(params, gamePage ? [] : games.map((g) => g.name)), [params, games, gamePage]);
   const [query, setQuery] = useState(f.q);
@@ -47,7 +47,6 @@ function FilterableList({ streamers, gamePage = false, params }: Props & { param
     setUrlQuery(f.q);
     setQuery(f.q);
   }
-  const [now] = useState(() => Date.now());
   const [openId, setOpenId] = useState<string | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
   const id = useId();
