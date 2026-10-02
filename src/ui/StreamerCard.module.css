@@ -1,8 +1,42 @@
-.card { display: flex; flex-direction: column; background: var(--color-card); border: 1px solid var(--color-border); border-radius: var(--radius-md); overflow: hidden; }
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-filter);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: transform var(--duration), box-shadow var(--duration);
+}
+@supports (mask-composite: exclude) or (-webkit-mask-composite: xor) {
+  .card { border: 0; }
+  .card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: var(--gradient-brand);
+    opacity: 0.5;
+    pointer-events: none;
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    transition: opacity var(--duration);
+  }
+}
+.card::before { content: ""; position: absolute; inset: 0 0 auto; z-index: 1; height: 2px; background: var(--gradient-bar); }
+.card:hover, .card:focus-within { transform: translateY(var(--lift)); box-shadow: var(--glow-pink); }
+.card:hover::after, .card:focus-within::after { opacity: 1; }
+.card:active { transform: scale(var(--press)); }
 .body { display: grid; gap: var(--space-2); padding: var(--space-3); }
 .name { margin: 0; font-size: var(--text-lg); color: var(--color-pink); }
 .title { margin: 0; color: var(--color-text-muted); overflow-wrap: anywhere; }
 .meta { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; font-family: var(--font-mono); font-size: var(--text-sm); }
 .badge, .zero { padding: 0 var(--space-2); border-radius: var(--radius-full); border: 1px solid var(--color-blue); color: var(--color-blue); }
 .zero { border-color: var(--color-yellow); color: var(--color-yellow); }
-.link { font-family: var(--font-mono); }
+.link { justify-self: start; }
+.game { color: var(--color-blue); text-decoration: underline; }

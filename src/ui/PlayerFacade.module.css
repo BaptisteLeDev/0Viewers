@@ -5,6 +5,6 @@
 .play {
   position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
   padding: var(--space-2) var(--space-4); border-radius: var(--radius-full);
-  background: var(--color-yellow); color: #000; font-family: var(--font-mono);
+  background: var(--color-yellow); color: var(--color-on-fill);
 }
 .facade:hover .play { transform: translate(-50%, -52%); }

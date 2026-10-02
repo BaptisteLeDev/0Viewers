@@ -2,7 +2,7 @@
 
 Projet Camille & Baptiste, MDS B3.
 
-0Viewers trouve les streamers Twitch français en direct devant (presque) personne : 5 viewers ou moins, en live depuis plus de 10 minutes. L'accueil met en avant un streamer (la Reco), `/streamers` liste les 50 premiers avec recherche et lecteur Twitch à la demande.
+0Viewers trouve les streamers Twitch français en direct devant (presque) personne : 5 viewers ou moins, en live depuis plus de 10 minutes. L'accueil met en avant un streamer (la Reco) et six autres lives, `/streamers` liste les 50 premiers avec recherche ; un clic ouvre le live en mode cinéma (grand lecteur et chat).
 
 ## Lancer
 

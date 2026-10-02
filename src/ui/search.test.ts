@@ -23,8 +23,8 @@ describe("matchesQuery", () => {
 
 describe("viewerLabel", () => {
   it("handles singular and plural in French", () => {
-    expect(viewerLabel(0)).toBe("0 viewer");
-    expect(viewerLabel(1)).toBe("1 viewer");
-    expect(viewerLabel(3)).toBe("3 viewers");
+    expect(viewerLabel(0)).toBe("0 spectateur");
+    expect(viewerLabel(1)).toBe("1 spectateur");
+    expect(viewerLabel(3)).toBe("3 spectateurs");
   });
 });

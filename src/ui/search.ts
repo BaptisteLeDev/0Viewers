@@ -1,6 +1,5 @@
+import { fold } from "@/decouverte/games";
 import type { Streamer0V } from "@/decouverte/types";
-
-const fold = (text: string) => text.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
 
 export function matchesQuery(s: Streamer0V, query: string): boolean {
   const q = fold(query.trim());
@@ -9,5 +8,5 @@ export function matchesQuery(s: Streamer0V, query: string): boolean {
 }
 
 export function viewerLabel(n: number): string {
-  return `${n} viewer${n > 1 ? "s" : ""}`;
+  return `${n} spectateur${n > 1 ? "s" : ""}`;
 }

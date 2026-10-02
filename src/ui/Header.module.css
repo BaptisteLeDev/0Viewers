@@ -1,6 +1,37 @@
-.header { border-bottom: 1px solid var(--color-border); background: var(--color-surface); }
-.nav { display: flex; align-items: center; justify-content: space-between; min-height: 4rem; }
-.logo { font-family: var(--font-heading); font-size: var(--text-xl); color: var(--color-pink); text-decoration: none; }
-.links { display: flex; gap: var(--space-4); list-style: none; margin: 0; padding: 0; font-family: var(--font-mono); }
-.links a { color: var(--color-text); text-decoration: none; }
-.links a:hover { color: var(--color-blue); }
+.header { border-bottom: 1px solid var(--glass-border); background: var(--glass-bg); backdrop-filter: var(--glass-filter); }
+.nav { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); min-height: 4.5rem; }
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-full);
+  background:
+    radial-gradient(ellipse 200% 100% at 20% 50%, rgba(24, 160, 251, 0.15), transparent 50%),
+    radial-gradient(ellipse 200% 100% at 80% 50%, rgba(255, 88, 228, 0.15), transparent 50%),
+    var(--color-bg);
+  text-decoration: none;
+  transition: transform var(--duration), box-shadow var(--duration), border-color var(--duration);
+}
+.logo:hover { transform: translateY(var(--lift)); box-shadow: var(--glow-pink); border-color: var(--glass-border-hover); }
+.logo:active { transform: scale(var(--press)); }
+.mark { flex-shrink: 0; filter: drop-shadow(0 2px 8px rgba(255, 88, 228, 0.3)); }
+.wordmark {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  letter-spacing: -0.02em;
+  color: var(--color-pink);
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.links { display: flex; gap: var(--space-4); list-style: none; margin: 0; padding: 0; }
+.links a { display: inline-flex; align-items: center; min-height: 44px; color: var(--color-text); text-decoration: none; }
+.links a:hover { color: var(--color-yellow); }
+
+@media (max-width: 480px) {
+  .nav { flex-wrap: wrap; padding-block: var(--space-2); }
+  .links { gap: var(--space-3); }
+}

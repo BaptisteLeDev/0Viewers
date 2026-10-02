@@ -10,9 +10,11 @@ type Props = {
   active: boolean;
   onActivate: () => void;
   autoplayWhenFits?: boolean;
+  onPlay?: () => void;
+  priority?: boolean;
 };
 
-export function PlayerFacade({ streamer, active, onActivate, autoplayWhenFits = false }: Props) {
+export function PlayerFacade({ streamer, active, onActivate, autoplayWhenFits = false, onPlay, priority = false }: Props) {
   const box = useRef<HTMLDivElement>(null);
   const frame = useRef<HTMLIFrameElement>(null);
   const clicked = useRef(false);
@@ -54,9 +56,9 @@ export function PlayerFacade({ streamer, active, onActivate, autoplayWhenFits = 
           allowFullScreen
         />
       ) : (
-        <button type="button" className={styles.facade} onClick={() => { clicked.current = true; onActivate(); }}>
+        <button type="button" className={styles.facade} onClick={() => { if (onPlay) return onPlay(); clicked.current = true; onActivate(); }}>
           {/* eslint-disable-next-line @next/next/no-img-element -- Twitch resizes, URL churns every 5 min */}
-          <img src={thumbnailSrc(streamer.thumbnailUrl, 440, 248)} alt="" width={440} height={248} loading="lazy" className={styles.thumb} />
+          <img src={thumbnailSrc(streamer.thumbnailUrl, 440, 248)} alt="" width={440} height={248} loading={priority ? "eager" : "lazy"} fetchPriority={priority ? "high" : undefined} className={styles.thumb} />
           <span className={styles.play}>
             <span aria-hidden="true">▶</span> Regarder<span className="visually-hidden"> le live de {streamer.displayName}</span>
           </span>

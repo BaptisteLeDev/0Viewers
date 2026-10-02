@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { canAutoplay, thumbnailSrc, twitchPlayerSrc } from "@/ui/player";
+import { canAutoplay, thumbnailSrc, twitchChatSrc, twitchPlayerSrc } from "@/ui/player";
 
 describe("canAutoplay", () => {
   it("needs at least 400x300", () => {
@@ -26,5 +26,17 @@ describe("thumbnailSrc", () => {
   });
   it("leaves plain urls alone", () => {
     expect(thumbnailSrc("/fixtures/thumb.svg", 440, 248)).toBe("/fixtures/thumb.svg");
+  });
+});
+
+describe("twitchChatSrc", () => {
+  it("embeds the channel chat with parent host in dark popout mode", () => {
+    const url = new URL(twitchChatSrc("games247stream", "localhost"));
+    expect(url.origin + url.pathname).toBe("https://www.twitch.tv/embed/games247stream/chat");
+    expect(url.searchParams.get("parent")).toBe("localhost");
+    expect(url.searchParams.has("darkpopout")).toBe(true);
+  });
+  it("encodes the login", () => {
+    expect(twitchChatSrc("a/b", "x")).toContain("/embed/a%2Fb/chat");
   });
 });
