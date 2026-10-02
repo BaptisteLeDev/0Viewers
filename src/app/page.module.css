@@ -7,8 +7,8 @@
   background:
     radial-gradient(ellipse at top, color-mix(in srgb, var(--color-blue) 10%, transparent), transparent 50%),
     radial-gradient(ellipse at bottom, color-mix(in srgb, var(--color-pink) 10%, transparent), transparent 50%),
-    var(--color-surface);
-  border: 1px solid color-mix(in srgb, var(--color-pink) 30%, transparent);
+    var(--glass-bg);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
 }
@@ -18,16 +18,16 @@
   position: absolute;
   inset: 0 0 auto;
   height: 2px;
-  background: linear-gradient(90deg, var(--color-blue), var(--color-pink), var(--color-yellow));
+  background: var(--gradient-bar);
 }
 
-.hero h1 { margin: 0 0 var(--space-3); font-size: var(--text-2xl); font-weight: 700; }
+.hero h1 { margin: 0 0 var(--space-3); font-size: var(--text-2xl); }
 
 .hero p { max-width: 40rem; margin: 0 auto; font-size: var(--text-lg); color: var(--color-text-muted); }
 
 .section { margin-block: var(--space-5); }
 
-.section h2 { margin: 0 0 var(--space-4); text-align: center; font-size: var(--text-xl); font-weight: 700; }
+.section h2 { margin: 0 0 var(--space-4); text-align: center; font-size: var(--text-xl); }
 
 .section > :not(h2) { margin-inline: auto; }
 

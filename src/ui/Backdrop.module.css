@@ -1,0 +1,12 @@
+.backdrop { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.shape { position: absolute; opacity: var(--shape-opacity); }
+.flower { top: 18%; right: -110px; }
+.star { bottom: -70px; left: -60px; }
+.ellipse { bottom: 8%; right: -120px; }
+.wheel { top: 42%; left: -130px; }
+
+@media (max-width: 47.99rem) {
+  .ellipse, .wheel { display: none; }
+  .flower { width: 200px; height: 200px; right: -100px; }
+  .star { width: 160px; height: 160px; }
+}
