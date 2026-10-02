@@ -3,6 +3,7 @@ import { REPO_URL } from "@/ui/Footer";
 
 export const metadata: Metadata = {
   title: "Mentions légales et confidentialité",
+  description: "Éditeur, hébergeur et données personnelles de 0Viewers : aucun compte, aucun cookie, aucune mesure d'audience.",
   alternates: { canonical: "/mentions-legales" },
 };
 

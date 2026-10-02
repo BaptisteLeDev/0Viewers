@@ -3,6 +3,7 @@ import { AUTHOR_URL, REPO_URL } from "@/ui/Footer";
 
 export const metadata: Metadata = {
   title: "Crédits",
+  description: "Sources des données (API Twitch), polices et outils utilisés pour construire 0Viewers.",
   alternates: { canonical: "/credits" },
 };
 
