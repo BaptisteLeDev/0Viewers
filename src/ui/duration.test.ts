@@ -14,9 +14,13 @@ describe("formatLiveDuration", () => {
     expect(formatLiveDuration(ago(125), now)).toBe("2 h 05");
   });
   it("drops minutes on a round hour", () => {
+    expect(formatLiveDuration(ago(60), now)).toBe("1 h");
     expect(formatLiveDuration(ago(180), now)).toBe("3 h");
   });
   it("clamps a start in the future to 0 min", () => {
     expect(formatLiveDuration(ago(-3), now)).toBe("0 min");
+  });
+  it("returns an empty label for an invalid start", () => {
+    expect(formatLiveDuration("not a date", now)).toBe("");
   });
 });
