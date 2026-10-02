@@ -19,7 +19,7 @@ describe("slugifyGame", () => {
 
 const make = (id: string, gameName: string): Streamer0V => ({
   id, login: id, displayName: id, title: "", gameName,
-  startedAt: "", viewerCount: 0, thumbnailUrl: "", profileImageUrl: "",
+  startedAt: "", viewerCount: 0, thumbnailUrl: "", profileImageUrl: "", mature: false,
 });
 
 describe("groupByGame", () => {

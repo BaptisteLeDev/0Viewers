@@ -16,6 +16,12 @@ export type HelixUser = {
   profile_image_url: string;
 };
 
+export type HelixChannel = { broadcaster_id: string; content_classification_labels: string[] };
+
+export type HelixCategory = { id: string; name: string; box_art_url: string };
+
+export type Category = { id: string; name: string; slug: string; boxArtUrl: string };
+
 export type Streamer0V = {
   id: string;
   login: string;
@@ -26,4 +32,5 @@ export type Streamer0V = {
   viewerCount: number;
   thumbnailUrl: string;
   profileImageUrl: string;
+  mature: boolean;
 };

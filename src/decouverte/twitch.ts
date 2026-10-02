@@ -1,4 +1,4 @@
-import type { HelixStream, HelixUser } from "./types";
+import type { HelixCategory, HelixChannel, HelixStream, HelixUser } from "./types";
 
 const HELIX = "https://api.twitch.tv/helix";
 const MAX_PAGES = 100;
@@ -49,9 +49,24 @@ export async function fetchFrenchStreams(token: string, fetchImpl: Fetch = fetch
   return [...streams.values()];
 }
 
+// Helix caps id lists at 100 = MAX_STREAMERS, so one call is enough
+async function fetchByIds<T>(path: string, param: string, ids: string[], token: string, fetchImpl: Fetch): Promise<T[]> {
+  if (ids.length === 0) return [];
+  const query = new URLSearchParams(ids.map((id) => [param, id]));
+  return (await helix<{ data: T[] }>(`${path}?${query}`, token, fetchImpl)).data;
+}
+
 export async function fetchUsers(ids: string[], token: string, fetchImpl: Fetch = fetch): Promise<Map<string, HelixUser>> {
-  if (ids.length === 0) return new Map();
-  const query = new URLSearchParams(ids.map((id) => ["id", id]));
-  const body = await helix<{ data: HelixUser[] }>(`/users?${query}`, token, fetchImpl);
-  return new Map(body.data.map((u) => [u.id, u]));
+  const users = await fetchByIds<HelixUser>("/users", "id", ids, token, fetchImpl);
+  return new Map(users.map((u) => [u.id, u]));
+}
+
+export async function fetchChannels(ids: string[], token: string, fetchImpl: Fetch = fetch): Promise<Map<string, HelixChannel>> {
+  const channels = await fetchByIds<HelixChannel>("/channels", "broadcaster_id", ids, token, fetchImpl);
+  return new Map(channels.map((c) => [c.broadcaster_id, c]));
+}
+
+export async function searchHelixCategories(query: string, token: string, fetchImpl: Fetch = fetch): Promise<HelixCategory[]> {
+  const params = new URLSearchParams({ query, first: "20" });
+  return (await helix<{ data: HelixCategory[] }>(`/search/categories?${params}`, token, fetchImpl)).data;
 }

@@ -5,9 +5,9 @@ import { DEFAULT_FILTERS, activeCount, applyFilters, parseFilters, toSearch, typ
 const now = Date.parse("2026-10-02T20:00:00Z");
 const ago = (minutes: number) => new Date(now - minutes * 60_000).toISOString();
 
-const make = (id: string, viewerCount: number, liveMinutes: number, gameName = "Minecraft"): Streamer0V => ({
+const make = (id: string, viewerCount: number, liveMinutes: number, gameName = "Minecraft", mature = false): Streamer0V => ({
   id, login: id, displayName: `Streamer ${id}`, title: "Live détente", gameName,
-  startedAt: ago(liveMinutes), viewerCount, thumbnailUrl: "", profileImageUrl: "",
+  startedAt: ago(liveMinutes), viewerCount, thumbnailUrl: "", profileImageUrl: "", mature,
 });
 
 // rule order: fewest viewers, then longest live first
@@ -16,7 +16,7 @@ const list = [
   make("b", 0, 30, "Just Chatting"),
   make("c", 1, 90, "Minecraft"),
   make("d", 2, 15, "Pokémon Écarlate"),
-  make("e", 3, 240, "Minecraft"),
+  make("e", 3, 240, "Minecraft", true),
   make("f", 5, 60, "Just Chatting"),
 ];
 const ids = (f: Partial<Filters>) => applyFilters(list, { ...DEFAULT_FILTERS, ...f }, now).map((s) => s.id).join("");
@@ -41,6 +41,10 @@ describe("applyFilters", () => {
     const broken = [{ ...make("x", 0, 10), startedAt: "nope" }];
     expect(applyFilters(broken, DEFAULT_FILTERS, now)).toHaveLength(1);
     expect(applyFilters(broken, { ...DEFAULT_FILTERS, duration: "moins-1h" }, now)).toHaveLength(0);
+  });
+  it("filters on mature content", () => {
+    expect(ids({ content: "adulte" })).toBe("e");
+    expect(ids({ content: "tout-public" })).toBe("abcdf");
   });
   it("reuses the accent and case folding search", () => expect(ids({ q: "POKEMON" })).toBe("d"));
   it("combines filters", () => {
@@ -72,14 +76,14 @@ describe("parseFilters / toSearch", () => {
 
   it("reads French params", () => {
     expect(parse("q=zelda&spectateurs=1-2&jeu=Pok%C3%A9mon+%C3%89carlate&duree=plus-3h&tri=recent")).toEqual({
-      q: "zelda", viewers: "1-2", game: "Pokémon Écarlate", duration: "plus-3h", sort: "recent",
+      q: "zelda", viewers: "1-2", game: "Pokémon Écarlate", duration: "plus-3h", sort: "recent", content: "",
     });
   });
   it("falls back to defaults on invalid values", () => {
-    expect(parse("spectateurs=9&jeu=Tetris&duree=2h&tri=random")).toEqual(DEFAULT_FILTERS);
+    expect(parse("spectateurs=9&jeu=Tetris&duree=2h&tri=random&contenu=x")).toEqual(DEFAULT_FILTERS);
   });
   it("round-trips and omits defaults", () => {
-    const f: Filters = { q: "été", viewers: "0", game: "Minecraft", duration: "1-3h", sort: "long" };
+    const f: Filters = { q: "été", viewers: "0", game: "Minecraft", duration: "1-3h", sort: "long", content: "adulte" };
     expect(parse(toSearch(f))).toEqual(f);
     expect(toSearch(DEFAULT_FILTERS)).toBe("");
     expect(toSearch({ ...DEFAULT_FILTERS, sort: "recent" })).toBe("tri=recent");
