@@ -68,7 +68,7 @@ export default async function GamePage({ params }: Props) {
       <section className={styles.others} aria-labelledby="others-title">
         <h2 id="others-title">Autres jeux en direct</h2>
         {others.length > 0 ? <GameLinks games={others} /> : <p>Aucun autre jeu en direct pour l&apos;instant.</p>}
-        <p><Link href="/streamers">Voir tous les streamers</Link></p>
+        <Link href="/streamers" className="btn btn-ghost">Voir tous les streamers</Link>
       </section>
     </section>
   );

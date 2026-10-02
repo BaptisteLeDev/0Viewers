@@ -23,7 +23,6 @@
   --glow-pink: 0 0 20px rgba(255, 88, 228, 0.38);
   --glow-blue: 0 0 20px rgba(24, 160, 251, 0.38);
   --glow-yellow: 0 0 20px rgba(255, 215, 73, 0.38);
-  --shape-opacity: 0.18;
 
   --lift: -3px;
   --press: 0.98;
@@ -109,7 +108,7 @@ main { flex: 1; }
 h1, h2, h3 { font-family: var(--font-body), system-ui, sans-serif; font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; }
 h1 { font-weight: 700; letter-spacing: -0.03em; }
 
-a { color: var(--color-blue); }
+a { color: inherit; text-decoration: none; }
 
 :focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
 
@@ -152,15 +151,6 @@ a { color: var(--color-blue); }
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-
-.site-footer {
-  margin-top: auto;
-  padding-block: var(--space-5) var(--space-3);
-  color: var(--color-text-muted);
-  font-size: var(--text-xs);
-}
-.site-footer p { margin-block: 0; }
-.site-footer a { color: inherit; }
 
 .visually-hidden {
   position: absolute; width: 1px; height: 1px; overflow: hidden;
