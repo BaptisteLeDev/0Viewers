@@ -5,6 +5,7 @@ import { Suspense, useEffect, useId, useMemo, useState } from "react";
 import { groupByGame } from "@/decouverte/games";
 import type { Streamer0V } from "@/decouverte/types";
 import { DEFAULT_FILTERS, activeCount, applyFilters, parseFilters, toSearch, type Filters } from "./filters";
+import { Combobox } from "./Combobox";
 import { StreamerCard } from "./StreamerCard";
 import { nextIndex } from "./random";
 import { Theater } from "./Theater";
@@ -14,7 +15,12 @@ type Props = { streamers: Streamer0V[]; renderedAt: number; gamePage?: boolean }
 
 const VIEWER_CHOICES: [Filters["viewers"], string][] = [["", "Tous"], ["0", "0"], ["1-2", "1 à 2"], ["3-5", "3 à 5"]];
 const DURATION_CHOICES: [Filters["duration"], string][] = [["", "Toutes"], ["moins-1h", "Moins d'1 h"], ["1-3h", "1 à 3 h"], ["plus-3h", "Plus de 3 h"]];
-const SORT_CHOICES: [Filters["sort"], string][] = [["spectateurs", "Moins de spectateurs"], ["recent", "Live le plus récent"], ["long", "Live le plus long"]];
+const CONTENT_CHOICES: [Filters["content"], string][] = [["", "Tous"], ["tout-public", "Tout public"], ["adulte", "Adulte"]];
+const SORT_OPTIONS = [
+  { value: "spectateurs", label: "Moins de spectateurs" },
+  { value: "recent", label: "Live le plus récent" },
+  { value: "long", label: "Live le plus long" },
+];
 const NO_PARAMS = new URLSearchParams();
 
 // useSearchParams bails out of prerender up to the nearest Suspense:
@@ -40,6 +46,10 @@ const writeUrl = (f: Filters) => {
 
 function FilterableList({ streamers, renderedAt: now, gamePage = false, params }: Props & { params: { get(name: string): string | null } }) {
   const games = useMemo(() => groupByGame(streamers), [streamers]);
+  const gameOptions = useMemo(
+    () => [{ value: "", label: "Tous les jeux" }, ...games.map((g) => ({ value: g.name, label: g.name, hint: String(g.count) }))],
+    [games],
+  );
   const f = useMemo(() => parseFilters(params, gamePage ? [] : games.map((g) => g.name)), [params, games, gamePage]);
   const [query, setQuery] = useState(f.q);
   const [urlQuery, setUrlQuery] = useState(f.q);
@@ -81,21 +91,11 @@ function FilterableList({ streamers, renderedAt: now, gamePage = false, params }
       <div id={`${id}-panel`} className={styles.panel} data-open={panelOpen}>
         <Pills legend="Spectateurs" name={`${id}-viewers`} choices={VIEWER_CHOICES} value={current.viewers} onChange={(viewers) => set({ viewers })} />
         <Pills legend="Durée du live" name={`${id}-duration`} choices={DURATION_CHOICES} value={current.duration} onChange={(duration) => set({ duration })} />
+        <Pills legend="Public" name={`${id}-content`} choices={CONTENT_CHOICES} value={current.content} onChange={(content) => set({ content })} />
         {!gamePage && (
-          <div className={styles.field}>
-            <label htmlFor={`${id}-game`}>Jeu</label>
-            <select id={`${id}-game`} value={current.game} onChange={(e) => set({ game: e.target.value })}>
-              <option value="">Tous les jeux</option>
-              {games.map((g) => <option key={g.slug} value={g.name}>{g.name} ({g.count})</option>)}
-            </select>
-          </div>
+          <Combobox label="Jeu" searchable placeholder="Rechercher un jeu" emptyText="Aucun jeu en live" options={gameOptions} value={current.game} onChange={(game) => set({ game })} />
         )}
-        <div className={styles.field}>
-          <label htmlFor={`${id}-sort`}>Trier par</label>
-          <select id={`${id}-sort`} value={current.sort} onChange={(e) => set({ sort: e.target.value as Filters["sort"] })}>
-            {SORT_CHOICES.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
-          </select>
-        </div>
+        <Combobox label="Trier par" options={SORT_OPTIONS} value={current.sort} onChange={(sort) => set({ sort: sort as Filters["sort"] })} />
       </div>
       <div className={styles.status}>
         <p aria-live="polite" className={styles.count}>{shown.length} streamer{shown.length > 1 ? "s" : ""} affiché{shown.length > 1 ? "s" : ""}</p>
