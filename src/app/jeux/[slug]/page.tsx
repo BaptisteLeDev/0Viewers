@@ -6,7 +6,7 @@ import { GameLinks } from "@/ui/GameLinks";
 import { StreamerList } from "@/ui/StreamerList";
 import styles from "../jeux.module.css";
 
-export const revalidate = 300;
+export const revalidate = 60;
 export const maxDuration = 60;
 export const dynamicParams = true;
 
@@ -14,6 +14,7 @@ type Props = { params: Promise<{ slug: string }> };
 
 // slugifyGame never outputs anything else: other input can't be a game
 const SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+const EMPTY_TITLE = "Ce jeu n'a personne en live en ce moment";
 
 export async function generateStaticParams() {
   return groupByGame(await getZeroViewersStreamers()).map(({ slug }) => ({ slug }));
@@ -24,41 +25,44 @@ async function load(params: Props["params"]) {
   if (slug.length > 100 || !SLUG.test(slug)) notFound();
   const games = groupByGame(await getZeroViewersStreamers());
   const game = games.find((g) => g.slug === slug);
-  return { slug, game, name: game?.name ?? slug.replace(/-/g, " "), others: games.filter((g) => g !== game) };
+  return { slug, game, others: games.filter((g) => g !== game) };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug, game, name } = await load(params);
+  const { slug, game } = await load(params);
+  const page = { alternates: { canonical: `/jeux/${slug}` }, openGraph: { url: `/jeux/${slug}`, images: ["/opengraph-image"] } };
+  if (!game) return { ...page, title: EMPTY_TITLE, robots: { index: false, follow: true } };
   return {
-    title: `Streamers ${name} FR à 0 spectateur`,
-    description: `Regarde des streamers Twitch français en live sur ${name} devant 0 viewer ou presque, et deviens leur premier spectateur. Liste mise à jour toutes les 5 minutes.`,
-    alternates: { canonical: `/jeux/${slug}` },
-    openGraph: { url: `/jeux/${slug}`, images: ["/opengraph-image"] },
-    ...(game ? {} : { robots: { index: false, follow: true } }),
+    ...page,
+    title: `Streamers ${game.name} FR à 0 spectateur`,
+    description: `Regarde des streamers Twitch français en live sur ${game.name} devant 0 viewer ou presque, et deviens leur premier spectateur. Liste mise à jour toutes les 5 minutes.`,
   };
 }
 
 export default async function GamePage({ params }: Props) {
-  const { game, name, others } = await load(params);
+  const { game, others } = await load(params);
   return (
     <section className={`container ${styles.page}`} aria-labelledby="game-title">
       <nav aria-label="Fil d'Ariane" className={styles.crumbs}>
         <ol>
           <li><Link href="/">Accueil</Link></li>
           <li><Link href="/jeux">Jeux</Link></li>
-          <li><span aria-current="page">{name}</span></li>
+          <li><span aria-current="page">{game?.name ?? "Jeu sans live"}</span></li>
         </ol>
       </nav>
-      <h1 id="game-title">Streamers <span className="highlight">{name}</span> FR à 0 spectateur</h1>
       {game ? (
         <>
+          <h1 id="game-title">Streamers <span className="highlight">{game.name}</span> FR à 0 spectateur</h1>
           <p className={styles.intro}>
-            {game.count > 1 ? `${game.count} streamers français sont` : "Un streamer français est"} en live sur {name} avec {MAX_VIEWERS} spectateurs ou moins&nbsp;: choisis un live et passe dire bonjour dans le chat.
+            {game.count > 1 ? `${game.count} streamers français sont` : "Un streamer français est"} en live sur {game.name} avec {MAX_VIEWERS} spectateurs ou moins&nbsp;: choisis un live et passe dire bonjour dans le chat.
           </p>
-          <StreamerList streamers={game.streamers} />
+          <StreamerList streamers={game.streamers} gamePage />
         </>
       ) : (
-        <p className={styles.intro}>Personne ne streame {name} en ce moment avec {MAX_VIEWERS} spectateurs ou moins. Repasse dans quelques minutes.</p>
+        <>
+          <h1 id="game-title">{EMPTY_TITLE}</h1>
+          <p className={styles.intro}>Personne ne le streame avec {MAX_VIEWERS} spectateurs ou moins. Repasse dans quelques minutes, ou choisis un autre jeu.</p>
+        </>
       )}
       <section className={styles.others} aria-labelledby="others-title">
         <h2 id="others-title">Autres jeux en direct</h2>

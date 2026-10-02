@@ -7,10 +7,10 @@ import { PlayerFacade } from "./PlayerFacade";
 import { viewerLabel } from "./search";
 import styles from "./StreamerCard.module.css";
 
-type Props = { streamer: Streamer0V; active?: boolean; onActivate: () => void; autoplayWhenFits?: boolean; headingLevel?: "h2" | "h3" };
+type Props = { streamer: Streamer0V; active?: boolean; onActivate: () => void; autoplayWhenFits?: boolean; headingLevel?: "h2" | "h3"; linkGame?: boolean };
 
-export function StreamerCard({ streamer, active = false, onActivate, autoplayWhenFits, headingLevel: Heading = "h3" }: Props) {
-  const gameSlug = slugifyGame(streamer.gameName);
+export function StreamerCard({ streamer, active = false, onActivate, autoplayWhenFits, headingLevel: Heading = "h3", linkGame = true }: Props) {
+  const gameSlug = linkGame ? slugifyGame(streamer.gameName) : "";
   return (
     <article className={styles.card}>
       <PlayerFacade streamer={streamer} active={active} onActivate={onActivate} autoplayWhenFits={autoplayWhenFits} />

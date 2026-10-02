@@ -28,7 +28,8 @@ const strays = urls.filter((u) => !PAGES.includes(u) && !/^\/jeux\/[a-z0-9-]+$/.
 if (strays.length) failures.push(`sitemap unexpected ${strays}`);
 
 const gone = await get("/jeux/jeu-sans-live");
-expectIn("/jeux/jeu-sans-live", gone, "Personne ne streame");
+expectIn("/jeux/jeu-sans-live", gone, "personne en live en ce moment");
+if (gone.includes("jeu sans live")) failures.push("/jeux/jeu-sans-live shows the raw slug");
 expectIn("/jeux/jeu-sans-live", gone, 'name="robots" content="noindex');
 
 const robots = await get("/robots.txt");

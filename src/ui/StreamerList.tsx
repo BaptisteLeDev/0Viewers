@@ -10,7 +10,7 @@ import { nextIndex } from "./random";
 import { Theater } from "./Theater";
 import styles from "./StreamerList.module.css";
 
-type Props = { streamers: Streamer0V[] };
+type Props = { streamers: Streamer0V[]; gamePage?: boolean };
 
 const VIEWER_CHOICES: [Filters["viewers"], string][] = [["", "Tous"], ["0", "0"], ["1-2", "1 à 2"], ["3-5", "3 à 5"]];
 const DURATION_CHOICES: [Filters["duration"], string][] = [["", "Toutes"], ["moins-1h", "Moins d'1 h"], ["1-3h", "1 à 3 h"], ["plus-3h", "Plus de 3 h"]];
@@ -19,16 +19,16 @@ const NO_PARAMS = new URLSearchParams();
 
 // useSearchParams bails out of prerender up to the nearest Suspense:
 // the fallback keeps the full default list in the static HTML for SEO.
-export function StreamerList({ streamers }: Props) {
+export function StreamerList(props: Props) {
   return (
-    <Suspense fallback={<FilterableList streamers={streamers} params={NO_PARAMS} />}>
-      <UrlStreamerList streamers={streamers} />
+    <Suspense fallback={<FilterableList {...props} params={NO_PARAMS} />}>
+      <UrlStreamerList {...props} />
     </Suspense>
   );
 }
 
-function UrlStreamerList({ streamers }: Props) {
-  return <FilterableList streamers={streamers} params={useSearchParams()} />;
+function UrlStreamerList(props: Props) {
+  return <FilterableList {...props} params={useSearchParams()} />;
 }
 
 // replaceState syncs useSearchParams without the RSC refetch router.replace
@@ -38,9 +38,9 @@ const writeUrl = (f: Filters) => {
   window.history.replaceState(null, "", search ? `?${search}` : window.location.pathname);
 };
 
-function FilterableList({ streamers, params }: Props & { params: { get(name: string): string | null } }) {
+function FilterableList({ streamers, gamePage = false, params }: Props & { params: { get(name: string): string | null } }) {
   const games = useMemo(() => groupByGame(streamers), [streamers]);
-  const f = useMemo(() => parseFilters(params, games.map((g) => g.name)), [params, games]);
+  const f = useMemo(() => parseFilters(params, gamePage ? [] : games.map((g) => g.name)), [params, games, gamePage]);
   const [query, setQuery] = useState(f.q);
   const [urlQuery, setUrlQuery] = useState(f.q);
   if (f.q !== urlQuery) {
@@ -82,7 +82,7 @@ function FilterableList({ streamers, params }: Props & { params: { get(name: str
       <div id={`${id}-panel`} className={styles.panel} data-open={panelOpen}>
         <Pills legend="Spectateurs" name={`${id}-viewers`} choices={VIEWER_CHOICES} value={current.viewers} onChange={(viewers) => set({ viewers })} />
         <Pills legend="Durée du live" name={`${id}-duration`} choices={DURATION_CHOICES} value={current.duration} onChange={(duration) => set({ duration })} />
-        {games.length > 1 && (
+        {!gamePage && (
           <div className={styles.field}>
             <label htmlFor={`${id}-game`}>Jeu</label>
             <select id={`${id}-game`} value={current.game} onChange={(e) => set({ game: e.target.value })}>
@@ -111,7 +111,7 @@ function FilterableList({ streamers, params }: Props & { params: { get(name: str
         <ul className={styles.grid}>
           {shown.map((s) => (
             <li key={s.id}>
-              <StreamerCard headingLevel="h2" streamer={s} onActivate={() => setOpenId(s.id)} />
+              <StreamerCard headingLevel="h2" streamer={s} linkGame={!gamePage} onActivate={() => setOpenId(s.id)} />
             </li>
           ))}
         </ul>
