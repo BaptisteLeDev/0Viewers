@@ -10,6 +10,7 @@
 .ctas > * { white-space: nowrap; }
 
 .media {
+  max-width: 48rem;
   display: grid;
   gap: var(--space-3);
   padding: var(--space-3);
@@ -34,7 +35,12 @@
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: var(--space-4); list-style: none; padding: 0; margin: 0 0 var(--space-4); }
 
 @media (min-width: 1024px) {
-  .hero { grid-template-columns: minmax(0, 1fr) 36rem; gap: var(--space-6); min-height: min(calc(100dvh - 4.5rem), 45rem); padding-block: var(--space-5); }
   .strip { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
   .actions { grid-column: 2; grid-row: 1 / span 2; justify-content: flex-end; }
+}
+
+/* split from 1200: below it the text column is too narrow for a 2-line h1 next to a 36rem player */
+@media (min-width: 1200px) {
+  .hero { grid-template-columns: minmax(0, 1fr) 36rem; gap: var(--space-6); min-height: min(calc(100dvh - 4.5rem), 45rem); padding-block: var(--space-5); }
+  .pitch h1 { font-size: 2rem; }
 }

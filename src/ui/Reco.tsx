@@ -20,6 +20,7 @@ export function Reco({ streamers, renderedAt, children }: Props) {
   const [now, setNow] = useState(renderedAt);
   const [active, setActive] = useState(false);
   const [autoplay, setAutoplay] = useState(true);
+  const [rerolled, setRerolled] = useState(false);
   const [theater, setTheater] = useState<{ id: string; chat: boolean } | null>(null);
   const activate = useCallback(() => setActive(true), []);
 
@@ -27,12 +28,14 @@ export function Reco({ streamers, renderedAt, children }: Props) {
     // random pick after hydration keeps ISR HTML identical for everyone
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setIndex(Math.floor(Math.random() * streamers.length));
+    setActive(false);
     setNow(Date.now());
   }, [streamers.length]);
 
   const reroll = () => {
     setActive(false);
     setAutoplay(true);
+    setRerolled(true);
     setNow(Date.now());
     setIndex((i) => pickOther(streamers.length, i));
   };
@@ -45,6 +48,7 @@ export function Reco({ streamers, renderedAt, children }: Props) {
 
   const streamer = streamers.length > 0 ? streamers[index % streamers.length] : undefined;
   const others = streamers.filter((s) => s.id !== streamer?.id).slice(0, GRID_SIZE);
+  const duration = streamer ? formatLiveDuration(streamer.startedAt, now) : "";
   const theaterIndex = theater ? streamers.findIndex((s) => s.id === theater.id) : -1;
   const listLabel = streamers.length > 1 ? `Voir les ${streamers.length} streamers` : "Voir la liste";
 
@@ -62,16 +66,17 @@ export function Reco({ streamers, renderedAt, children }: Props) {
         </div>
         {streamer ? (
           <div className={styles.media}>
-            <PlayerFacade key={streamer.id} streamer={streamer} active={active} onActivate={activate} autoplayWhenFits={autoplay} />
+            <PlayerFacade key={streamer.id} streamer={streamer} active={active} onActivate={activate} autoplayWhenFits={autoplay} onPlay={() => openTheater(streamer.id)} priority />
             <div className={styles.strip}>
-              <p className={styles.who} aria-live="polite">
+              <p className={styles.who}>
                 <span className={styles.name}>{streamer.displayName}</span>
                 <span>{streamer.gameName}</span>
               </p>
               <p className={styles.meta}>
-                <span>en live depuis {formatLiveDuration(streamer.startedAt, now)}</span>
+                {duration && <span>en live depuis {duration}</span>}
                 <span className={streamer.viewerCount === 0 ? styles.zero : styles.badge}>{viewerLabel(streamer.viewerCount)}</span>
               </p>
+              <p className="visually-hidden" aria-live="polite">{rerolled ? `${streamer.displayName}, ${streamer.gameName}` : ""}</p>
               <div className={styles.actions}>
                 {streamers.length > 1 && (
                   <button type="button" className="btn btn-ghost" onClick={reroll}>Autre streamer</button>
@@ -98,7 +103,6 @@ export function Reco({ streamers, renderedAt, children }: Props) {
           ) : (
             <p>Pas d&apos;autre streamer en live pour l&apos;instant. Repasse dans quelques minutes.</p>
           )}
-          {others.length > 0 && <Link href="/streamers" className="btn btn-ghost">{listLabel}</Link>}
         </section>
       )}
       <Theater

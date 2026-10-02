@@ -28,7 +28,7 @@ export default async function Home() {
       </Reco>
       <section className={styles.stats} aria-labelledby="stats-title">
         <div className="container">
-          <h2 id="stats-title" className="visually-hidden">En ce moment</h2>
+          <h2 id="stats-title" className="visually-hidden">En chiffres</h2>
           <p>
             En ce moment, <strong>{zeros}</strong> {plural(zeros, "streamer")} français {zeros > 1 ? "sont" : "est"} en live devant 0 spectateur,
             sur <strong>{streamers.length}</strong> {plural(streamers.length, "live")} à {MAX_VIEWERS} spectateurs ou moins.
@@ -38,20 +38,20 @@ export default async function Home() {
       <section className={`container ${styles.mission}`} aria-labelledby="mission-title">
         <h2 id="mission-title">Pourquoi un premier spectateur compte</h2>
         <p>
-          Streamer devant 0 spectateur, c&apos;est parler pendant des heures dans une pièce vide. Tu lances ton live, tu commentes ta partie,
-          tu salues un chat qui ne répond pas. Dans les catégories Twitch triées par nombre de spectateurs, ces lives sont tout en bas de la liste,
-          là où presque personne ne descend. Beaucoup de petits streamers finissent par arrêter sans que personne ne les ait jamais trouvés.
+          Streamer devant un compteur à 0, c&apos;est dur à tenir. Tu lances ton live, tu commentes ta partie, tu salues un chat qui ne
+          répond pas. Tu continues quand même, en espérant que quelqu&apos;un finisse par passer. Et quand personne ne vient, c&apos;est
+          difficile de savoir si ce que tu fais plaît ou pas.
         </p>
         <p>
           Un seul spectateur suffit à changer l&apos;ambiance. Le streamer voit ton pseudo, te répond, explique ce qu&apos;il fait. Le live devient
           une conversation. Pas besoin d&apos;en faire des tonnes : un salut dans le chat et quelques minutes de présence, c&apos;est déjà
-          beaucoup pour quelqu&apos;un qui streame seul. De ton côté, tu tombes sur des chaînes que l&apos;algorithme ne t&apos;aurait jamais montrées.
+          beaucoup pour quelqu&apos;un qui streame seul. De ton côté, tu découvres des chaînes que tu ne connaissais pas.
         </p>
         <p>
-          0Viewers fait le tri pour toi. Toutes les 5 minutes, le site récupère les lives Twitch en français en direct depuis plus
-          de {MIN_LIVE_MINUTES} minutes avec {MAX_VIEWERS} spectateurs ou moins, en commençant par ceux à 0. Tu choisis un live, tu le regardes ici
-          ou sur Twitch, et tu passes dire bonjour. C&apos;est gratuit et tu n&apos;as pas besoin de compte sur 0Viewers. Pour écrire dans le chat,
-          il te faut juste ton compte Twitch.
+          0Viewers fait le tri pour toi, et ici les petits lives passent en premier. Toutes les 5 minutes, le site récupère les lives Twitch
+          en français en direct depuis plus de {MIN_LIVE_MINUTES} minutes avec {MAX_VIEWERS} spectateurs ou moins, en commençant par ceux à 0.
+          Tu choisis un live, tu le regardes ici ou sur Twitch, et tu passes dire bonjour. C&apos;est gratuit et tu n&apos;as pas besoin de compte
+          sur 0Viewers. Pour écrire dans le chat, il te faut juste ton compte Twitch.
         </p>
       </section>
     </>
