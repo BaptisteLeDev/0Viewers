@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Iceland, Share_Tech_Mono } from "next/font/google";
 import { Backdrop } from "@/ui/Backdrop";
 import { Header } from "@/ui/Header";
-import { SITE_DESCRIPTION, SITE_NAME, isIndexable, siteUrl } from "@/site";
+import { SITE_DESCRIPTION, SITE_NAME, isIndexable, jsonLd, siteUrl } from "@/site";
 import "./globals.css";
 
 const display = Iceland({ weight: "400", subsets: ["latin"], variable: "--font-display", display: "swap" });
@@ -18,8 +18,18 @@ export const metadata: Metadata = {
   openGraph: { type: "website", locale: "fr_FR", siteName: SITE_NAME, url: "/" },
   twitter: { card: "summary_large_image" },
   robots: isIndexable() ? { index: true, follow: true } : { index: false, follow: false },
-  verification: process.env.GOOGLE_SITE_VERIFICATION ? { google: process.env.GOOGLE_SITE_VERIFICATION } : undefined,
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION || undefined,
+    other: process.env.BING_SITE_VERIFICATION ? { "msvalidate.01": process.env.BING_SITE_VERIFICATION } : undefined,
+  },
 };
+
+const siteLd = jsonLd({
+  "@graph": [
+    { "@type": "Organization", "@id": `${siteUrl()}/#org`, name: SITE_NAME, url: siteUrl(), logo: `${siteUrl()}/icon.svg` },
+    { "@type": "WebSite", name: SITE_NAME, url: siteUrl(), description: SITE_DESCRIPTION, inLanguage: "fr-FR", publisher: { "@id": `${siteUrl()}/#org` } },
+  ],
+});
 
 export const viewport: Viewport = { themeColor: "#050508" };
 
@@ -27,6 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="fr" className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: siteLd }} />
         <a href="#contenu" className="skip-link">Aller au contenu</a>
         <Backdrop />
         <Header />

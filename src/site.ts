@@ -11,6 +11,10 @@ export function siteUrl(): string {
   return "http://localhost:3000";
 }
 
+export function jsonLd(data: Record<string, unknown>): string {
+  return JSON.stringify({ "@context": "https://schema.org", ...data }).replace(/</g, "\\u003c");
+}
+
 export function isIndexable(): boolean {
   return process.env.VERCEL_ENV !== "preview";
 }

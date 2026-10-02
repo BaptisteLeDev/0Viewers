@@ -1,7 +1,15 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { isIndexable, siteUrl } from "@/site";
+import { isIndexable, jsonLd, siteUrl } from "@/site";
 
 afterEach(() => vi.unstubAllEnvs());
+
+describe("jsonLd", () => {
+  it("cannot close its script tag from untrusted text", () => {
+    const out = jsonLd({ name: "</script><script>alert(1)</script>" });
+    expect(out).not.toContain("<");
+    expect(JSON.parse(out)).toEqual({ "@context": "https://schema.org", name: "</script><script>alert(1)</script>" });
+  });
+});
 
 describe("siteUrl", () => {
   it("prefers NEXT_PUBLIC_SITE_URL without trailing slash", () => {

@@ -25,13 +25,14 @@ La CI GitHub ajoute le smoke test et Lighthouse (budgets dans `lighthouserc.json
 
 ## Déploiement (Vercel)
 
-Variables d'environnement : `TWITCH_CLIENT_ID`, `TWITCH_CLIENT_SECRET`, `NEXT_PUBLIC_SITE_URL`, `GOOGLE_SITE_VERIFICATION`. Les déploiements preview sont en `noindex`.
+Variables d'environnement : `TWITCH_CLIENT_ID`, `TWITCH_CLIENT_SECRET`, `NEXT_PUBLIC_SITE_URL`, `GOOGLE_SITE_VERIFICATION`, `BING_SITE_VERIFICATION` (optionnel). Les déploiements preview sont en `noindex`.
 
 Après le premier déploiement en production :
 
 1. Ajouter la propriété dans Google Search Console.
 2. Mettre le code de vérification dans `GOOGLE_SITE_VERIFICATION` et redéployer.
 3. Soumettre `/sitemap.xml`.
+4. Bing Webmaster Tools : importer la propriété depuis Search Console, ou renseigner `BING_SITE_VERIFICATION`.
 
 ## Structure
 

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { MAX_VIEWERS, MIN_LIVE_MINUTES, getZeroViewersStreamers } from "@/decouverte";
+import { jsonLd } from "@/site";
+import { twitchChannelUrl } from "@/ui/player";
 import { StreamerList } from "@/ui/StreamerList";
 
 export const revalidate = 60;
@@ -14,8 +16,15 @@ export const metadata: Metadata = {
 
 export default async function StreamersPage() {
   const streamers = await getZeroViewersStreamers();
+  const listLd = jsonLd({
+    "@type": "ItemList",
+    name: "Streamers Twitch français en live à 0 spectateur",
+    numberOfItems: streamers.length,
+    itemListElement: streamers.map((s, i) => ({ "@type": "ListItem", position: i + 1, name: s.displayName, url: twitchChannelUrl(s.login) })),
+  });
   return (
     <section className="container" aria-labelledby="streamers-title">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: listLd }} />
       <h1 id="streamers-title">Trouve ton prochain <span className="highlight">streamer FR</span> à découvrir</h1>
       <p>Lives Twitch en français, en direct depuis plus de {MIN_LIVE_MINUTES} minutes, avec {MAX_VIEWERS} spectateurs ou moins. Liste mise à jour toutes les 5 minutes.</p>
       {streamers.length === 0 ? (
