@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Iceland, Share_Tech_Mono } from "next/font/google";
+import { Footer } from "@/ui/Footer";
 import { Header } from "@/ui/Header";
 import { SITE_DESCRIPTION, SITE_NAME, isIndexable, jsonLd, siteUrl } from "@/site";
 import "./globals.css";
@@ -37,6 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a href="#contenu" className="skip-link">Aller au contenu</a>
         <Header />
         <main id="contenu">{children}</main>
+        <Footer />
       </body>
     </html>
   );
