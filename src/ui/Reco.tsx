@@ -23,7 +23,7 @@ export function Reco({ streamers }: { streamers: Streamer0V[] }) {
     setIndex((i) => pickOther(streamers.length, i));
   };
 
-  const streamer = streamers[index];
+  const streamer = streamers[index % streamers.length];
   return (
     <div className={styles.reco}>
       <StreamerCard key={streamer.id} streamer={streamer} active={active} onActivate={activate} autoplayWhenFits headingLevel="h3" />
