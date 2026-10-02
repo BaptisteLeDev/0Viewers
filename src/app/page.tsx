@@ -49,9 +49,9 @@ export default async function Home() {
       <section className={`container ${styles.mission}`} aria-labelledby="mission-title">
         <h2 id="mission-title">Pourquoi un premier spectateur compte</h2>
         <p>
-          Streamer devant un compteur à 0, c&apos;est dur à tenir. Tu lances ton live, tu commentes ta partie, tu salues un chat qui ne
-          répond pas. Tu continues quand même, en espérant que quelqu&apos;un finisse par passer. Et quand personne ne vient, c&apos;est
-          difficile de savoir si ce que tu fais plaît ou pas.
+          Streamer devant un compteur à 0, c&apos;est dur à tenir. On lance son live, on commente sa partie, on salue un chat qui ne
+          répond pas. On continue quand même, en espérant que quelqu&apos;un finisse par passer. Et quand personne ne vient, difficile
+          de savoir si ce qu&apos;on fait plaît ou pas.
         </p>
         <p>
           Un seul spectateur suffit à changer l&apos;ambiance. Le streamer voit ton pseudo, te répond, explique ce qu&apos;il fait. Le live devient
@@ -60,7 +60,7 @@ export default async function Home() {
         </p>
         <p>
           0Viewers fait le tri pour toi, et ici les petits lives passent en premier. Toutes les 5 minutes, le site récupère les lives Twitch
-          en français en direct depuis plus de {MIN_LIVE_MINUTES} minutes avec {MAX_VIEWERS} spectateurs ou moins, en commençant par ceux à 0.
+          en français lancés depuis plus de {MIN_LIVE_MINUTES} minutes et qui comptent {MAX_VIEWERS} spectateurs ou moins, en commençant par ceux à 0.
           Tu choisis un live, tu le regardes ici ou sur Twitch, et tu passes dire bonjour. C&apos;est gratuit et tu n&apos;as pas besoin de compte
           sur 0Viewers. Pour écrire dans le chat, il te faut juste ton compte Twitch.
         </p>
