@@ -1,8 +1,8 @@
-import type { HelixStream, HelixUser, Streamer0V } from "./types";
+import type { HelixChannel, HelixStream, HelixUser, Streamer0V } from "./types";
 
 export const MAX_VIEWERS = 5;
 export const MIN_LIVE_MINUTES = 10;
-export const MAX_STREAMERS = 50;
+export const MAX_STREAMERS = 100;
 
 export function selectStreams(streams: HelixStream[], now: Date): HelixStream[] {
   const minStart = now.getTime() - MIN_LIVE_MINUTES * 60_000;
@@ -12,7 +12,7 @@ export function selectStreams(streams: HelixStream[], now: Date): HelixStream[] 
     .slice(0, MAX_STREAMERS);
 }
 
-export function toStreamer0V(stream: HelixStream, user: HelixUser | undefined): Streamer0V {
+export function toStreamer0V(stream: HelixStream, user: HelixUser | undefined, channel?: HelixChannel): Streamer0V {
   return {
     id: stream.user_id,
     login: user?.login ?? stream.user_login,
@@ -23,5 +23,6 @@ export function toStreamer0V(stream: HelixStream, user: HelixUser | undefined): 
     viewerCount: stream.viewer_count,
     thumbnailUrl: stream.thumbnail_url,
     profileImageUrl: user?.profile_image_url ?? "",
+    mature: (channel?.content_classification_labels.length ?? 0) > 0,
   };
 }

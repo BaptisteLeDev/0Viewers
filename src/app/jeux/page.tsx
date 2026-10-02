@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { MAX_VIEWERS, getZeroViewersStreamers, groupByGame } from "@/decouverte";
+import { CategorySearch } from "@/ui/CategorySearch";
 import { GameLinks } from "@/ui/GameLinks";
 import styles from "./jeux.module.css";
 
@@ -21,6 +22,9 @@ export default async function GamesPage() {
         Les jeux streamés en ce moment sur Twitch par des streamers français à {MAX_VIEWERS} spectateurs ou moins. Le chiffre indique le nombre de lives.
         Choisis un jeu pour voir qui le streame.
       </p>
+      <div className={styles.search}>
+        <CategorySearch live={Object.fromEntries(games.map((g) => [g.slug, g.count]))} />
+      </div>
       {games.length > 0 ? <GameLinks games={games} /> : <p>Aucun jeu en direct pour l&apos;instant. Repasse dans quelques minutes.</p>}
     </section>
   );

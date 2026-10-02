@@ -1,4 +1,5 @@
-import type { HelixStream, HelixUser } from "./types";
+import { fold } from "./games";
+import type { HelixCategory, HelixChannel, HelixStream, HelixUser } from "./types";
 
 const games = ["Just Chatting", "Minecraft", "League of Legends", "Valorant", "Pokémon Écarlate"];
 const viewers = [0, 0, 0, 1, 2, 5, 0, 3, 7, 0];
@@ -18,4 +19,14 @@ export function fixtureStreams(now: Date): HelixStream[] {
 
 export function fixtureUsers(ids: string[]): Map<string, HelixUser> {
   return new Map(ids.map((id) => [id, { id, login: `streamer_fr_${id.slice(2)}`, display_name: `StreamerFR${id.slice(2)}`, profile_image_url: "/fixtures/avatar.svg" }]));
+}
+
+export function fixtureChannels(ids: string[]): Map<string, HelixChannel> {
+  return new Map(ids.map((id, i) => [id, { broadcaster_id: id, content_classification_labels: i % 3 === 2 ? ["MatureGame"] : [] }]));
+}
+
+export function fixtureCategories(query: string): HelixCategory[] {
+  return [...games, "Minecraft Dungeons"]
+    .filter((name) => fold(name).includes(fold(query)))
+    .map((name, i) => ({ id: `cat${i}`, name, box_art_url: "/fixtures/thumb.svg" }));
 }

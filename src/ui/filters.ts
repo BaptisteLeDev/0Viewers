@@ -4,6 +4,7 @@ import { matchesQuery } from "./search";
 export const VIEWERS = ["", "0", "1-2", "3-5"] as const;
 export const DURATIONS = ["", "moins-1h", "1-3h", "plus-3h"] as const;
 export const SORTS = ["spectateurs", "recent", "long"] as const;
+export const CONTENTS = ["", "tout-public", "adulte"] as const;
 
 export type Filters = {
   q: string;
@@ -11,9 +12,10 @@ export type Filters = {
   game: string;
   duration: (typeof DURATIONS)[number];
   sort: (typeof SORTS)[number];
+  content: (typeof CONTENTS)[number];
 };
 
-export const DEFAULT_FILTERS: Filters = { q: "", viewers: "", game: "", duration: "", sort: "spectateurs" };
+export const DEFAULT_FILTERS: Filters = { q: "", viewers: "", game: "", duration: "", sort: "spectateurs", content: "" };
 
 const VIEWER_RANGES: Record<Exclude<Filters["viewers"], "">, [number, number]> = { "0": [0, 0], "1-2": [1, 2], "3-5": [3, 5] };
 const MINUTE_RANGES: Record<Exclude<Filters["duration"], "">, [number, number]> = {
@@ -29,6 +31,7 @@ export function applyFilters(streamers: Streamer0V[], f: Filters, now: number): 
       if (s.viewerCount < min || s.viewerCount > max) return false;
     }
     if (f.game && s.gameName !== f.game) return false;
+    if (f.content && s.mature !== (f.content === "adulte")) return false;
     if (f.duration) {
       const [min, max] = MINUTE_RANGES[f.duration];
       const m = liveMinutes(s, now);
@@ -60,6 +63,7 @@ export function parseFilters(params: { get(name: string): string | null }, games
     game: games.includes(game) ? game : "",
     duration: pick(DURATIONS, params.get("duree"), ""),
     sort: pick(SORTS, params.get("tri"), "spectateurs"),
+    content: pick(CONTENTS, params.get("contenu"), ""),
   };
 }
 
@@ -70,9 +74,10 @@ export function toSearch(f: Filters): string {
   if (f.game) params.set("jeu", f.game);
   if (f.duration) params.set("duree", f.duration);
   if (f.sort !== DEFAULT_FILTERS.sort) params.set("tri", f.sort);
+  if (f.content) params.set("contenu", f.content);
   return params.toString();
 }
 
 export function activeCount(f: Filters): number {
-  return [f.viewers, f.game, f.duration, f.sort !== DEFAULT_FILTERS.sort].filter(Boolean).length;
+  return [f.viewers, f.game, f.duration, f.content, f.sort !== DEFAULT_FILTERS.sort].filter(Boolean).length;
 }

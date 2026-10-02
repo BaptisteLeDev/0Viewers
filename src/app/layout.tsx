@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Iceland, Share_Tech_Mono } from "next/font/google";
-import { Backdrop } from "@/ui/Backdrop";
 import { Header } from "@/ui/Header";
 import { SITE_DESCRIPTION, SITE_NAME, isIndexable, jsonLd, siteUrl } from "@/site";
 import "./globals.css";
@@ -36,14 +35,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: siteLd }} />
         <a href="#contenu" className="skip-link">Aller au contenu</a>
-        <Backdrop />
         <Header />
         <main id="contenu">{children}</main>
-        <footer className="site-footer">
-          <p className="container">
-            Formes : <a href="https://coolshap.es" target="_blank" rel="noopener noreferrer">Coolshapes<span className="visually-hidden"> (nouvel onglet)</span></a> par realvjy
-          </p>
-        </footer>
       </body>
     </html>
   );

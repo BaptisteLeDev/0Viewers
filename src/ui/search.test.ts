@@ -4,7 +4,7 @@ import { matchesQuery, viewerLabel } from "@/ui/search";
 
 const s: Streamer0V = {
   id: "1", login: "zelda_fr", displayName: "ZeldaFR", title: "Speedrun détente",
-  gameName: "Pokémon Écarlate", startedAt: "", viewerCount: 0, thumbnailUrl: "", profileImageUrl: "",
+  gameName: "Pokémon Écarlate", startedAt: "", viewerCount: 0, thumbnailUrl: "", profileImageUrl: "", mature: false,
 };
 
 describe("matchesQuery", () => {

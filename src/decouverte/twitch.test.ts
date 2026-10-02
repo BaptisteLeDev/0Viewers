@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { fetchAppToken, fetchFrenchStreams, fetchUsers } from "@/decouverte/twitch";
+import { fetchAppToken, fetchChannels, fetchFrenchStreams, fetchUsers, searchHelixCategories } from "@/decouverte/twitch";
 
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
 
@@ -54,5 +54,22 @@ describe("fetchUsers", () => {
     expect(fake).toHaveBeenCalledTimes(1);
     expect(fake.mock.calls[0][0]).toContain("id=1&id=2");
     expect(users.get("1")?.login).toBe("a");
+  });
+});
+
+describe("fetchChannels", () => {
+  it("batches broadcaster ids and keys by broadcaster_id", async () => {
+    const fake = vi.fn().mockResolvedValue(json({ data: [{ broadcaster_id: "1", content_classification_labels: ["Gambling"] }] }));
+    const channels = await fetchChannels(["1", "2"], "tok", fake);
+    expect(fake.mock.calls[0][0]).toContain("/channels?broadcaster_id=1&broadcaster_id=2");
+    expect(channels.get("1")?.content_classification_labels).toEqual(["Gambling"]);
+  });
+});
+
+describe("searchHelixCategories", () => {
+  it("encodes the query", async () => {
+    const fake = vi.fn().mockResolvedValue(json({ data: [] }));
+    await searchHelixCategories("pokémon & co", "tok", fake);
+    expect(fake.mock.calls[0][0]).toContain("/search/categories?query=pok%C3%A9mon+%26+co&first=20");
   });
 });

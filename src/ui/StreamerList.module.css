@@ -1,13 +1,12 @@
-.search, .field { display: grid; gap: var(--space-2); }
+.search { display: grid; gap: var(--space-2); }
 .search { max-width: 32rem; margin-block: var(--space-4); }
-.search input, .field select {
+.search input {
   min-height: 44px; padding: var(--space-2) var(--space-4);
   border: 1px solid var(--color-border-strong); border-radius: var(--radius-full);
   background: var(--glass-bg); color: var(--color-text); font: inherit;
   transition: border-color var(--duration), box-shadow var(--duration);
 }
-.field select { background: var(--color-card); cursor: pointer; }
-.search input:focus-visible, .field select:focus-visible { border-color: var(--color-blue); box-shadow: var(--glow-blue); }
+.search input:focus-visible { border-color: var(--color-blue); box-shadow: var(--glow-blue); }
 
 .panel { display: flex; flex-wrap: wrap; align-items: end; gap: var(--space-3); margin-bottom: var(--space-3); }
 .pills { margin: 0; padding: 0; border: 0; min-width: 0; }
