@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { MAX_VIEWERS, MIN_LIVE_MINUTES, getZeroViewersStreamers } from "@/decouverte";
 import { StreamerList } from "@/ui/StreamerList";
 
-export const revalidate = 300;
+export const revalidate = 60;
 export const maxDuration = 60;
 
 export const metadata: Metadata = {

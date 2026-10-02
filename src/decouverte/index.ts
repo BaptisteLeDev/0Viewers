@@ -1,4 +1,5 @@
 import "server-only";
+import { unstable_cache } from "next/cache";
 import { cache } from "react";
 import { fixtureStreams, fixtureUsers } from "./fixtures";
 import { selectStreams, toStreamer0V } from "./rule";
@@ -9,8 +10,7 @@ export type { Streamer0V } from "./types";
 export { MAX_VIEWERS, MIN_LIVE_MINUTES } from "./rule";
 export { groupByGame, slugifyGame, type Game } from "./games";
 
-// one Twitch crawl per render: page and generateMetadata share it
-export const getZeroViewersStreamers = cache(async (): Promise<Streamer0V[]> => {
+async function crawl(): Promise<Streamer0V[]> {
   const now = new Date();
   if (process.env.TWITCH_FIXTURES === "1") {
     const selected = selectStreams(fixtureStreams(now), now);
@@ -21,4 +21,10 @@ export const getZeroViewersStreamers = cache(async (): Promise<Streamer0V[]> => 
   const selected = selectStreams(await fetchFrenchStreams(token), now);
   const users = await fetchUsers(selected.map((s) => s.user_id), token);
   return selected.map((s) => toStreamer0V(s, users.get(s.user_id)));
-});
+}
+
+// unstable_cache, not "use cache": Cache Components would forbid the
+// route revalidate/dynamicParams configs. A throw is never cached.
+const sharedCrawl = unstable_cache(crawl, ["streams"], { revalidate: 240, tags: ["streams"] });
+
+export const getZeroViewersStreamers = cache(sharedCrawl);

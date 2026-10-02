@@ -5,7 +5,7 @@ import { GameLinks } from "@/ui/GameLinks";
 import { Reco } from "@/ui/Reco";
 import styles from "./page.module.css";
 
-export const revalidate = 300;
+export const revalidate = 60;
 export const maxDuration = 60;
 
 export const metadata: Metadata = {

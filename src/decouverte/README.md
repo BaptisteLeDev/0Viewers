@@ -11,7 +11,7 @@ Contexte qui trouve les streamers Twitch français en live devant (presque) pers
 
 ## API publique
 
-`getZeroViewersStreamers(): Promise<Streamer0V[]>` dans `index.ts`, réservé au serveur, mémoïsé par rendu (`React.cache`). Le type `Streamer0V` est ré-exporté, ainsi que `groupByGame` et `slugifyGame` (purs, `games.ts`, aussi importables côté client). Le reste du dossier est interne.
+`getZeroViewersStreamers(): Promise<Streamer0V[]>` dans `index.ts`, réservé au serveur, un crawl partagé entre pages (`unstable_cache`, 240 s, tag `streams`) et mémoïsé par rendu (`React.cache`). Le type `Streamer0V` est ré-exporté, ainsi que `groupByGame` et `slugifyGame` (purs, `games.ts`, aussi importables côté client). Le reste du dossier est interne.
 
 ## Invariants
 
@@ -19,7 +19,7 @@ Contexte qui trouve les streamers Twitch français en live devant (presque) pers
 - En live depuis plus de `MIN_LIVE_MINUTES = 10` minutes.
 - Tri par viewers croissants, puis par `started_at` croissant.
 - Au plus `MAX_STREAMERS = 50` résultats.
-- Une erreur Twitch ou un token manquant lève une exception : jamais de liste vide à la place, la page précédente reste servie.
+- Une erreur Twitch ou un token manquant lève une exception, jamais mise en cache : jamais de liste vide à la place, la donnée ou la page précédente reste servie.
 - Plafond de 100 pages de streams : `console.warn`, liste partielle renvoyée.
 
 ## Provenance des données
