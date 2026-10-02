@@ -11,7 +11,7 @@ const mono = Share_Tech_Mono({ weight: "400", subsets: ["latin"], variable: "--f
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl()),
-  title: { default: `${SITE_NAME}, les streamers français à 0 viewer`, template: `%s | ${SITE_NAME}` },
+  title: { default: `${SITE_NAME}, les streamers français à 0 spectateur`, template: `%s | ${SITE_NAME}` },
   description: SITE_DESCRIPTION,
   applicationName: SITE_NAME,
   alternates: { canonical: "/" },

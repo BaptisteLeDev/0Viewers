@@ -9,5 +9,5 @@ export function matchesQuery(s: Streamer0V, query: string): boolean {
 }
 
 export function viewerLabel(n: number): string {
-  return `${n} viewer${n > 1 ? "s" : ""}`;
+  return `${n} spectateur${n > 1 ? "s" : ""}`;
 }
