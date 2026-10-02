@@ -1,0 +1,6 @@
+.header { border-bottom: 1px solid var(--color-border); background: var(--color-surface); }
+.nav { display: flex; align-items: center; justify-content: space-between; min-height: 4rem; }
+.logo { font-family: var(--font-heading); font-size: var(--text-xl); color: var(--color-pink); text-decoration: none; }
+.links { display: flex; gap: var(--space-4); list-style: none; margin: 0; padding: 0; font-family: var(--font-mono); }
+.links a { color: var(--color-text); text-decoration: none; }
+.links a:hover { color: var(--color-blue); }
