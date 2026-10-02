@@ -2,6 +2,7 @@ export type HelixStream = {
   user_id: string;
   user_login: string;
   user_name: string;
+  game_id: string;
   game_name: string;
   title: string;
   viewer_count: number;
@@ -27,7 +28,8 @@ export type Streamer0V = {
   login: string;
   displayName: string;
   title: string;
-  gameName: string;
+  categoryId: string;
+  categoryName: string;
   startedAt: string;
   viewerCount: number;
   thumbnailUrl: string;

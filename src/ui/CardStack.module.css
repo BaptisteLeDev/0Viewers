@@ -1,0 +1,50 @@
+.stack {
+  --spread: 15%;
+  position: relative;
+  width: min(20rem, 50vw);
+  aspect-ratio: 16 / 9;
+  margin: var(--space-5) auto var(--space-6);
+  padding: 0;
+  list-style: none;
+}
+.card {
+  position: absolute;
+  inset: 0;
+  transform: translateX(calc(var(--i) * 6px)) rotate(calc(var(--i) * 3deg));
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+}
+/* i*i lifts the outer cards: the fan follows an arc */
+.stack:hover .card, .stack:focus-within .card {
+  transform: translate(calc(var(--i) * var(--spread)), calc(var(--i) * var(--i) * 6px)) rotate(calc(var(--i) * 5deg));
+}
+.card:hover, .card:focus-within { z-index: 10; }
+
+.button {
+  position: relative; display: block; width: 100%; height: 100%; padding: 0;
+  border: 1px solid var(--glass-border); border-radius: var(--radius-md); overflow: hidden;
+  background: var(--color-card); box-shadow: var(--shadow-card); cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow var(--duration), border-color var(--duration);
+}
+.card:hover .button, .button:focus-visible { transform: translateY(-12px) scale(1.06); border-color: var(--color-pink); box-shadow: var(--glow-pink); }
+.thumb { display: block; width: 100%; height: 100%; object-fit: cover; }
+.label {
+  position: absolute; inset: auto 0 0; display: grid; padding: var(--space-4) var(--space-3) var(--space-2);
+  text-align: left; background: linear-gradient(transparent, rgba(5, 5, 8, 0.9));
+}
+.name { font-weight: 600; color: var(--color-pink); overflow-wrap: anywhere; }
+.category { font-size: var(--text-sm); color: var(--color-text-muted); }
+
+/* no hover on touch: show the fan open */
+@media (hover: none) {
+  .card { transform: translate(calc(var(--i) * var(--spread)), calc(var(--i) * var(--i) * 6px)) rotate(calc(var(--i) * 5deg)); }
+}
+@media (min-width: 900px) {
+  .stack { --spread: 40%; }
+}
+@media (min-width: 1200px) {
+  .stack { --spread: 62%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card, .button { transition: none; }
+}

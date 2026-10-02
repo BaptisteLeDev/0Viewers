@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { fetchAppToken, fetchChannels, fetchFrenchStreams, fetchUsers, searchHelixCategories } from "@/decouverte/twitch";
+import { fetchAppToken, fetchChannels, fetchFrenchStreams, fetchGames, fetchUsers, searchHelixCategories } from "@/decouverte/twitch";
 
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
 
@@ -71,5 +71,13 @@ describe("searchHelixCategories", () => {
     const fake = vi.fn().mockResolvedValue(json({ data: [] }));
     await searchHelixCategories("pokémon & co", "tok", fake);
     expect(fake.mock.calls[0][0]).toContain("/search/categories?query=pok%C3%A9mon+%26+co&first=20");
+  });
+});
+
+describe("fetchGames", () => {
+  it("asks /games with one id param per category", async () => {
+    const fake = vi.fn().mockResolvedValue(json({ data: [{ id: "1", name: "A", box_art_url: "u" }] }));
+    expect(await fetchGames(["1", "2"], "tok", fake)).toEqual([{ id: "1", name: "A", box_art_url: "u" }]);
+    expect(fake.mock.calls[0][0]).toContain("/games?id=1&id=2");
   });
 });

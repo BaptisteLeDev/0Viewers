@@ -50,7 +50,7 @@ export function CategorySearch({ live }: { live: Record<string, number> }) {
       value=""
       onQuery={setQuery}
       emptyText={emptyText}
-      onChange={(slug) => router.push(`/jeux/${slug}`)}
+      onChange={(slug) => router.push(`/categories/${slug}`)}
     />
   );
 }

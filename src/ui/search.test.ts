@@ -4,7 +4,7 @@ import { matchesQuery, viewerLabel } from "@/ui/search";
 
 const s: Streamer0V = {
   id: "1", login: "zelda_fr", displayName: "ZeldaFR", title: "Speedrun détente",
-  gameName: "Pokémon Écarlate", startedAt: "", viewerCount: 0, thumbnailUrl: "", profileImageUrl: "", mature: false,
+  categoryName: "Pokémon Écarlate", startedAt: "", viewerCount: 0, categoryId: "", thumbnailUrl: "", profileImageUrl: "", mature: false,
 };
 
 describe("matchesQuery", () => {
@@ -15,7 +15,7 @@ describe("matchesQuery", () => {
     expect(matchesQuery(s, "détente")).toBe(true);
   });
   it("does not strip ASCII symbols", () => expect(matchesQuery(s, "^")).toBe(false));
-  it("searches name, title and game", () => {
+  it("searches name, title and category", () => {
     expect(matchesQuery(s, "speedrun")).toBe(true);
     expect(matchesQuery(s, "minecraft")).toBe(false);
   });

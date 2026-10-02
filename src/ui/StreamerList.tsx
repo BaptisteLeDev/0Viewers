@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useId, useMemo, useState } from "react";
-import { groupByGame } from "@/decouverte/games";
+import { groupByCategory } from "@/decouverte/categories";
 import type { Streamer0V } from "@/decouverte/types";
 import { DEFAULT_FILTERS, activeCount, applyFilters, parseFilters, toSearch, type Filters } from "./filters";
 import { Combobox } from "./Combobox";
@@ -11,7 +11,7 @@ import { nextIndex } from "./random";
 import { Theater } from "./Theater";
 import styles from "./StreamerList.module.css";
 
-type Props = { streamers: Streamer0V[]; renderedAt: number; gamePage?: boolean };
+type Props = { streamers: Streamer0V[]; renderedAt: number; categoryPage?: boolean };
 
 const VIEWER_CHOICES: [Filters["viewers"], string][] = [["", "Tous"], ["0", "0"], ["1-2", "1 à 2"], ["3-5", "3 à 5"]];
 const DURATION_CHOICES: [Filters["duration"], string][] = [["", "Toutes"], ["moins-1h", "Moins d'1 h"], ["1-3h", "1 à 3 h"], ["plus-3h", "Plus de 3 h"]];
@@ -44,13 +44,13 @@ const writeUrl = (f: Filters) => {
   window.history.replaceState(null, "", search ? `?${search}` : window.location.pathname);
 };
 
-function FilterableList({ streamers, renderedAt: now, gamePage = false, params }: Props & { params: { get(name: string): string | null } }) {
-  const games = useMemo(() => groupByGame(streamers), [streamers]);
-  const gameOptions = useMemo(
-    () => [{ value: "", label: "Tous les jeux" }, ...games.map((g) => ({ value: g.name, label: g.name, hint: String(g.count) }))],
-    [games],
+function FilterableList({ streamers, renderedAt: now, categoryPage = false, params }: Props & { params: { get(name: string): string | null } }) {
+  const categories = useMemo(() => groupByCategory(streamers), [streamers]);
+  const categoryOptions = useMemo(
+    () => [{ value: "", label: "Toutes les catégories" }, ...categories.map((g) => ({ value: g.name, label: g.name, hint: String(g.count) }))],
+    [categories],
   );
-  const f = useMemo(() => parseFilters(params, gamePage ? [] : games.map((g) => g.name)), [params, games, gamePage]);
+  const f = useMemo(() => parseFilters(params, categoryPage ? [] : categories.map((g) => g.name)), [params, categories, categoryPage]);
   const [query, setQuery] = useState(f.q);
   const [urlQuery, setUrlQuery] = useState(f.q);
   if (f.q !== urlQuery) {
@@ -82,7 +82,7 @@ function FilterableList({ streamers, renderedAt: now, gamePage = false, params }
   return (
     <>
       <div className={styles.search}>
-        <label htmlFor={`${id}-q`}>Rechercher un streamer, un jeu ou un titre</label>
+        <label htmlFor={`${id}-q`}>Rechercher un streamer, une catégorie ou un titre</label>
         <input id={`${id}-q`} type="search" value={query} onChange={(e) => setQuery(e.target.value)} autoComplete="off" />
       </div>
       <button type="button" className={`btn btn-ghost ${styles.toggle}`} aria-expanded={panelOpen} aria-controls={`${id}-panel`} onClick={() => setPanelOpen((v) => !v)}>
@@ -92,8 +92,8 @@ function FilterableList({ streamers, renderedAt: now, gamePage = false, params }
         <Pills legend="Spectateurs" name={`${id}-viewers`} choices={VIEWER_CHOICES} value={current.viewers} onChange={(viewers) => set({ viewers })} />
         <Pills legend="Durée du live" name={`${id}-duration`} choices={DURATION_CHOICES} value={current.duration} onChange={(duration) => set({ duration })} />
         <Pills legend="Public" name={`${id}-content`} choices={CONTENT_CHOICES} value={current.content} onChange={(content) => set({ content })} />
-        {!gamePage && (
-          <Combobox label="Jeu" searchable placeholder="Rechercher un jeu" emptyText="Aucun jeu en live" options={gameOptions} value={current.game} onChange={(game) => set({ game })} />
+        {!categoryPage && (
+          <Combobox label="Catégorie" searchable placeholder="Rechercher une catégorie" emptyText="Aucune catégorie en live" options={categoryOptions} value={current.category} onChange={(category) => set({ category })} />
         )}
         <Combobox label="Trier par" options={SORT_OPTIONS} value={current.sort} onChange={(sort) => set({ sort: sort as Filters["sort"] })} />
       </div>
@@ -110,7 +110,7 @@ function FilterableList({ streamers, renderedAt: now, gamePage = false, params }
         <ul className={styles.grid}>
           {shown.map((s) => (
             <li key={s.id}>
-              <StreamerCard headingLevel="h2" streamer={s} linkGame={!gamePage} onActivate={() => setOpenId(s.id)} />
+              <StreamerCard headingLevel="h2" streamer={s} linkCategory={!categoryPage} onActivate={() => setOpenId(s.id)} />
             </li>
           ))}
         </ul>

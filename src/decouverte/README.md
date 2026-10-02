@@ -6,12 +6,12 @@ Contexte qui trouve les streamers Twitch français en live devant (presque) pers
 
 - **Streamer0V** : streamer français en live avec 5 viewers ou moins depuis plus de 10 minutes.
 - **Reco** : le Streamer0V mis en avant sur l'accueil, tiré au hasard côté client.
-- **Jeu** (`Game`) : regroupement des Streamer0V par jeu, identifié par son **slug** (`slugifyGame`, ex. `league-of-legends`). Une page `/jeux/{slug}` par jeu en live.
+- **Catégorie** (`LiveCategory`, catégorie Twitch) : regroupement des Streamer0V par catégorie, identifiée par son **slug** (`slugifyCategory`, ex. `league-of-legends`), avec sa jaquette (`boxArtUrl`, via Helix `/games`). Une page `/categories/{slug}` par catégorie en live.
 - **Découverte** : ce contexte.
 
 ## API publique
 
-`getCrawl(): Promise<{ streamers, crawledAt }>` dans `index.ts`, réservé au serveur : un crawl partagé entre pages (`"use cache"`, `cacheLife` stale 60 s / revalidate 240 s / expire 1 h, tag `streams`). `crawledAt` sert d'heure de référence aux pages (durées de live, filtres, sitemap). `getZeroViewersStreamers()` en renvoie juste la liste. `searchCategories(q)` cherche une **Catégorie** Twitch (`Category` : id, nom, slug, jaquette), mise en cache 1 jour par requête. Le type `Streamer0V` est ré-exporté, ainsi que `groupByGame` et `slugifyGame` (purs, `games.ts`, aussi importables côté client). Le reste du dossier est interne.
+`getCrawl(): Promise<{ streamers, boxArt, crawledAt }>` dans `index.ts`, réservé au serveur : un crawl partagé entre pages (`"use cache"`, `cacheLife` stale 60 s / revalidate 240 s / expire 1 h, tag `streams`). `crawledAt` sert d'heure de référence aux pages (durées de live, filtres, sitemap). `getZeroViewersStreamers()` en renvoie juste la liste. `searchCategories(q)` cherche une **Catégorie** Twitch (`Category` : id, nom, slug, jaquette), mise en cache 1 jour par requête. Le type `Streamer0V` est ré-exporté, ainsi que `groupByCategory` et `slugifyCategory` (purs, `categories.ts`, aussi importables côté client). Le reste du dossier est interne.
 
 ## Invariants
 

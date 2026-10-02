@@ -11,9 +11,9 @@ ${SITE_NAME} liste les lives Twitch en français, lancés depuis plus de ${MIN_L
 
 ## Pages
 
-- [Accueil](${url}/): un streamer à 0 spectateur mis en avant et d'autres lives
+- [Accueil](${url}/): des lives à 0 spectateur pris au hasard et un carrousel des lives du moment
 - [Streamers](${url}/streamers): tous les petits lives FR du moment, avec recherche
-- [Jeux](${url}/jeux): les jeux streamés en ce moment, une page par jeu
+- [Catégories](${url}/categories): les catégories Twitch streamées en ce moment, une page par catégorie
 `;
   return new Response(body, { headers: { "Content-Type": "text/plain; charset=utf-8" } });
 }

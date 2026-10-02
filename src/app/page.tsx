@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { MAX_VIEWERS, MIN_LIVE_MINUTES, getCrawl, groupByGame } from "@/decouverte";
+import { MAX_VIEWERS, MIN_LIVE_MINUTES, getCrawl, groupByCategory } from "@/decouverte";
 import Link from "next/link";
-import { GameLinks } from "@/ui/GameLinks";
+import { CategoryTile } from "@/ui/CategoryLinks";
+import { Marquee } from "@/ui/Marquee";
 import { Reco } from "@/ui/Reco";
 import styles from "./page.module.css";
 
@@ -14,34 +15,17 @@ export const metadata: Metadata = {
 };
 
 const plural = (n: number, word: string) => `${word}${n > 1 ? "s" : ""}`;
-const TOP_GAMES = 8;
 
 export default async function Home() {
-  const { streamers, crawledAt } = await getCrawl();
+  const { streamers, boxArt } = await getCrawl();
   const zeros = streamers.filter((s) => s.viewerCount === 0).length;
-  const games = groupByGame(streamers);
+  const categories = groupByCategory(streamers, boxArt);
   return (
     <>
-      <Reco streamers={streamers} renderedAt={crawledAt}>
+      <Reco streamers={streamers}>
         <h1 id="hero-title">Découvre les streamers Twitch français à <span className="highlight">0 spectateur</span></h1>
         <p>Un clic pour lancer leur live, un mot dans le chat, et tu deviens leur premier spectateur.</p>
       </Reco>
-      <section className={styles.stats} aria-labelledby="stats-title">
-        <div className="container">
-          <h2 id="stats-title" className="visually-hidden">En chiffres</h2>
-          <p>
-            En ce moment, <strong>{zeros}</strong> {plural(zeros, "streamer")} français {zeros > 1 ? "sont" : "est"} en live devant 0 spectateur,
-            sur <strong>{streamers.length}</strong> {plural(streamers.length, "live")} à {MAX_VIEWERS} spectateurs ou moins.
-          </p>
-        </div>
-      </section>
-      {games.length > 0 && (
-        <section className={`container ${styles.games}`} aria-labelledby="games-title">
-          <h2 id="games-title">Parcours par jeu</h2>
-          <GameLinks games={games.slice(0, TOP_GAMES)} />
-          <Link href="/jeux" className="btn btn-ghost">Tous les jeux en direct</Link>
-        </section>
-      )}
       <section className={`container ${styles.mission}`} aria-labelledby="mission-title">
         <h2 id="mission-title">Pourquoi un premier spectateur compte</h2>
         <p>
@@ -60,6 +44,22 @@ export default async function Home() {
           Tu choisis un live, tu le regardes ici ou sur Twitch, et tu passes dire bonjour. C&apos;est gratuit et tu n&apos;as pas besoin de compte
           sur 0Viewers. Pour écrire dans le chat, il te faut juste ton compte Twitch.
         </p>
+      </section>
+      {categories.length > 0 && (
+        <section className={`container ${styles.categories}`} aria-labelledby="categories-title">
+          <h2 id="categories-title">Parcours par catégorie</h2>
+          <Marquee itemWidth="9rem" secondsPerItem={4} items={categories.map((g) => ({ key: g.slug, node: <CategoryTile category={g} /> }))} />
+          <Link href="/categories" className="btn btn-ghost">Toutes les catégories en direct</Link>
+        </section>
+      )}
+      <section className={styles.stats} aria-labelledby="stats-title">
+        <div className="container">
+          <h2 id="stats-title" className="visually-hidden">En chiffres</h2>
+          <p>
+            En ce moment, <strong>{zeros}</strong> {plural(zeros, "streamer")} français {zeros > 1 ? "sont" : "est"} en live devant 0 spectateur,
+            sur <strong>{streamers.length}</strong> {plural(streamers.length, "live")} à {MAX_VIEWERS} spectateurs ou moins.
+          </p>
+        </div>
       </section>
     </>
   );

@@ -11,7 +11,7 @@ function expectIn(path, body, needle) {
   if (!body.includes(needle)) failures.push(`${path} missing ${needle}`);
 }
 
-const PAGES = ["/", "/streamers", "/jeux", "/jeux/minecraft"];
+const PAGES = ["/", "/streamers", "/categories", "/categories/minecraft", "/mentions-legales", "/credits"];
 
 for (const path of PAGES) {
   const html = await get(path);
@@ -24,10 +24,10 @@ for (const path of PAGES) {
 const sitemap = await get("/sitemap.xml");
 const urls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) => new URL(m[1]).pathname);
 for (const path of PAGES) if (!urls.includes(path)) failures.push(`sitemap missing ${path}`);
-const strays = urls.filter((u) => !PAGES.includes(u) && !/^\/jeux\/[a-z0-9-]+$/.test(u));
+const strays = urls.filter((u) => !PAGES.includes(u) && !/^\/categories\/[a-z0-9-]+$/.test(u));
 if (strays.length) failures.push(`sitemap unexpected ${strays}`);
 
-const empty = "/jeux/aucun-live-ici";
+const empty = "/categories/aucun-live-ici";
 const gone = await get(empty);
 expectIn(empty, gone, "personne en live en ce moment");
 if (gone.toLowerCase().includes("aucun live ici")) failures.push(`${empty} shows the raw slug`);
@@ -37,7 +37,7 @@ const robots = await get("/robots.txt");
 expectIn("/robots.txt", robots, "Allow: /");
 expectIn("/robots.txt", robots, "/sitemap.xml");
 
-for (const path of ["/account", "/jeux/Pas_Un_Slug"]) {
+for (const path of ["/account", "/categories/Pas_Un_Slug"]) {
   const res = await fetch(base + path);
   if (res.status !== 404) failures.push(`${path} -> ${res.status}, expected 404`);
 }

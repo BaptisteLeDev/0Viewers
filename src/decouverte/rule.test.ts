@@ -9,6 +9,7 @@ const stream = (id: string, viewers: number, liveMinutes: number): HelixStream =
   user_id: id,
   user_login: `login${id}`,
   user_name: `Name${id}`,
+  game_id: "509658",
   game_name: "Just Chatting",
   title: `Title ${id}`,
   viewer_count: viewers,

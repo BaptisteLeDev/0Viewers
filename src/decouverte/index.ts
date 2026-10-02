@@ -1,37 +1,45 @@
 import "server-only";
 import { cacheLife, cacheTag } from "next/cache";
-import { fixtureCategories, fixtureChannels, fixtureStreams, fixtureUsers } from "./fixtures";
-import { slugifyGame } from "./games";
+import { fixtureCategories, fixtureChannels, fixtureGames, fixtureStreams, fixtureUsers } from "./fixtures";
+import { slugifyCategory, type BoxArt } from "./categories";
 import { selectStreams, toStreamer0V } from "./rule";
-import { fetchAppToken, fetchChannels, fetchFrenchStreams, fetchUsers, searchHelixCategories } from "./twitch";
+import { fetchAppToken, fetchChannels, fetchFrenchStreams, fetchGames, fetchUsers, searchHelixCategories } from "./twitch";
 import type { Category, HelixCategory, Streamer0V } from "./types";
 
 export type { Category, Streamer0V } from "./types";
 export { MAX_VIEWERS, MIN_LIVE_MINUTES } from "./rule";
-export { groupByGame, slugifyGame, type Game } from "./games";
+export { groupByCategory, slugifyCategory, type BoxArt, type LiveCategory } from "./categories";
 
-async function crawl(): Promise<Streamer0V[]> {
+type Crawl = { streamers: Streamer0V[]; boxArt: BoxArt; crawledAt: number };
+
+const toBoxArt = (categories: HelixCategory[]): BoxArt => Object.fromEntries(categories.map((g) => [g.id, g.box_art_url]));
+
+async function crawl(): Promise<Omit<Crawl, "crawledAt">> {
   const now = new Date();
   if (process.env.TWITCH_FIXTURES === "1") {
     const selected = selectStreams(fixtureStreams(now), now);
     const ids = selected.map((s) => s.user_id);
     const [users, channels] = [fixtureUsers(ids), fixtureChannels(ids)];
-    return selected.map((s) => toStreamer0V(s, users.get(s.user_id), channels.get(s.user_id)));
+    const gameIds = [...new Set(selected.map((s) => s.game_id))];
+    return { streamers: selected.map((s) => toStreamer0V(s, users.get(s.user_id), channels.get(s.user_id))), boxArt: toBoxArt(fixtureGames(gameIds)) };
   }
   const token = await fetchAppToken();
   const selected = selectStreams(await fetchFrenchStreams(token), now);
   const ids = selected.map((s) => s.user_id);
-  const [users, channels] = await Promise.all([fetchUsers(ids, token), fetchChannels(ids, token)]);
-  return selected.map((s) => toStreamer0V(s, users.get(s.user_id), channels.get(s.user_id)));
+  const gameIds = [...new Set(selected.map((s) => s.game_id).filter(Boolean))];
+  // box art is cosmetic: a /categories failure must not kill the crawl
+  const categories = fetchGames(gameIds, token).catch((error) => (console.error(error), []));
+  const [users, channels, boxArt] = await Promise.all([fetchUsers(ids, token), fetchChannels(ids, token), categories.then(toBoxArt)]);
+  return { streamers: selected.map((s) => toStreamer0V(s, users.get(s.user_id), channels.get(s.user_id))), boxArt };
 }
 
 // stale 60 = old page revalidate, revalidate 240 = old crawl window.
 // A throw is never cached.
-export async function getCrawl(): Promise<{ streamers: Streamer0V[]; crawledAt: number }> {
+export async function getCrawl(): Promise<Crawl> {
   "use cache";
   cacheLife({ stale: 60, revalidate: 240, expire: 3600 });
   cacheTag("streams");
-  return { streamers: await crawl(), crawledAt: Date.now() };
+  return { ...(await crawl()), crawledAt: Date.now() };
 }
 
 export async function getZeroViewersStreamers(): Promise<Streamer0V[]> {
@@ -39,7 +47,7 @@ export async function getZeroViewersStreamers(): Promise<Streamer0V[]> {
 }
 
 const toCategory = (c: HelixCategory): Category => ({
-  id: c.id, name: c.name, slug: slugifyGame(c.name), boxArtUrl: c.box_art_url.replace(/\{width\}x\{height\}|\d+x\d+/, "52x72"),
+  id: c.id, name: c.name, slug: slugifyCategory(c.name), boxArtUrl: c.box_art_url.replace(/\{width\}x\{height\}|\d+x\d+/, "52x72"),
 });
 
 // Caller validates query length. Categories barely change: 1 day.

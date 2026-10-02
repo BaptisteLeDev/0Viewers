@@ -1,6 +1,6 @@
 .stats {
   position: relative;
-  margin-block: var(--space-5);
+  margin-block: var(--space-5) 0;
   padding-block: var(--space-5);
   background: var(--glass-bg);
   border-block: 1px solid var(--glass-border);
@@ -15,8 +15,9 @@
   color: var(--color-yellow);
 }
 
-.games { display: grid; justify-items: start; gap: var(--space-3); margin-block: var(--space-6); }
-.games h2 { margin: 0; font-size: var(--text-xl); }
+.categories { display: grid; justify-items: start; gap: var(--space-2); margin-block: var(--space-6); }
+.categories > :nth-child(2) { justify-self: stretch; }
+.categories h2 { margin: 0; font-size: var(--text-xl); }
 
 .mission { margin-block: var(--space-6); }
 .mission h2 { margin: 0 0 var(--space-4); font-size: var(--text-xl); }

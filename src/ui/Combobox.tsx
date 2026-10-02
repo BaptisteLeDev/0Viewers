@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
-import { fold } from "@/decouverte/games";
+import { fold } from "@/decouverte/categories";
 import styles from "./Combobox.module.css";
 
 export type Option = { value: string; label: string; hint?: string; image?: string };

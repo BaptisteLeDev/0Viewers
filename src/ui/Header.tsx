@@ -13,7 +13,7 @@ export function Header() {
         <ul className={styles.links}>
           <li><Link href="/">Accueil</Link></li>
           <li><Link href="/streamers">Streamers</Link></li>
-          <li><Link href="/jeux">Jeux</Link></li>
+          <li><Link href="/categories">Catégories</Link></li>
         </ul>
       </nav>
     </header>

@@ -66,6 +66,10 @@ export async function fetchChannels(ids: string[], token: string, fetchImpl: Fet
   return new Map(channels.map((c) => [c.broadcaster_id, c]));
 }
 
+export async function fetchGames(ids: string[], token: string, fetchImpl: Fetch = fetch): Promise<HelixCategory[]> {
+  return fetchByIds<HelixCategory>("/games", "id", ids, token, fetchImpl);
+}
+
 export async function searchHelixCategories(query: string, token: string, fetchImpl: Fetch = fetch): Promise<HelixCategory[]> {
   const params = new URLSearchParams({ query, first: "20" });
   return (await helix<{ data: HelixCategory[] }>(`/search/categories?${params}`, token, fetchImpl)).data;

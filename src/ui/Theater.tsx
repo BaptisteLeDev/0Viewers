@@ -13,19 +13,19 @@ const subscribeWide = (onChange: () => void) => {
   return () => query.removeEventListener("change", onChange);
 };
 
-type Props = { streamer: Streamer0V | null; onClose: () => void; onNext?: () => void; chatFirst?: boolean };
+type Props = { streamer: Streamer0V | null; onClose: () => void; onNext?: () => void };
 
-export function Theater({ streamer, onClose, onNext, chatFirst = false }: Props) {
+export function Theater({ streamer, onClose, onNext }: Props) {
   const dialog = useRef<HTMLDialogElement>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   const headingId = useId();
-  const [chatOpen, setChatOpen] = useState(chatFirst);
+  const [chatOpen, setChatOpen] = useState(false);
   const wide = useSyncExternalStore(subscribeWide, () => window.matchMedia(WIDE).matches, () => false);
   const id = streamer?.id;
   const [shownId, setShownId] = useState(id);
   if (id !== shownId) {
     setShownId(id);
-    setChatOpen(chatFirst);
+    setChatOpen(false);
   }
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export function Theater({ streamer, onClose, onNext, chatFirst = false }: Props)
             <div className={styles.who}>
               <h2 id={headingId} ref={heading} tabIndex={-1} className={styles.name}>{streamer.displayName}</h2>
               <p className={styles.meta}>
-                <span>{streamer.gameName}</span>
+                <span>{streamer.categoryName}</span>
                 <span className={streamer.viewerCount === 0 ? styles.zero : styles.badge}>{viewerLabel(streamer.viewerCount)}</span>
               </p>
             </div>
