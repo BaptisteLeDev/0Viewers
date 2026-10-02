@@ -1,46 +1,12 @@
-.hero {
-  display: grid;
-  gap: var(--space-4);
-  align-items: center;
-  padding-block: var(--space-4) var(--space-5);
-}
-.pitch h1 { margin: 0 0 var(--space-3); font-size: clamp(1.75rem, 7vw, 2.75rem); line-height: 1.1; text-wrap: balance; }
-.pitch p { margin: 0; max-width: 34rem; font-size: var(--text-lg); color: var(--color-text-muted); }
+.hero { padding-block: var(--space-6) var(--space-4); }
+.hero h1 { margin: 0 0 var(--space-3); font-size: clamp(1.75rem, 7vw, 2.75rem); line-height: 1.1; text-wrap: balance; }
+.hero p { margin: 0; max-width: 34rem; font-size: var(--text-lg); color: var(--color-text-muted); }
 .ctas { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-4); }
 .ctas > * { white-space: nowrap; }
+.hero .empty { margin-top: var(--space-4); }
 
-.media {
-  max-width: 48rem;
-  display: grid;
-  gap: var(--space-3);
-  padding: var(--space-3);
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-filter);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-card);
-}
-.strip { display: grid; gap: var(--space-2); }
-.who, .meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-2) var(--space-3); margin: 0; }
-.name { font-size: var(--text-lg); font-weight: 600; color: var(--color-pink); overflow-wrap: anywhere; }
-.who > :last-child { color: var(--color-text-muted); }
-.meta { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-text-muted); }
-.badge, .zero { padding: 0 var(--space-2); border-radius: var(--radius-full); border: 1px solid var(--color-blue); color: var(--color-blue); }
-.zero { border-color: var(--color-yellow); color: var(--color-yellow); }
-.actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-.empty { margin: 0; color: var(--color-text-muted); }
-
-.live { margin-block: var(--space-5); }
-.live h2 { margin: 0 0 var(--space-4); font-size: var(--text-xl); }
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: var(--space-4); list-style: none; padding: 0; margin: 0 0 var(--space-4); }
-
-@media (min-width: 1024px) {
-  .strip { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
-  .actions { grid-column: 2; grid-row: 1 / span 2; justify-content: flex-end; }
-}
-
-/* split from 1200: below it the text column is too narrow for a 2-line h1 next to a 36rem player */
-@media (min-width: 1200px) {
-  .hero { grid-template-columns: minmax(0, 1fr) 36rem; gap: var(--space-6); min-height: min(calc(100dvh - 4.5rem), 45rem); padding-block: var(--space-5); }
-  .pitch h1 { font-size: 2rem; }
-}
+.stack, .live { margin-block: var(--section-gap); }
+.stack { overflow-x: clip; }
+.stack h2, .live h2 { margin: 0 0 var(--space-3); font-size: var(--text-xl); }
+.live { display: grid; justify-items: start; gap: var(--space-4); }
+.live > :nth-child(2) { justify-self: stretch; }

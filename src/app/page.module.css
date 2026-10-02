@@ -1,11 +1,10 @@
 .stats {
   position: relative;
-  margin-block: var(--space-5);
-  padding-block: var(--space-5);
+  margin-block: var(--section-gap) 0;
+  padding-block: var(--space-6);
   background: var(--glass-bg);
   border-block: 1px solid var(--glass-border);
 }
-.stats::before { content: ""; position: absolute; inset: 0 0 auto; height: 2px; background: var(--gradient-bar); }
 .stats p { margin: 0; max-width: 46rem; font-size: var(--text-lg); line-height: 1.5; color: var(--color-text-muted); }
 .stats strong {
   font-family: var(--font-display);
@@ -16,12 +15,13 @@
   color: var(--color-yellow);
 }
 
-.games { display: grid; justify-items: start; gap: var(--space-3); margin-block: var(--space-6); }
-.games h2 { margin: 0; font-size: var(--text-xl); }
+.categories { display: grid; justify-items: start; gap: var(--space-4); margin-block: var(--section-gap); }
+.categories > :nth-child(2) { justify-self: stretch; }
+.categories h2 { margin: 0; font-size: var(--text-xl); }
 
-.mission { margin-block: var(--space-6); }
+.mission { margin-block: var(--section-gap); }
 .mission h2 { margin: 0 0 var(--space-4); font-size: var(--text-xl); }
-.mission p { max-width: 65ch; color: var(--color-text-muted); }
+.mission p { max-width: 65ch; margin: 0 0 var(--space-4); line-height: 1.75; color: var(--color-text-muted); text-wrap: pretty; }
 
 @media (min-width: 1024px) {
   .mission { padding-left: 20%; }

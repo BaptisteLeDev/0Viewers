@@ -1,0 +1,17 @@
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr)); gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
+.tile {
+  position: relative; display: grid; gap: var(--space-2); height: 100%; padding: var(--space-2);
+  border: 1px solid var(--glass-border); border-radius: var(--radius-md);
+  background: var(--glass-bg); color: var(--color-text); text-decoration: none;
+  transition: transform var(--duration), border-color var(--duration), box-shadow var(--duration);
+}
+.tile:hover, .tile:focus-visible { transform: translateY(var(--lift)); border-color: var(--color-yellow); box-shadow: var(--glow-yellow); }
+.tile:active { transform: scale(var(--press)); }
+.art { display: block; width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; border-radius: var(--radius-sm); background: var(--color-card); }
+.name { font-size: var(--text-sm); font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; }
+.count {
+  position: absolute; top: var(--space-3); right: var(--space-3);
+  display: inline-grid; place-items: center; min-width: 1.75rem; height: 1.75rem; padding-inline: var(--space-1);
+  border-radius: var(--radius-full); background: var(--color-yellow); color: var(--color-on-fill);
+  font-family: var(--font-mono); font-size: var(--text-sm);
+}

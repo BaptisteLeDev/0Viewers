@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import type { Streamer0V } from "@/decouverte/types";
-import { twitchChatSrc, twitchPlayerSrc } from "./player";
+import { twitchChannelUrl, twitchChatSrc, twitchPlayerSrc } from "./player";
 import { viewerLabel } from "./search";
 import styles from "./Theater.module.css";
 
@@ -13,19 +13,19 @@ const subscribeWide = (onChange: () => void) => {
   return () => query.removeEventListener("change", onChange);
 };
 
-type Props = { streamer: Streamer0V | null; onClose: () => void; onNext?: () => void; chatFirst?: boolean };
+type Props = { streamer: Streamer0V | null; onClose: () => void; onNext?: () => void };
 
-export function Theater({ streamer, onClose, onNext, chatFirst = false }: Props) {
+export function Theater({ streamer, onClose, onNext }: Props) {
   const dialog = useRef<HTMLDialogElement>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   const headingId = useId();
-  const [chatOpen, setChatOpen] = useState(chatFirst);
+  const [chatOpen, setChatOpen] = useState(false);
   const wide = useSyncExternalStore(subscribeWide, () => window.matchMedia(WIDE).matches, () => false);
   const id = streamer?.id;
   const [shownId, setShownId] = useState(id);
   if (id !== shownId) {
     setShownId(id);
-    setChatOpen(chatFirst);
+    setChatOpen(false);
   }
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export function Theater({ streamer, onClose, onNext, chatFirst = false }: Props)
             <div className={styles.who}>
               <h2 id={headingId} ref={heading} tabIndex={-1} className={styles.name}>{streamer.displayName}</h2>
               <p className={styles.meta}>
-                <span>{streamer.gameName}</span>
+                <span>{streamer.categoryName}</span>
                 <span className={streamer.viewerCount === 0 ? styles.zero : styles.badge}>{viewerLabel(streamer.viewerCount)}</span>
               </p>
             </div>
@@ -80,7 +80,7 @@ export function Theater({ streamer, onClose, onNext, chatFirst = false }: Props)
             <iframe key={`chat-${streamer.id}`} className={styles.chat} src={twitchChatSrc(streamer.login, host)} title={`Chat de ${streamer.displayName}`} />
           )}
           <footer className={styles.foot}>
-            <a className="btn btn-ghost" href={`https://www.twitch.tv/${streamer.login}`} target="_blank" rel="noopener noreferrer">
+            <a className="btn btn-ghost" href={twitchChannelUrl(streamer.login)} target="_blank" rel="noopener noreferrer">
               Ouvrir sur Twitch<span className="visually-hidden"> (nouvel onglet)</span>
             </a>
             {onNext && (

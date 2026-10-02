@@ -1,13 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { canAutoplay, thumbnailSrc, twitchChatSrc, twitchPlayerSrc } from "@/ui/player";
-
-describe("canAutoplay", () => {
-  it("needs at least 400x300", () => {
-    expect(canAutoplay({ width: 400, height: 300 })).toBe(true);
-    expect(canAutoplay({ width: 399, height: 300 })).toBe(false);
-    expect(canAutoplay({ width: 640, height: 299 })).toBe(false);
-  });
-});
+import { thumbnailSrc, twitchChatSrc, twitchPlayerSrc } from "@/ui/player";
 
 describe("twitchPlayerSrc", () => {
   it("embeds channel, parent host and muted autoplay flag", () => {

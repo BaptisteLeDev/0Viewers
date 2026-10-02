@@ -9,6 +9,7 @@ const stream = (id: string, viewers: number, liveMinutes: number): HelixStream =
   user_id: id,
   user_login: `login${id}`,
   user_name: `Name${id}`,
+  game_id: "509658",
   game_name: "Just Chatting",
   title: `Title ${id}`,
   viewer_count: viewers,
@@ -41,8 +42,8 @@ describe("selectStreams", () => {
     expect(ids).toEqual(["b", "a"]);
   });
 
-  it("caps at 50", () => {
-    const many = Array.from({ length: 80 }, (_, i) => stream(String(i), 0, 30 + i));
+  it("caps at MAX_STREAMERS", () => {
+    const many = Array.from({ length: 150 }, (_, i) => stream(String(i), 0, 30 + i));
     expect(selectStreams(many, now)).toHaveLength(MAX_STREAMERS);
   });
 });
@@ -55,6 +56,12 @@ describe("toStreamer0V", () => {
 
   it("falls back to stream login and name when user is missing", () => {
     const s = toStreamer0V(stream("a", 2, 30), undefined);
-    expect(s).toMatchObject({ login: "logina", displayName: "Namea", profileImageUrl: "" });
+    expect(s).toMatchObject({ login: "logina", displayName: "Namea", profileImageUrl: "", mature: false });
+  });
+
+  it("flags mature when the channel has any content classification label", () => {
+    const channel = (labels: string[]) => ({ broadcaster_id: "a", content_classification_labels: labels });
+    expect(toStreamer0V(stream("a", 0, 30), undefined, channel(["MatureGame"])).mature).toBe(true);
+    expect(toStreamer0V(stream("a", 0, 30), undefined, channel([])).mature).toBe(false);
   });
 });
