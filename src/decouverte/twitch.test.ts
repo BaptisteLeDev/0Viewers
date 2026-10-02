@@ -55,6 +55,13 @@ describe("fetchUsers", () => {
     expect(fake.mock.calls[0][0]).toContain("id=1&id=2");
     expect(users.get("1")?.login).toBe("a");
   });
+
+  it("splits more than 100 ids into Helix-sized calls", async () => {
+    const fake = vi.fn().mockImplementation(async () => json({ data: [] }));
+    await fetchUsers(Array.from({ length: 150 }, (_, i) => String(i)), "tok", fake);
+    expect(fake).toHaveBeenCalledTimes(2);
+    expect(fake.mock.calls[1][0]).toContain("id=100&");
+  });
 });
 
 describe("fetchChannels", () => {

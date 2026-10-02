@@ -49,11 +49,15 @@ export async function fetchFrenchStreams(token: string, fetchImpl: Fetch = fetch
   return [...streams.values()];
 }
 
-// Helix caps id lists at 100 = MAX_STREAMERS, so one call is enough
+const HELIX_MAX_IDS = 100;
+
 async function fetchByIds<T>(path: string, param: string, ids: string[], token: string, fetchImpl: Fetch): Promise<T[]> {
-  if (ids.length === 0) return [];
-  const query = new URLSearchParams(ids.map((id) => [param, id]));
-  return (await helix<{ data: T[] }>(`${path}?${query}`, token, fetchImpl)).data;
+  const batches = [];
+  for (let i = 0; i < ids.length; i += HELIX_MAX_IDS) {
+    const query = new URLSearchParams(ids.slice(i, i + HELIX_MAX_IDS).map((id) => [param, id]));
+    batches.push(helix<{ data: T[] }>(`${path}?${query}`, token, fetchImpl));
+  }
+  return (await Promise.all(batches)).flatMap((b) => b.data);
 }
 
 export async function fetchUsers(ids: string[], token: string, fetchImpl: Fetch = fetch): Promise<Map<string, HelixUser>> {

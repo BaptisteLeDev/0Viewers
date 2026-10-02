@@ -33,6 +33,7 @@
   --space-4: 1.5rem;
   --space-5: 2rem;
   --space-6: 3rem;
+  --section-gap: clamp(3rem, 8vw, 5.5rem);
 
   /* radius rule: full = interactive controls + badges, md (16px) = cards + panels, sm = media inset in a card */
   --radius-sm: 0.5rem;

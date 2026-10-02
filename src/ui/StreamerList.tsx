@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useId, useMemo, useState } from "react";
+import { Suspense, useEffect, useId, useMemo, useRef, useState } from "react";
 import { groupByCategory } from "@/decouverte/categories";
 import type { Streamer0V } from "@/decouverte/types";
 import { DEFAULT_FILTERS, activeCount, applyFilters, parseFilters, toSearch, type Filters } from "./filters";
@@ -22,6 +22,8 @@ const SORT_OPTIONS = [
   { value: "long", label: "Live le plus long" },
 ];
 const NO_PARAMS = new URLSearchParams();
+const FIRST_PAGE = 10;
+const PAGE = 25;
 
 // useSearchParams bails out of prerender up to the nearest Suspense:
 // the fallback keeps the full default list in the static HTML for SEO.
@@ -77,6 +79,25 @@ function FilterableList({ streamers, renderedAt: now, categoryPage = false, para
   const openIndex = shown.findIndex((s) => s.id === openId);
   if (openId && openIndex === -1) setOpenId(null);
   const active = activeCount(current);
+  const [limit, setLimit] = useState(FIRST_PAGE);
+  const [infinite, setInfinite] = useState(false);
+  const [listKey, setListKey] = useState(toSearch(current));
+  if (toSearch(current) !== listKey) {
+    setListKey(toSearch(current));
+    setLimit(FIRST_PAGE);
+    setInfinite(false);
+  }
+  const visible = shown.slice(0, limit);
+  const hasMore = visible.length < shown.length;
+  const sentinel = useRef<HTMLDivElement>(null);
+
+  // limit in deps re-observes after each page: still in view -> next page
+  useEffect(() => {
+    if (!infinite || !sentinel.current) return;
+    const io = new IntersectionObserver(([e]) => e.isIntersecting && setLimit((l) => l + PAGE), { rootMargin: "400px" });
+    io.observe(sentinel.current);
+    return () => io.disconnect();
+  }, [infinite, limit]);
   const dirty = active > 0 || query.trim() !== "";
 
   return (
@@ -98,7 +119,7 @@ function FilterableList({ streamers, renderedAt: now, categoryPage = false, para
         <Combobox label="Trier par" options={SORT_OPTIONS} value={current.sort} onChange={(sort) => set({ sort: sort as Filters["sort"] })} />
       </div>
       <div className={styles.status}>
-        <p aria-live="polite" className={styles.count}>{shown.length} streamer{shown.length > 1 ? "s" : ""} affiché{shown.length > 1 ? "s" : ""}</p>
+        <p aria-live="polite" className={styles.count}>{shown.length} streamer{shown.length > 1 ? "s" : ""} trouvé{shown.length > 1 ? "s" : ""}</p>
         {dirty && shown.length > 0 && <button type="button" className="btn btn-ghost" onClick={reset}>Réinitialiser</button>}
       </div>
       {shown.length === 0 ? (
@@ -108,13 +129,19 @@ function FilterableList({ streamers, renderedAt: now, categoryPage = false, para
         </div>
       ) : (
         <ul className={styles.grid}>
-          {shown.map((s) => (
+          {visible.map((s) => (
             <li key={s.id}>
               <StreamerCard headingLevel="h2" streamer={s} linkCategory={!categoryPage} onActivate={() => setOpenId(s.id)} />
             </li>
           ))}
         </ul>
       )}
+      {hasMore && !infinite && (
+        <button type="button" className={`btn btn-ghost ${styles.more}`} onClick={() => { setLimit((l) => l + PAGE); setInfinite(true); }}>
+          Voir plus
+        </button>
+      )}
+      {hasMore && infinite && <div ref={sentinel} aria-hidden="true" />}
       <Theater
         streamer={shown[openIndex] ?? null}
         onClose={() => setOpenId(null)}

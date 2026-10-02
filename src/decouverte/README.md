@@ -18,7 +18,7 @@ Contexte qui trouve les streamers Twitch français en live devant (presque) pers
 - Au plus `MAX_VIEWERS = 5` viewers.
 - En live depuis plus de `MIN_LIVE_MINUTES = 10` minutes.
 - Tri par viewers croissants, puis par `started_at` croissant.
-- Au plus `MAX_STREAMERS = 100` résultats (une seule requête `/users` et `/channels`, plafond Helix 100 ids).
+- Au plus `MAX_STREAMERS = 150` résultats (`/users` et `/channels` découpés en lots de 100 ids, plafond Helix).
 - `mature` vaut `true` si la chaîne a au moins un label de classification de contenu (CCL).
 - Une erreur Twitch ou un token manquant lève une exception, jamais mise en cache : jamais de liste vide à la place, la donnée ou la page précédente reste servie.
 - Plafond de 100 pages de streams : `console.warn`, liste partielle renvoyée.

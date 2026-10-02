@@ -2,7 +2,7 @@ import type { HelixChannel, HelixStream, HelixUser, Streamer0V } from "./types";
 
 export const MAX_VIEWERS = 5;
 export const MIN_LIVE_MINUTES = 10;
-export const MAX_STREAMERS = 100;
+export const MAX_STREAMERS = 150;
 
 export function selectStreams(streams: HelixStream[], now: Date): HelixStream[] {
   const minStart = now.getTime() - MIN_LIVE_MINUTES * 60_000;
