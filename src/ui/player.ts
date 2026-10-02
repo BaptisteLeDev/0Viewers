@@ -17,3 +17,7 @@ export function thumbnailSrc(template: string, width: number, height: number): s
 export function twitchChatSrc(channel: string, parent: string): string {
   return `https://www.twitch.tv/embed/${encodeURIComponent(channel)}/chat?${new URLSearchParams({ parent })}&darkpopout`;
 }
+
+export function twitchChannelUrl(login: string): string {
+  return `https://www.twitch.tv/${encodeURIComponent(login)}`;
+}
