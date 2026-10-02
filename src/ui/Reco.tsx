@@ -12,6 +12,7 @@ export function Reco({ streamers }: { streamers: Streamer0V[] }) {
   const [index, setIndex] = useState(0);
   const [active, setActive] = useState(false);
   const [theater, setTheater] = useState(false);
+  const [autoplay, setAutoplay] = useState(true);
   const activate = useCallback(() => setActive(true), []);
 
   useEffect(() => {
@@ -25,12 +26,18 @@ export function Reco({ streamers }: { streamers: Streamer0V[] }) {
     setIndex((i) => pickOther(streamers.length, i));
   };
 
+  const openTheater = () => {
+    setActive(false);
+    setAutoplay(false);
+    setTheater(true);
+  };
+
   const streamer = streamers[index % streamers.length];
   return (
     <div className={styles.reco}>
-      <StreamerCard key={streamer.id} streamer={streamer} active={active} onActivate={activate} autoplayWhenFits headingLevel="h3" />
+      <StreamerCard key={streamer.id} streamer={streamer} active={active} onActivate={activate} autoplayWhenFits={autoplay} headingLevel="h3" />
       <div className={styles.actions}>
-        <button type="button" className="btn btn-ghost" onClick={() => setTheater(true)}>Mode cinéma</button>
+        <button type="button" className="btn btn-ghost" onClick={openTheater}>Mode cinéma</button>
         {streamers.length > 1 && (
           <button type="button" className="btn" onClick={reroll}>Autre streamer</button>
         )}
