@@ -1,0 +1,37 @@
+name: ci
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    env:
+      TWITCH_FIXTURES: "1"
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm test
+      - run: pnpm build
+      - name: start server
+        run: |
+          pnpm start &
+          for i in $(seq 1 30); do curl -sf http://localhost:3000 >/dev/null && exit 0; sleep 1; done
+          exit 1
+      - run: pnpm smoke
+      - run: pnpm exec lhci autorun
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: lighthouse
+          path: .lighthouseci

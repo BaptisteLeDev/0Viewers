@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "Streamers français en live à 0 viewer",
   description: "La liste des streamers Twitch français en direct avec 0 viewer ou presque, mise à jour toutes les 5 minutes.",
   alternates: { canonical: "/streamers" },
-  openGraph: { url: "/streamers" },
+  openGraph: { url: "/streamers", images: ["/opengraph-image"] },
 };
 
 export default async function StreamersPage() {

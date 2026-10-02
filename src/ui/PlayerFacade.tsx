@@ -14,6 +14,8 @@ type Props = {
 
 export function PlayerFacade({ streamer, active, onActivate, autoplayWhenFits = false }: Props) {
   const box = useRef<HTMLDivElement>(null);
+  const frame = useRef<HTMLIFrameElement>(null);
+  const clicked = useRef(false);
   const activateRef = useRef(onActivate);
 
   // never active during SSR, so window is safe here
@@ -22,6 +24,10 @@ export function PlayerFacade({ streamer, active, onActivate, autoplayWhenFits = 
   useEffect(() => {
     activateRef.current = onActivate;
   });
+
+  useEffect(() => {
+    if (host && clicked.current) frame.current?.focus();
+  }, [host]);
 
   useEffect(() => {
     if (active || !autoplayWhenFits || !box.current) return;
@@ -40,6 +46,7 @@ export function PlayerFacade({ streamer, active, onActivate, autoplayWhenFits = 
     <div ref={box} className={styles.player}>
       {active && host ? (
         <iframe
+          ref={frame}
           className={styles.frame}
           src={twitchPlayerSrc(streamer.login, host, true)}
           title={`Live Twitch de ${streamer.displayName}`}
@@ -47,7 +54,7 @@ export function PlayerFacade({ streamer, active, onActivate, autoplayWhenFits = 
           allowFullScreen
         />
       ) : (
-        <button type="button" className={styles.facade} onClick={onActivate}>
+        <button type="button" className={styles.facade} onClick={() => { clicked.current = true; onActivate(); }}>
           {/* eslint-disable-next-line @next/next/no-img-element -- Twitch resizes, URL churns every 5 min */}
           <img src={thumbnailSrc(streamer.thumbnailUrl, 440, 248)} alt="" width={440} height={248} loading="lazy" className={styles.thumb} />
           <span className={styles.play}>
