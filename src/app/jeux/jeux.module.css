@@ -1,0 +1,10 @@
+.page { padding-block: var(--space-4) var(--space-6); }
+.page h1 { margin: 0 0 var(--space-3); font-size: clamp(1.75rem, 6vw, 2.5rem); text-wrap: balance; }
+.intro { max-width: 65ch; margin: 0 0 var(--space-4); color: var(--color-text-muted); }
+.crumbs ol { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0 0 var(--space-3); padding: 0; list-style: none; font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-text-muted); }
+.crumbs li + li::before { content: "/"; content: "/" / ""; margin-right: var(--space-2); }
+.crumbs a { display: inline-block; padding-block: var(--space-1); color: var(--color-blue); }
+.crumbs [aria-current] { padding-block: var(--space-1); color: var(--color-text); }
+.others { margin-top: var(--space-5); }
+.others h2 { margin: 0 0 var(--space-3); font-size: var(--text-xl); }
+.others p { margin: 0 0 var(--space-3); }

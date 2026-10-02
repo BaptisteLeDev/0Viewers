@@ -1,0 +1,28 @@
+.stats {
+  position: relative;
+  margin-block: var(--space-5);
+  padding-block: var(--space-5);
+  background: var(--glass-bg);
+  border-block: 1px solid var(--glass-border);
+}
+.stats::before { content: ""; position: absolute; inset: 0 0 auto; height: 2px; background: var(--gradient-bar); }
+.stats p { margin: 0; max-width: 46rem; font-size: var(--text-lg); line-height: 1.5; color: var(--color-text-muted); }
+.stats strong {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 9vw, 4rem);
+  font-weight: 400;
+  line-height: 1;
+  vertical-align: -0.1em;
+  color: var(--color-yellow);
+}
+
+.games { display: grid; justify-items: start; gap: var(--space-3); margin-block: var(--space-6); }
+.games h2 { margin: 0; font-size: var(--text-xl); }
+
+.mission { margin-block: var(--space-6); }
+.mission h2 { margin: 0 0 var(--space-4); font-size: var(--text-xl); }
+.mission p { max-width: 65ch; color: var(--color-text-muted); }
+
+@media (min-width: 1024px) {
+  .mission { padding-left: 20%; }
+}

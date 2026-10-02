@@ -1,0 +1,29 @@
+export type HelixStream = {
+  user_id: string;
+  user_login: string;
+  user_name: string;
+  game_name: string;
+  title: string;
+  viewer_count: number;
+  started_at: string;
+  thumbnail_url: string;
+};
+
+export type HelixUser = {
+  id: string;
+  login: string;
+  display_name: string;
+  profile_image_url: string;
+};
+
+export type Streamer0V = {
+  id: string;
+  login: string;
+  displayName: string;
+  title: string;
+  gameName: string;
+  startedAt: string;
+  viewerCount: number;
+  thumbnailUrl: string;
+  profileImageUrl: string;
+};

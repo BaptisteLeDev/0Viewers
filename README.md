@@ -1,55 +1,45 @@
-# 0viewers
-Projet Camille &amp; baptiste MDS B3
+# 0Viewers
 
-# 🌟 Découverte des Streamers 0V
+Projet Camille & Baptiste, MDS B3.
 
-Un projet communautaire pour mettre en avant les streamers Twitch qui débutent ou qui n’ont pas encore trouvé leur audience.  
-Objectif : offrir une visibilité aux créateurs avec **0 viewers** et encourager la découverte de nouveaux talents.  
+0Viewers trouve les streamers Twitch français en direct devant (presque) personne : 5 viewers ou moins, en live depuis plus de 10 minutes. L'accueil met en avant un streamer (la Reco) et six autres lives, `/streamers` liste les 50 premiers avec recherche ; un clic ouvre le live en mode cinéma (grand lecteur et chat).
 
----
+## Lancer
 
-## 🎯 Objectifs du projet
-- Mettre en avant les streamers francophones à **0 viewers**.  
-- Offrir une **recommandation quotidienne** (LA Reco) sur la page d’accueil.  
-- Permettre à la communauté de **soutenir** les streamers invisibles.  
-- Créer un espace de suivi et de mise en valeur autour de cette communauté "0V".  
+```bash
+pnpm i
+cp .env.example .env.local   # renseigner TWITCH_CLIENT_ID et TWITCH_CLIENT_SECRET
+pnpm dev
+```
 
----
+Sans clés Twitch : `TWITCH_FIXTURES=1 pnpm dev` utilise un jeu de données figé.
 
-## 📺 Fonctionnalités principales
+## Tests et CI
 
-### 🔹 Découverte & Affichage
-- Connexion à l’**API Twitch (Helix)** pour récupérer les streams en direct.  
-- Filtrage par **langue (français)**.  
-- Post-traitement pour ne garder que les **0 viewers**.  
-- Affichage des lives via **iframe Twitch embed**.  
+```bash
+pnpm typecheck && pnpm lint && pnpm test
+TWITCH_FIXTURES=1 pnpm build && pnpm start   # puis pnpm smoke
+```
 
-### 🔹 Recommandations
-- **Accueil / Reco** : un streamer mis en avant chaque jour.  
-- **Page “0 Viewers”** : liste des streamers FR à 0 viewers.  
-- Possibilité de filtrer par **nombre d’abonnés** (si disponible via l’API Twitch).  
+La CI GitHub ajoute le smoke test et Lighthouse (budgets dans `lighthouserc.json`). En local : `/ci-local`.
 
-### 🔹 Communauté & Comptes
-- Création de compte utilisateur (indépendant de Twitch).  
-- Upload d’image pour la **photo de profil**.  
-- Page profil avec :  
-  - Infos de l’utilisateur  
-  - Statistiques personnelles (combien de streamers 0V soutenus)  
-  - Historique des soutiens  
+## Déploiement (Vercel)
 
-### 🔹 Suivi global
-- Compteur du nombre de streamers **0V mis en avant**.  
-- Nombre total de soutiens donnés par la communauté.  
+Variables d'environnement : `TWITCH_CLIENT_ID`, `TWITCH_CLIENT_SECRET`, `NEXT_PUBLIC_SITE_URL`, `GOOGLE_SITE_VERIFICATION`. Les déploiements preview sont en `noindex`.
 
----
+Après le premier déploiement en production :
 
-## 🚀 Bonus envisagés
-- Notifications temps réel avec **EventSub** (quand un streamer passe en live).  
-- Votes communautaires pour choisir le streamer recommandé.  
-- Page “Stats” publique (combien de 0V trouvés aujourd’hui, total de soutiens, etc.).  
+1. Ajouter la propriété dans Google Search Console.
+2. Mettre le code de vérification dans `GOOGLE_SITE_VERIFICATION` et redéployer.
+3. Soumettre `/sitemap.xml`.
 
----
+## Structure
 
-## 💡 Vision
-Donner une chance à chaque créateur, même les plus petits, de se faire découvrir.  
-Parce qu’un streamer à **0 viewers** mérite autant d’attention qu’un grand nom ✨  
+- `src/app` : pages et SEO
+- `src/decouverte` : contexte serveur (Twitch, règle de sélection)
+- `src/ui` : composants client
+- `docs/decisions` : ADR
+- `slide/` : présentation du projet
+- `doc/` : notes d'API et TODO
+
+Détails : [ARCHITECTURE.md](ARCHITECTURE.md), [src/decouverte/README.md](src/decouverte/README.md).
