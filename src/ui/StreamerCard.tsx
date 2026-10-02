@@ -22,8 +22,11 @@ export function StreamerCard({ streamer, onActivate, headingLevel: Heading = "h3
           <span className={streamer.viewerCount === 0 ? styles.zero : styles.badge}>{viewerLabel(streamer.viewerCount)}</span>
           {categorySlug ? <Link href={`/categories/${categorySlug}`} className={styles.category}>{streamer.categoryName}</Link> : <span>{streamer.categoryName}</span>}
         </p>
-        <a className={`btn btn-ghost ${styles.link}`} href={twitchChannelUrl(streamer.login)} target="_blank" rel="noopener noreferrer">
+        <a className={styles.link} href={twitchChannelUrl(streamer.login)} target="_blank" rel="noopener noreferrer">
           Ouvrir sur Twitch<span className="visually-hidden"> (nouvel onglet)</span>
+          <svg aria-hidden="true" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M6 3h7v7M13 3 4 12" />
+          </svg>
         </a>
       </div>
     </article>
