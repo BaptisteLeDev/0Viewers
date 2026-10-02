@@ -1,0 +1,38 @@
+"use client";
+
+import Link from "next/link";
+import { useCallback, useEffect, useState } from "react";
+import type { Streamer0V } from "@/decouverte/types";
+import { pickOther } from "./random";
+import { StreamerCard } from "./StreamerCard";
+import styles from "./Reco.module.css";
+
+export function Reco({ streamers }: { streamers: Streamer0V[] }) {
+  const [index, setIndex] = useState(0);
+  const [active, setActive] = useState(false);
+  const activate = useCallback(() => setActive(true), []);
+
+  useEffect(() => {
+    // random pick after hydration keeps ISR HTML identical for everyone
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIndex(Math.floor(Math.random() * streamers.length));
+  }, [streamers.length]);
+
+  const reroll = () => {
+    setActive(false);
+    setIndex((i) => pickOther(streamers.length, i));
+  };
+
+  const streamer = streamers[index];
+  return (
+    <div className={styles.reco}>
+      <StreamerCard key={streamer.id} streamer={streamer} active={active} onActivate={activate} autoplayWhenFits headingLevel="h3" />
+      <div className={styles.actions}>
+        {streamers.length > 1 && (
+          <button type="button" className="btn" onClick={reroll}>Autre streamer</button>
+        )}
+        <Link href="/streamers" className="btn btn-ghost">Voir tous les streamers</Link>
+      </div>
+    </div>
+  );
+}
