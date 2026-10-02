@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: "Catégories en direct avec des petits streamers FR",
   description: "Les catégories Twitch streamées en ce moment par des streamers français à 0 viewer ou presque. Choisis une catégorie et découvre ses petits lives.",
   alternates: { canonical: "/categories" },
-  openGraph: { url: "/categories", images: ["/opengraph-image"] },
 };
 
 export default async function CategoriesPage() {

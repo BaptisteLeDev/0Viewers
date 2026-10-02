@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   description: SITE_DESCRIPTION,
   applicationName: SITE_NAME,
   alternates: { canonical: "/" },
-  openGraph: { type: "website", locale: "fr_FR", siteName: SITE_NAME, url: "/" },
+  openGraph: { type: "website", locale: "fr_FR", siteName: SITE_NAME },
   twitter: { card: "summary_large_image" },
   robots: isIndexable() ? { index: true, follow: true } : { index: false, follow: false },
   verification: process.env.GOOGLE_SITE_VERIFICATION ? { google: process.env.GOOGLE_SITE_VERIFICATION } : undefined,
