@@ -37,8 +37,6 @@
   ],
   "exclude": [
     "node_modules",
-    "front",
-    "back",
     "slide"
   ]
 }
