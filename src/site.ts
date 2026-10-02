@@ -1,6 +1,6 @@
 export const SITE_NAME = "0Viewers";
 export const SITE_DESCRIPTION =
-  "Découvrez les streamers Twitch français en live à 0 viewer et devenez leur premier spectateur.";
+  "Découvre les streamers Twitch français en live à 0 viewer et deviens leur premier spectateur.";
 export const PUBLIC_PATHS = ["/", "/streamers"] as const;
 
 export function siteUrl(): string {
