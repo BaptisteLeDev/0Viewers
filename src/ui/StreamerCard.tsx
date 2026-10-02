@@ -4,6 +4,7 @@ import Link from "next/link";
 import { slugifyGame } from "@/decouverte/games";
 import type { Streamer0V } from "@/decouverte/types";
 import { PlayerFacade } from "./PlayerFacade";
+import { twitchChannelUrl } from "./player";
 import { viewerLabel } from "./search";
 import styles from "./StreamerCard.module.css";
 
@@ -21,7 +22,7 @@ export function StreamerCard({ streamer, active = false, onActivate, autoplayWhe
           <span className={streamer.viewerCount === 0 ? styles.zero : styles.badge}>{viewerLabel(streamer.viewerCount)}</span>
           {gameSlug ? <Link href={`/jeux/${gameSlug}`} className={styles.game}>{streamer.gameName}</Link> : <span>{streamer.gameName}</span>}
         </p>
-        <a className={`btn btn-ghost ${styles.link}`} href={`https://www.twitch.tv/${streamer.login}`} target="_blank" rel="noopener noreferrer">
+        <a className={`btn btn-ghost ${styles.link}`} href={twitchChannelUrl(streamer.login)} target="_blank" rel="noopener noreferrer">
           Ouvrir sur Twitch<span className="visually-hidden"> (nouvel onglet)</span>
         </a>
       </div>

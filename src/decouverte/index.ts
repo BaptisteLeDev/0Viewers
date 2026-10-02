@@ -1,6 +1,5 @@
 import "server-only";
-import { unstable_cache } from "next/cache";
-import { cache } from "react";
+import { cacheLife, cacheTag } from "next/cache";
 import { fixtureStreams, fixtureUsers } from "./fixtures";
 import { selectStreams, toStreamer0V } from "./rule";
 import { fetchAppToken, fetchFrenchStreams, fetchUsers } from "./twitch";
@@ -23,8 +22,15 @@ async function crawl(): Promise<Streamer0V[]> {
   return selected.map((s) => toStreamer0V(s, users.get(s.user_id)));
 }
 
-// unstable_cache, not "use cache": Cache Components would forbid the
-// route revalidate/dynamicParams configs. A throw is never cached.
-const sharedCrawl = unstable_cache(crawl, ["streams"], { revalidate: 240, tags: ["streams"] });
+// stale 60 = old page revalidate, revalidate 240 = old crawl window.
+// A throw is never cached.
+export async function getCrawl(): Promise<{ streamers: Streamer0V[]; crawledAt: number }> {
+  "use cache";
+  cacheLife({ stale: 60, revalidate: 240, expire: 3600 });
+  cacheTag("streams");
+  return { streamers: await crawl(), crawledAt: Date.now() };
+}
 
-export const getZeroViewersStreamers = cache(sharedCrawl);
+export async function getZeroViewersStreamers(): Promise<Streamer0V[]> {
+  return (await getCrawl()).streamers;
+}

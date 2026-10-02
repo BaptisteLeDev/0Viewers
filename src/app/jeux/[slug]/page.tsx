@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { MAX_VIEWERS, getZeroViewersStreamers, groupByGame } from "@/decouverte";
+import { MAX_VIEWERS, getCrawl, getZeroViewersStreamers, groupByGame } from "@/decouverte";
 import { GameLinks } from "@/ui/GameLinks";
 import { StreamerList } from "@/ui/StreamerList";
 import styles from "../jeux.module.css";
 
-export const revalidate = 60;
 export const maxDuration = 60;
-export const dynamicParams = true;
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -16,16 +14,19 @@ type Props = { params: Promise<{ slug: string }> };
 const SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const EMPTY_TITLE = "Ce jeu n'a personne en live en ce moment";
 
+// cacheComponents rejects an empty list; "_" fails SLUG, so 404
 export async function generateStaticParams() {
-  return groupByGame(await getZeroViewersStreamers()).map(({ slug }) => ({ slug }));
+  const params = groupByGame(await getZeroViewersStreamers()).map(({ slug }) => ({ slug }));
+  return params.length > 0 ? params : [{ slug: "_" }];
 }
 
 async function load(params: Props["params"]) {
   const { slug } = await params;
   if (slug.length > 100 || !SLUG.test(slug)) notFound();
-  const games = groupByGame(await getZeroViewersStreamers());
+  const { streamers, crawledAt } = await getCrawl();
+  const games = groupByGame(streamers);
   const game = games.find((g) => g.slug === slug);
-  return { slug, game, others: games.filter((g) => g !== game) };
+  return { slug, game, crawledAt, others: games.filter((g) => g !== game) };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -40,7 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function GamePage({ params }: Props) {
-  const { game, others } = await load(params);
+  const { game, crawledAt, others } = await load(params);
   return (
     <section className={`container ${styles.page}`} aria-labelledby="game-title">
       <nav aria-label="Fil d'Ariane" className={styles.crumbs}>
@@ -56,7 +57,7 @@ export default async function GamePage({ params }: Props) {
           <p className={styles.intro}>
             {game.count > 1 ? `${game.count} streamers français sont` : "Un streamer français est"} en live sur {game.name} avec {MAX_VIEWERS} spectateurs ou moins&nbsp;: choisis un live et passe dire bonjour dans le chat.
           </p>
-          <StreamerList streamers={game.streamers} gamePage />
+          <StreamerList streamers={game.streamers} renderedAt={crawledAt} gamePage />
         </>
       ) : (
         <>
