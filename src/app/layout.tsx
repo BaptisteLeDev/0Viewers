@@ -18,10 +18,7 @@ export const metadata: Metadata = {
   openGraph: { type: "website", locale: "fr_FR", siteName: SITE_NAME, url: "/" },
   twitter: { card: "summary_large_image" },
   robots: isIndexable() ? { index: true, follow: true } : { index: false, follow: false },
-  verification: {
-    google: process.env.GOOGLE_SITE_VERIFICATION || undefined,
-    other: process.env.BING_SITE_VERIFICATION ? { "msvalidate.01": process.env.BING_SITE_VERIFICATION } : undefined,
-  },
+  verification: process.env.GOOGLE_SITE_VERIFICATION ? { google: process.env.GOOGLE_SITE_VERIFICATION } : undefined,
 };
 
 const siteLd = jsonLd({
