@@ -4,8 +4,10 @@ export type Game = { slug: string; name: string; count: number; streamers: Strea
 
 export const fold = (text: string) => text.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
 
+const SYMBOLS: Record<string, string> = { "+": " plus ", "#": " sharp ", "&": " et " };
+
 export function slugifyGame(name: string): string {
-  return fold(name).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  return fold(name).replace(/[+#&]/g, (c) => SYMBOLS[c]).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 
 export function groupByGame(streamers: Streamer0V[]): Game[] {

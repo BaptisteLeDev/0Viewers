@@ -11,6 +11,9 @@ describe("slugifyGame", () => {
     ["Counter-Strike 2", "counter-strike-2"],
     ["--Just   Chatting!!", "just-chatting"],
     ["", ""],
+    ["C++", "c-plus-plus"],
+    ["C#", "c-sharp"],
+    ["Dungeons & Dragons", "dungeons-et-dragons"],
   ])("%s -> %s", (name, slug) => expect(slugifyGame(name)).toBe(slug));
 });
 
@@ -34,6 +37,12 @@ describe("groupByGame", () => {
   });
   it("breaks count ties alphabetically, accent aware", () => {
     expect(groupByGame([make("x", "Valorant"), make("y", "Échecs"), make("z", "Apex")]).map((g) => g.name)).toEqual(["Apex", "Échecs", "Valorant"]);
+  });
+  it("keeps symbol-named games apart", () => {
+    expect(groupByGame([make("x", "C++"), make("y", "C#"), make("z", "C")]).map((g) => g.slug).sort()).toEqual(["c", "c-plus-plus", "c-sharp"]);
+  });
+  it("merges accent variants on purpose, keeping the first name", () => {
+    expect(groupByGame([make("x", "Pokemon"), make("y", "Pokémon")]).map(({ name, count }) => ({ name, count }))).toEqual([{ name: "Pokemon", count: 2 }]);
   });
   it("skips games whose name has no slug", () => {
     expect(groupByGame([make("x", ""), make("y", "!!!")])).toEqual([]);
