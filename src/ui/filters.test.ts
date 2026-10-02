@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { Streamer0V } from "@/decouverte/types";
-import { DEFAULT_FILTERS, activeCount, applyFilters, gameOptions, parseFilters, toSearch, type Filters } from "@/ui/filters";
+import { DEFAULT_FILTERS, activeCount, applyFilters, parseFilters, toSearch, type Filters } from "@/ui/filters";
 
 const now = Date.parse("2026-10-02T20:00:00Z");
 const ago = (minutes: number) => new Date(now - minutes * 60_000).toISOString();
@@ -64,17 +64,6 @@ describe("applyFilters", () => {
     applyFilters(list, { ...DEFAULT_FILTERS, sort: "recent" }, now);
     expect(list).toEqual(copy);
   });
-});
-
-describe("gameOptions", () => {
-  it("lists games by count, then alphabetically", () => {
-    expect(gameOptions(list)).toEqual([
-      { name: "Minecraft", count: 3 },
-      { name: "Just Chatting", count: 2 },
-      { name: "Pokémon Écarlate", count: 1 },
-    ]);
-  });
-  it("skips empty game names", () => expect(gameOptions([make("x", 0, 10, "")])).toEqual([]));
 });
 
 describe("parseFilters / toSearch", () => {

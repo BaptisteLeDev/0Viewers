@@ -16,6 +16,9 @@
   color: var(--color-yellow);
 }
 
+.games { display: grid; justify-items: start; gap: var(--space-3); margin-block: var(--space-6); }
+.games h2 { margin: 0; font-size: var(--text-xl); }
+
 .mission { margin-block: var(--space-6); }
 .mission h2 { margin: 0 0 var(--space-4); font-size: var(--text-xl); }
 .mission p { max-width: 65ch; color: var(--color-text-muted); }

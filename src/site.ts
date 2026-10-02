@@ -1,7 +1,7 @@
 export const SITE_NAME = "0Viewers";
 export const SITE_DESCRIPTION =
   "Découvre les streamers Twitch français en live à 0 viewer et deviens leur premier spectateur.";
-export const PUBLIC_PATHS = ["/", "/streamers"] as const;
+export const PUBLIC_PATHS = ["/", "/streamers", "/jeux"] as const;
 
 export function siteUrl(): string {
   const explicit = process.env.NEXT_PUBLIC_SITE_URL;

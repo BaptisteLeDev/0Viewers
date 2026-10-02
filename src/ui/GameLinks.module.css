@@ -1,0 +1,14 @@
+.games { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+.game {
+  display: inline-flex; align-items: center; gap: var(--space-2); min-height: 44px; padding: var(--space-2) var(--space-2) var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border-strong); border-radius: var(--radius-full);
+  background: var(--glass-bg); color: var(--color-text); text-decoration: none;
+  transition: transform var(--duration), border-color var(--duration), box-shadow var(--duration);
+}
+.game:hover, .game:focus-visible { transform: translateY(var(--lift)); border-color: var(--color-yellow); box-shadow: var(--glow-yellow); }
+.game:active { transform: scale(var(--press)); }
+.count {
+  display: inline-grid; place-items: center; min-width: 1.75rem; height: 1.75rem; padding-inline: var(--space-1);
+  border-radius: var(--radius-full); background: var(--color-yellow); color: var(--color-on-fill);
+  font-family: var(--font-mono); font-size: var(--text-sm);
+}

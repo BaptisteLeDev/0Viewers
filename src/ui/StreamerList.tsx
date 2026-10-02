@@ -2,8 +2,9 @@
 
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useId, useMemo, useState } from "react";
+import { groupByGame } from "@/decouverte/games";
 import type { Streamer0V } from "@/decouverte/types";
-import { DEFAULT_FILTERS, activeCount, applyFilters, gameOptions, parseFilters, toSearch, type Filters } from "./filters";
+import { DEFAULT_FILTERS, activeCount, applyFilters, parseFilters, toSearch, type Filters } from "./filters";
 import { StreamerCard } from "./StreamerCard";
 import { nextIndex } from "./random";
 import { Theater } from "./Theater";
@@ -38,7 +39,7 @@ const writeUrl = (f: Filters) => {
 };
 
 function FilterableList({ streamers, params }: Props & { params: { get(name: string): string | null } }) {
-  const games = useMemo(() => gameOptions(streamers), [streamers]);
+  const games = useMemo(() => groupByGame(streamers), [streamers]);
   const f = useMemo(() => parseFilters(params, games.map((g) => g.name)), [params, games]);
   const [query, setQuery] = useState(f.q);
   const [urlQuery, setUrlQuery] = useState(f.q);
@@ -65,6 +66,7 @@ function FilterableList({ streamers, params }: Props & { params: { get(name: str
   };
   const shown = applyFilters(streamers, current, now);
   const openIndex = shown.findIndex((s) => s.id === openId);
+  if (openId && openIndex === -1) setOpenId(null);
   const active = activeCount(current);
   const dirty = active > 0 || query.trim() !== "";
 
@@ -80,13 +82,15 @@ function FilterableList({ streamers, params }: Props & { params: { get(name: str
       <div id={`${id}-panel`} className={styles.panel} data-open={panelOpen}>
         <Pills legend="Spectateurs" name={`${id}-viewers`} choices={VIEWER_CHOICES} value={current.viewers} onChange={(viewers) => set({ viewers })} />
         <Pills legend="Durée du live" name={`${id}-duration`} choices={DURATION_CHOICES} value={current.duration} onChange={(duration) => set({ duration })} />
-        <div className={styles.field}>
-          <label htmlFor={`${id}-game`}>Jeu</label>
-          <select id={`${id}-game`} value={current.game} onChange={(e) => set({ game: e.target.value })}>
-            <option value="">Tous les jeux</option>
-            {games.map((g) => <option key={g.name} value={g.name}>{g.name} ({g.count})</option>)}
-          </select>
-        </div>
+        {games.length > 1 && (
+          <div className={styles.field}>
+            <label htmlFor={`${id}-game`}>Jeu</label>
+            <select id={`${id}-game`} value={current.game} onChange={(e) => set({ game: e.target.value })}>
+              <option value="">Tous les jeux</option>
+              {games.map((g) => <option key={g.slug} value={g.name}>{g.name} ({g.count})</option>)}
+            </select>
+          </div>
+        )}
         <div className={styles.field}>
           <label htmlFor={`${id}-sort`}>Trier par</label>
           <select id={`${id}-sort`} value={current.sort} onChange={(e) => set({ sort: e.target.value as Filters["sort"] })}>

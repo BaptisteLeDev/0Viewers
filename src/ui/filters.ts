@@ -49,14 +49,6 @@ export function applyFilters(streamers: Streamer0V[], f: Filters, now: number): 
   });
 }
 
-export function gameOptions(streamers: Streamer0V[]): { name: string; count: number }[] {
-  const counts = new Map<string, number>();
-  for (const s of streamers) if (s.gameName) counts.set(s.gameName, (counts.get(s.gameName) ?? 0) + 1);
-  return [...counts]
-    .map(([name, count]) => ({ name, count }))
-    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, "fr"));
-}
-
 const pick = <T extends string>(allowed: readonly T[], value: string | null, fallback: T): T =>
   allowed.includes(value as T) ? (value as T) : fallback;
 

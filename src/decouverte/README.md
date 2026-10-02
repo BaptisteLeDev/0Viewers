@@ -6,11 +6,12 @@ Contexte qui trouve les streamers Twitch français en live devant (presque) pers
 
 - **Streamer0V** : streamer français en live avec 5 viewers ou moins depuis plus de 10 minutes.
 - **Reco** : le Streamer0V mis en avant sur l'accueil, tiré au hasard côté client.
+- **Jeu** (`Game`) : regroupement des Streamer0V par jeu, identifié par son **slug** (`slugifyGame`, ex. `league-of-legends`). Une page `/jeux/{slug}` par jeu en live.
 - **Découverte** : ce contexte.
 
 ## API publique
 
-`getZeroViewersStreamers(): Promise<Streamer0V[]>` dans `index.ts`, réservé au serveur. Le type `Streamer0V` est ré-exporté. Le reste du dossier est interne.
+`getZeroViewersStreamers(): Promise<Streamer0V[]>` dans `index.ts`, réservé au serveur, mémoïsé par rendu (`React.cache`). Le type `Streamer0V` est ré-exporté, ainsi que `groupByGame` et `slugifyGame` (purs, `games.ts`, aussi importables côté client). Le reste du dossier est interne.
 
 ## Invariants
 
@@ -25,7 +26,7 @@ Contexte qui trouve les streamers Twitch français en live devant (presque) pers
 
 API Twitch Helix avec un token d'application (`TWITCH_CLIENT_ID`, `TWITCH_CLIENT_SECRET`) : `/streams?language=fr` puis `/users` pour les profils. Rien d'autre n'appelle Twitch. Avec `TWITCH_FIXTURES=1`, les données viennent de `fixtures.ts`.
 
-Tests : `rule.test.ts` (règle), `twitch.test.ts` (appels et erreurs).
+Tests : `rule.test.ts` (règle), `twitch.test.ts` (appels et erreurs), `games.test.ts` (slug et regroupement).
 
 ## Décision
 

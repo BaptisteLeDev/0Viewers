@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import { MAX_VIEWERS, MIN_LIVE_MINUTES, getZeroViewersStreamers } from "@/decouverte";
+import { MAX_VIEWERS, MIN_LIVE_MINUTES, getZeroViewersStreamers, groupByGame } from "@/decouverte";
+import Link from "next/link";
+import { GameLinks } from "@/ui/GameLinks";
 import { Reco } from "@/ui/Reco";
 import styles from "./page.module.css";
 
@@ -13,10 +15,12 @@ export const metadata: Metadata = {
 };
 
 const plural = (n: number, word: string) => `${word}${n > 1 ? "s" : ""}`;
+const TOP_GAMES = 8;
 
 export default async function Home() {
   const streamers = await getZeroViewersStreamers();
   const zeros = streamers.filter((s) => s.viewerCount === 0).length;
+  const games = groupByGame(streamers);
   // server render, once per ISR window: hydration then moves it to client time
   // eslint-disable-next-line react-hooks/purity
   const renderedAt = Date.now();
@@ -35,6 +39,13 @@ export default async function Home() {
           </p>
         </div>
       </section>
+      {games.length > 0 && (
+        <section className={`container ${styles.games}`} aria-labelledby="games-title">
+          <h2 id="games-title">Parcours par jeu</h2>
+          <GameLinks games={games.slice(0, TOP_GAMES)} />
+          <Link href="/jeux" className="btn btn-ghost">Tous les jeux en direct</Link>
+        </section>
+      )}
       <section className={`container ${styles.mission}`} aria-labelledby="mission-title">
         <h2 id="mission-title">Pourquoi un premier spectateur compte</h2>
         <p>
