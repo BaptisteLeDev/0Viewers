@@ -80,6 +80,10 @@ body {
   font-size: var(--text-base);
   line-height: 1.6;
 }
+/* room for the mobile bottom nav (Header.module.css) */
+@media (max-width: 767px) {
+  body { padding-bottom: calc(52px + env(safe-area-inset-bottom)); }
+}
 
 body::before {
   content: "";

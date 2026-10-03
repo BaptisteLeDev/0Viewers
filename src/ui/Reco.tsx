@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { Streamer0V } from "@/decouverte/types";
 import { CardStack } from "./CardStack";
-import { Marquee } from "./Marquee";
 import { nextIndex, sample } from "./random";
 import { StreamerCard } from "./StreamerCard";
 import { Theater } from "./Theater";
@@ -56,7 +55,11 @@ export function Reco({ streamers, children, featured }: Props) {
       {live.length > 0 && (
         <section className={`container ${styles.live}`} aria-labelledby="live-title">
           <h2 id="live-title">En direct maintenant</h2>
-          <Marquee itemWidth="17rem" items={live.map((s) => ({ key: s.id, node: <StreamerCard streamer={s} onActivate={() => openTheater(s.id)} /> }))} />
+          <ul className={styles.liveList}>
+            {live.map((s) => (
+              <li key={s.id}><StreamerCard streamer={s} onActivate={() => openTheater(s.id)} /></li>
+            ))}
+          </ul>
           <Link href="/streamers?spectateurs=0" className="btn">Voir tous les streamers à 0 viewer</Link>
         </section>
       )}

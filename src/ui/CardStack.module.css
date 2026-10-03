@@ -35,9 +35,25 @@
 .name { font-weight: 600; color: var(--color-pink); overflow-wrap: anywhere; }
 .category { font-size: var(--text-sm); color: var(--color-text-muted); }
 
-/* no hover on touch: show the fan open */
-@media (hover: none) {
+/* small screens: swipe carousel, side cards shrink via scroll timeline */
+@media (max-width: 899px) {
+  .stack {
+    display: flex; gap: var(--space-3); width: 100%; aspect-ratio: auto; margin-block: var(--space-4);
+    padding: var(--space-3) 10%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+  }
+  .card, .stack:hover .card, .stack:focus-within .card { position: relative; flex: 0 0 80%; aspect-ratio: 16 / 9; transform: none; scroll-snap-align: center; }
+  .card:hover .button { transform: none; }
+  @supports (animation-timeline: view()) {
+    .card { animation: focus linear both; animation-timeline: view(inline); }
+  }
+}
+/* touch tablets: no hover, show the fan open */
+@media (hover: none) and (min-width: 900px) {
   .card { transform: translate(calc(var(--i) * var(--spread)), calc(var(--i) * var(--i) * 6px)) rotate(calc(var(--i) * 5deg)); }
+}
+@keyframes focus {
+  0%, 100% { scale: 0.85; opacity: 0.6; }
+  50% { scale: 1; opacity: 1; }
 }
 @media (min-width: 900px) {
   .stack { --spread: 40%; }
@@ -46,5 +62,5 @@
   .stack { --spread: 62%; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .card, .button { transition: none; }
+  .card, .button { transition: none; animation: none; }
 }

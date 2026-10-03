@@ -1,7 +1,18 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import styles from "./Header.module.css";
 
+const LINKS = [
+  { href: "/", label: "Accueil" },
+  { href: "/streamers", label: "Streamers" },
+  { href: "/categories", label: "Catégories" },
+];
+
 export function Header() {
+  const pathname = usePathname();
+  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
   return (
     <header className={styles.header}>
       <nav aria-label="Navigation principale" className={styles.nav}>
@@ -11,9 +22,11 @@ export function Header() {
           <span className={styles.wordmark}>0Viewers</span>
         </Link>
         <ul className={styles.links}>
-          <li><Link href="/">Accueil</Link></li>
-          <li><Link href="/streamers">Streamers</Link></li>
-          <li><Link href="/categories">Catégories</Link></li>
+          {LINKS.map((l) => (
+            <li key={l.href}>
+              <Link href={l.href} aria-current={isActive(l.href) ? "page" : undefined}>{l.label}</Link>
+            </li>
+          ))}
         </ul>
       </nav>
     </header>

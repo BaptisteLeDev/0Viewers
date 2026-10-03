@@ -25,9 +25,19 @@
 .links li { display: flex; align-items: center; }
 .links li::before { content: ""; width: 1px; height: 1.25rem; background: rgba(255, 255, 255, 0.14); }
 .links a { color: var(--color-text-muted); font-size: var(--text-sm); }
-.links a:hover { color: var(--color-text); }
+.links a:hover, .links a[aria-current="page"] { color: var(--color-text); }
+.links a[aria-current="page"] { background: rgba(255, 255, 255, 0.1); box-shadow: inset 0 -2px 0 var(--color-pink); }
 
-@media (max-width: 400px) {
-  .logo, .links a { padding-inline: var(--space-2); }
-  .wordmark { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+/* backdrop-filter on .nav would trap the fixed bar: glass moves to .links */
+@media (max-width: 767px) {
+  .nav { backdrop-filter: none; background: none; border: 0; box-shadow: none; }
+  .logo { border: 1px solid var(--glass-border); background: var(--glass-bg); backdrop-filter: var(--glass-filter); }
+  .links {
+    position: fixed; inset: auto 0 0; z-index: 10; justify-content: space-around;
+    padding: var(--space-1) var(--space-2) calc(var(--space-1) + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--glass-border); background: var(--glass-bg); backdrop-filter: var(--glass-filter);
+  }
+  .links li { flex: 1; }
+  .links li::before { display: none; }
+  .links a { flex: 1; justify-content: center; }
 }

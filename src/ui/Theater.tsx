@@ -19,14 +19,9 @@ export function Theater({ streamer, onClose, onNext }: Props) {
   const dialog = useRef<HTMLDialogElement>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   const headingId = useId();
-  const [chatOpen, setChatOpen] = useState(false);
+  const [chatOpen, setChatOpen] = useState(true);
   const wide = useSyncExternalStore(subscribeWide, () => window.matchMedia(WIDE).matches, () => false);
   const id = streamer?.id;
-  const [shownId, setShownId] = useState(id);
-  if (id !== shownId) {
-    setShownId(id);
-    setChatOpen(false);
-  }
 
   useEffect(() => {
     const el = dialog.current;
@@ -57,6 +52,13 @@ export function Theater({ streamer, onClose, onNext }: Props) {
                 <span className={streamer.viewerCount === 0 ? styles.zero : styles.badge}>{viewerLabel(streamer.viewerCount)}</span>
               </p>
             </div>
+            {!wide && (
+              <button type="button" className={`btn btn-ghost ${styles.chatToggle}`} aria-pressed={chatOpen} aria-label="Chat" title={chatOpen ? "Masquer le chat" : "Afficher le chat"} onClick={() => setChatOpen((v) => !v)}>
+                <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                </svg>
+              </button>
+            )}
             <button type="button" className={`btn btn-ghost ${styles.close}`} onClick={() => dialog.current?.close()}>
               Fermer
             </button>
@@ -71,11 +73,6 @@ export function Theater({ streamer, onClose, onNext }: Props) {
               allowFullScreen
             />
           </div>
-          {!wide && (
-            <button type="button" className={`btn btn-ghost ${styles.chatToggle}`} onClick={() => setChatOpen((v) => !v)}>
-              {chatOpen ? "Masquer le chat" : "Afficher le chat"}
-            </button>
-          )}
           {showChat && (
             <iframe key={`chat-${streamer.id}`} className={styles.chat} src={twitchChatSrc(streamer.login, host)} title={`Chat de ${streamer.displayName}`} />
           )}
