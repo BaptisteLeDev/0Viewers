@@ -26,6 +26,7 @@ ${categories || "- Aucune catégorie en direct pour l'instant"}
 ## Optional
 
 - [Mentions légales](${url}/mentions-legales): éditeur, hébergeur, données personnelles
+- [Algo](${url}/algo): quels streams sont affichés, lesquels sont écartés et pourquoi
 - [Crédits](${url}/credits): sources, polices et données Twitch
 `;
   return new Response(body, { headers: { "Content-Type": "text/plain; charset=utf-8" } });

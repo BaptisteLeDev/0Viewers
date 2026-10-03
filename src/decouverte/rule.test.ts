@@ -42,6 +42,26 @@ describe("selectStreams", () => {
     expect(ids).toEqual(["b", "a"]);
   });
 
+  it("drops media streams by title, category or tag", () => {
+    const media = [
+      { ...stream("a", 0, 30), title: "Radio libre 24/7" },
+      { ...stream("b", 0, 30), game_name: "Ville de Lyon" },
+      { ...stream("c", 0, 30), tags: ["FranceTV"] },
+      { ...stream("d", 0, 30), title: "Les villes de France" },
+      { ...stream("g", 0, 30), tags: ["webradio"] },
+      { ...stream("h", 0, 30), tags: ["Années80"] },
+      { ...stream("i", 0, 30), tags: ["annee70"] },
+      { ...stream("j", 0, 30), tags: ["Oldies"] },
+    ];
+    const kept = [stream("e", 0, 30), { ...stream("f", 0, 30), title: "Souffrance sur Elden Ring" }];
+    expect(selectStreams([...media, ...kept], now).map((s) => s.user_id)).toEqual(["e", "f"]);
+  });
+
+  it("keeps media-like logins but ranks them last", () => {
+    const ids = selectStreams([{ ...stream("a", 0, 90), user_login: "maxtv" }, stream("b", 3, 30)], now).map((s) => s.user_id);
+    expect(ids).toEqual(["b", "a"]);
+  });
+
   it("caps at MAX_STREAMERS", () => {
     const many = Array.from({ length: 150 }, (_, i) => stream(String(i), 0, 30 + i));
     expect(selectStreams(many, now)).toHaveLength(MAX_STREAMERS);

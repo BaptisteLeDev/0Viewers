@@ -5,6 +5,7 @@ export type HelixStream = {
   game_id: string;
   game_name: string;
   title: string;
+  tags?: string[];
   viewer_count: number;
   started_at: string;
   thumbnail_url: string;
