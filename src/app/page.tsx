@@ -26,6 +26,13 @@ export default async function Home() {
         <h1 id="hero-title">Découvre les streamers Twitch français à <span className="highlight">0 spectateur</span></h1>
         <p>Un clic pour lancer leur live, un mot dans le chat, et tu deviens leur premier spectateur.</p>
       </Reco>
+      <section className={`container ${styles.video}`} aria-labelledby="video-title">
+        <h2 id="video-title">0Viewers en 10 secondes</h2>
+        <video controls preload="none" playsInline poster="/video/0viewers.jpg" width={1920} height={1080}>
+          <source src="/video/0viewers.mp4" type="video/mp4" />
+          <track kind="captions" src="/video/0viewers.vtt" srcLang="fr" label="Français" default />
+        </video>
+      </section>
       <section className={`container ${styles.mission}`} aria-labelledby="mission-title">
         <h2 id="mission-title">Pourquoi un premier spectateur compte</h2>
         <p>

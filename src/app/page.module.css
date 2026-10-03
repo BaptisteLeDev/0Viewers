@@ -19,6 +19,18 @@
 .categories > :nth-child(2) { justify-self: stretch; }
 .categories h2 { margin: 0; font-size: var(--text-xl); }
 
+.video { margin-block: var(--section-gap); }
+.video h2 { margin: 0 0 var(--space-4); font-size: var(--text-xl); }
+.video video {
+  display: block;
+  width: 100%;
+  max-width: 56rem;
+  height: auto;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+}
+
 .mission { margin-block: var(--section-gap); }
 .mission h2 { margin: 0 0 var(--space-4); font-size: var(--text-xl); }
 .mission p { max-width: 65ch; margin: 0 0 var(--space-4); line-height: 1.75; color: var(--color-text-muted); text-wrap: pretty; }
