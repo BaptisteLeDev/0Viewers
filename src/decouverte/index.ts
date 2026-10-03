@@ -7,7 +7,7 @@ import { fetchAppToken, fetchChannels, fetchFrenchStreams, fetchGames, fetchUser
 import type { Category, HelixCategory, Streamer0V } from "./types";
 
 export type { Category, Streamer0V } from "./types";
-export { MAX_VIEWERS, MIN_LIVE_MINUTES } from "./rule";
+export { MAX_STREAMERS, MAX_VIEWERS, MIN_LIVE_MINUTES } from "./rule";
 export { groupByCategory, slugifyCategory, type BoxArt, type LiveCategory } from "./categories";
 
 type Crawl = { streamers: Streamer0V[]; boxArt: BoxArt; crawledAt: number };
