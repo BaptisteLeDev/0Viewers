@@ -9,6 +9,7 @@
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-card);
   overflow: hidden;
+  cursor: pointer;
   transition: transform var(--duration), box-shadow var(--duration);
 }
 @supports (mask-composite: exclude) or (-webkit-mask-composite: xor) {
@@ -42,8 +43,8 @@
   align-items: center;
   gap: var(--space-1);
   align-self: flex-end;
+  min-height: 44px;
   margin-top: auto;
-  padding-top: var(--space-2);
   font-size: var(--text-sm);
   color: var(--color-text-muted);
   text-decoration: none;
@@ -52,5 +53,6 @@
 .link:hover, .link:focus-visible { color: var(--color-pink); }
 .link svg { transition: transform var(--duration); }
 .link:hover svg { transform: translate(2px, -2px); }
-.category { transition: color var(--duration); }
+.category { display: inline-flex; align-items: center; min-height: 44px; transition: color var(--duration); }
+.meta { align-items: center; }
 .category:hover { color: var(--color-yellow); }

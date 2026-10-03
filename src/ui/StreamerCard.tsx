@@ -13,7 +13,8 @@ type Props = { streamer: Streamer0V; onActivate: () => void; headingLevel?: "h2"
 export function StreamerCard({ streamer, onActivate, headingLevel: Heading = "h3", linkCategory = true }: Props) {
   const categorySlug = linkCategory ? slugifyCategory(streamer.categoryName) : "";
   return (
-    <article className={styles.card}>
+    // pointer shortcut only: keyboard users already have the Regarder button
+    <article className={styles.card} onClick={(e) => { if (!(e.target as Element).closest("a, button")) onActivate(); }}>
       <PlayerFacade streamer={streamer} onPlay={onActivate} />
       <div className={styles.body}>
         <Heading className={styles.name}>{streamer.displayName}</Heading>

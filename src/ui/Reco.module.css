@@ -15,8 +15,7 @@
 .ctas > * { white-space: nowrap; }
 .hero .empty { margin-top: var(--space-4); }
 
-.stack { display: grid; justify-items: center; text-align: center; }
-.stack :global(ul) { width: min(26rem, 72vw); }
+.stack { display: grid; justify-items: center; text-align: center; min-width: 0; }
 .stack h2 {
   margin: 0;
   font-family: var(--font-mono);
@@ -31,13 +30,22 @@
 .live { display: grid; justify-items: start; gap: var(--space-4); margin-block: var(--section-gap); }
 .live h2 { margin: 0 0 var(--space-3); font-size: var(--text-xl); }
 .live > :nth-child(2) { justify-self: stretch; }
+.liveList { display: grid; grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr)); gap: var(--space-4); margin: 0; padding: 0; list-style: none; }
+
+@media (max-width: 767px) {
+  .liveList {
+    grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 85%;
+    overflow-x: auto; scroll-snap-type: x mandatory; padding-block: var(--space-2);
+  }
+  .liveList > li { scroll-snap-align: center; }
+}
 
 @media (hover: none) {
   .hint { display: none; }
 }
 @media (min-width: 900px) {
   .heroGrid { grid-template-columns: 1.1fr 1fr; }
-  .stack :global(ul) { --spread: 32%; }
+  .stack :global(ul) { width: min(26rem, 72vw); --spread: 32%; }
 }
 @media (min-width: 1200px) {
   .stack :global(ul) { --spread: 45%; }
