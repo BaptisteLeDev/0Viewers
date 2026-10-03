@@ -7,18 +7,18 @@ Projet Camille & Baptiste, MDS B3.
 ## Lancer
 
 ```bash
-pnpm i
+bun install
 cp .env.example .env.local   # renseigner TWITCH_CLIENT_ID et TWITCH_CLIENT_SECRET
-pnpm dev
+bun run dev
 ```
 
-Sans clés Twitch : `TWITCH_FIXTURES=1 pnpm dev` utilise un jeu de données figé.
+Sans clés Twitch : `TWITCH_FIXTURES=1 bun run dev` utilise un jeu de données figé.
 
 ## Tests et CI
 
 ```bash
-pnpm typecheck && pnpm lint && pnpm test
-TWITCH_FIXTURES=1 pnpm build && pnpm start   # puis pnpm smoke
+bun run typecheck && bun run lint && bun run test
+TWITCH_FIXTURES=1 bun run build && bun run start   # puis bun run smoke
 ```
 
 La CI GitHub ajoute le smoke test et Lighthouse (budgets dans `lighthouserc.json`). En local : `/ci-local`.
