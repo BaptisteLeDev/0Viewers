@@ -1,12 +1,44 @@
-.hero { padding-block: var(--space-6) var(--space-4); }
-.hero h1 { margin: 0 0 var(--space-3); font-size: clamp(1.75rem, 7vw, 2.75rem); line-height: 1.1; text-wrap: balance; }
+.hero {
+  display: grid;
+  align-items: center;
+  min-height: min(82svh, 52rem);
+  padding-block: var(--space-6);
+  overflow-x: clip;
+  background:
+    radial-gradient(36rem 26rem at 10% 30%, rgba(24, 160, 251, 0.16), transparent 70%),
+    radial-gradient(40rem 30rem at 85% 50%, rgba(255, 88, 228, 0.2), transparent 70%);
+}
+.heroGrid { display: grid; gap: var(--space-5); align-items: center; }
+.hero h1 { margin: 0 0 var(--space-4); font-size: clamp(2.25rem, 8vw, 4rem); line-height: 1.05; text-wrap: balance; }
 .hero p { margin: 0; max-width: 34rem; font-size: var(--text-lg); color: var(--color-text-muted); }
-.ctas { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-4); }
+.ctas { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-5); }
 .ctas > * { white-space: nowrap; }
 .hero .empty { margin-top: var(--space-4); }
 
-.stack, .live { margin-block: var(--section-gap); }
-.stack { overflow-x: clip; }
-.stack h2, .live h2 { margin: 0 0 var(--space-3); font-size: var(--text-xl); }
-.live { display: grid; justify-items: start; gap: var(--space-4); }
+.stack { display: grid; justify-items: center; text-align: center; }
+.stack :global(ul) { width: min(26rem, 72vw); }
+.stack h2 {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-yellow);
+}
+.hero .hint { font-size: var(--text-sm); }
+
+.live { display: grid; justify-items: start; gap: var(--space-4); margin-block: var(--section-gap); }
+.live h2 { margin: 0 0 var(--space-3); font-size: var(--text-xl); }
 .live > :nth-child(2) { justify-self: stretch; }
+
+@media (hover: none) {
+  .hint { display: none; }
+}
+@media (min-width: 900px) {
+  .heroGrid { grid-template-columns: 1.1fr 1fr; }
+  .stack :global(ul) { --spread: 32%; }
+}
+@media (min-width: 1200px) {
+  .stack :global(ul) { --spread: 45%; }
+}

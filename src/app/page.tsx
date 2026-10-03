@@ -22,7 +22,23 @@ export default async function Home() {
   const categories = groupByCategory(streamers, boxArt);
   return (
     <>
-      <Reco streamers={streamers}>
+      <Reco
+        streamers={streamers}
+        featured={
+          <section className={styles.video} aria-labelledby="video-title">
+            <div className="container">
+              <p className={styles.kicker}>Pour les petits lives Twitch</p>
+              <h2 id="video-title"><span className="highlight">0Viewers</span> en 10 secondes</h2>
+              <div className={styles.frame}>
+                <video controls preload="none" playsInline poster="/video/0viewers.jpg" width={1920} height={1080}>
+                  <source src="/video/0viewers.mp4" type="video/mp4" />
+                  <track kind="captions" src="/video/0viewers.vtt" srcLang="fr" label="Français" default />
+                </video>
+              </div>
+            </div>
+          </section>
+        }
+      >
         <h1 id="hero-title">Découvre les streamers Twitch français à <span className="highlight">0 spectateur</span></h1>
         <p>Un clic pour lancer leur live, un mot dans le chat, et tu deviens leur premier spectateur.</p>
       </Reco>

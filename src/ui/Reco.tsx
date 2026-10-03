@@ -13,9 +13,9 @@ import styles from "./Reco.module.css";
 const STACK_SIZE = 5;
 const CAROUSEL_SIZE = 12;
 
-type Props = { streamers: Streamer0V[]; children: React.ReactNode };
+type Props = { streamers: Streamer0V[]; children: React.ReactNode; featured?: React.ReactNode };
 
-export function Reco({ streamers, children }: Props) {
+export function Reco({ streamers, children, featured }: Props) {
   const [picks, setPicks] = useState(() => streamers.slice(0, STACK_SIZE).map((_, i) => i));
   const [theater, setTheater] = useState<{ id: string } | null>(null);
 
@@ -33,20 +33,26 @@ export function Reco({ streamers, children }: Props) {
 
   return (
     <>
-      <section className={`container ${styles.hero}`} aria-labelledby="hero-title">
-        {children}
-        <div className={styles.ctas}>
-          {stack[0] && <button type="button" className="btn" onClick={() => openTheater(stack[0].id)}>Regarder maintenant</button>}
-          <Link href="/streamers" className="btn btn-ghost">{listLabel}</Link>
+      <section className={styles.hero} aria-labelledby="hero-title">
+        <div className={`container ${styles.heroGrid}`}>
+          <div className={styles.intro}>
+            {children}
+            <div className={styles.ctas}>
+              {stack[0] && <button type="button" className="btn" onClick={() => openTheater(stack[0].id)}>Regarder maintenant</button>}
+              <Link href="/streamers" className="btn btn-ghost">{listLabel}</Link>
+            </div>
+            {!stack[0] && <p className={styles.empty}>Aucun streamer français à 0 spectateur en ce moment. Repasse dans quelques minutes.</p>}
+          </div>
+          {stack.length > 0 && (
+            <div className={styles.stack}>
+              <h2>Cinq lives pris au hasard</h2>
+              <CardStack streamers={stack} onPick={openTheater} />
+              <p className={styles.hint} aria-hidden="true">Survole pour déplier, clique pour regarder</p>
+            </div>
+          )}
         </div>
-        {!stack[0] && <p className={styles.empty}>Aucun streamer français à 0 spectateur en ce moment. Repasse dans quelques minutes.</p>}
       </section>
-      {stack.length > 0 && (
-        <section className={`container ${styles.stack}`} aria-labelledby="stack-title">
-          <h2 id="stack-title">Cinq lives pris au hasard</h2>
-          <CardStack streamers={stack} onPick={openTheater} />
-        </section>
-      )}
+      {featured}
       {live.length > 0 && (
         <section className={`container ${styles.live}`} aria-labelledby="live-title">
           <h2 id="live-title">En direct maintenant</h2>

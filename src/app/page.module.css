@@ -19,10 +19,50 @@
 .categories > :nth-child(2) { justify-self: stretch; }
 .categories h2 { margin: 0; font-size: var(--text-xl); }
 
-.mission { margin-block: var(--section-gap); }
-.mission h2 { margin: 0 0 var(--space-4); font-size: var(--text-xl); }
-.mission p { max-width: 65ch; margin: 0 0 var(--space-4); line-height: 1.75; color: var(--color-text-muted); text-wrap: pretty; }
-
-@media (min-width: 1024px) {
-  .mission { padding-left: 20%; }
+.video {
+  display: grid;
+  place-items: center;
+  padding-block: var(--section-gap);
+  text-align: center;
+  background:
+    radial-gradient(40rem 28rem at 15% 20%, rgba(255, 88, 228, 0.22), transparent 70%),
+    radial-gradient(36rem 26rem at 85% 85%, rgba(24, 160, 251, 0.2), transparent 70%);
+  border-block: 1px solid var(--glass-border);
 }
+.video > div { display: grid; justify-items: center; gap: var(--space-4); }
+.kicker {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-yellow);
+}
+.video h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.75rem, 9vw, 5.5rem);
+  line-height: 0.95;
+  text-wrap: balance;
+}
+.frame {
+  width: 100%;
+  max-width: 64rem;
+  padding: 3px;
+  border-radius: calc(var(--radius-md) + 3px);
+  background: var(--gradient-brand);
+  box-shadow: var(--glow-pink), 0 24px 80px rgba(0, 0, 0, 0.6);
+}
+.frame video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+}
+
+.mission { margin-block: var(--section-gap); text-align: center; }
+.mission h2 { margin: 0 0 var(--space-4); font-size: var(--text-xl); }
+.mission p { max-width: 65ch; margin: 0 auto var(--space-4); line-height: 1.75; color: var(--color-text-muted); text-wrap: pretty; }
+
