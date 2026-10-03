@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { MAX_STREAMERS, selectStreams, toStreamer0V } from "@/decouverte/rule";
+import { MAX_STREAMERS, selectStreams, toStreamer0V, toStreamers0V } from "@/decouverte/rule";
 import type { HelixStream } from "@/decouverte/types";
 
 const now = new Date("2026-10-02T20:00:00Z");
@@ -62,9 +62,27 @@ describe("selectStreams", () => {
     expect(ids).toEqual(["b", "a"]);
   });
 
+  it("drops crypto by login, tag or category, ranks crypto titles last", () => {
+    const dropped = [
+      { ...stream("a", 0, 30), user_login: "btc_daily" },
+      { ...stream("b", 0, 30), tags: ["CryptoMonnaie"] },
+      { ...stream("c", 0, 30), game_name: "Crypto" },
+    ];
+    const kept = [{ ...stream("d", 0, 90), title: "Session TRADING du soir" }, stream("e", 4, 30)];
+    expect(selectStreams([...dropped, ...kept], now).map((s) => s.user_id)).toEqual(["e", "d"]);
+  });
+
   it("caps at MAX_STREAMERS", () => {
     const many = Array.from({ length: 150 }, (_, i) => stream(String(i), 0, 30 + i));
     expect(selectStreams(many, now)).toHaveLength(MAX_STREAMERS);
+  });
+});
+
+describe("toStreamers0V", () => {
+  it("drops channels whose bio talks crypto", () => {
+    const user = (id: string, description: string) => [id, { id, login: id, display_name: id, profile_image_url: "", description }] as const;
+    const users = new Map([user("a", "Je parle de Bitcoin et de BTC"), user("b", "Chill et jeux rétro")]);
+    expect(toStreamers0V([stream("a", 0, 30), stream("b", 0, 30)], users, new Map()).map((s) => s.id)).toEqual(["b"]);
   });
 });
 

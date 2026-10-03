@@ -15,6 +15,7 @@ export type HelixUser = {
   id: string;
   login: string;
   display_name: string;
+  description?: string;
   profile_image_url: string;
 };
 

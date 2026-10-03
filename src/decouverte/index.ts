@@ -2,7 +2,7 @@ import "server-only";
 import { cacheLife, cacheTag } from "next/cache";
 import { fixtureCategories, fixtureChannels, fixtureGames, fixtureStreams, fixtureUsers } from "./fixtures";
 import { slugifyCategory, type BoxArt } from "./categories";
-import { selectStreams, toStreamer0V } from "./rule";
+import { selectStreams, toStreamers0V } from "./rule";
 import { fetchAppToken, fetchChannels, fetchFrenchStreams, fetchGames, fetchUsers, searchHelixCategories } from "./twitch";
 import type { Category, HelixCategory, Streamer0V } from "./types";
 
@@ -21,7 +21,7 @@ async function crawl(): Promise<Omit<Crawl, "crawledAt">> {
     const ids = selected.map((s) => s.user_id);
     const [users, channels] = [fixtureUsers(ids), fixtureChannels(ids)];
     const gameIds = [...new Set(selected.map((s) => s.game_id))];
-    return { streamers: selected.map((s) => toStreamer0V(s, users.get(s.user_id), channels.get(s.user_id))), boxArt: toBoxArt(fixtureGames(gameIds)) };
+    return { streamers: toStreamers0V(selected, users, channels), boxArt: toBoxArt(fixtureGames(gameIds)) };
   }
   const token = await fetchAppToken();
   const selected = selectStreams(await fetchFrenchStreams(token), now);
@@ -30,7 +30,7 @@ async function crawl(): Promise<Omit<Crawl, "crawledAt">> {
   // box art is cosmetic: a /categories failure must not kill the crawl
   const categories = fetchGames(gameIds, token).catch((error) => (console.error(error), []));
   const [users, channels, boxArt] = await Promise.all([fetchUsers(ids, token), fetchChannels(ids, token), categories.then(toBoxArt)]);
-  return { streamers: selected.map((s) => toStreamer0V(s, users.get(s.user_id), channels.get(s.user_id))), boxArt };
+  return { streamers: toStreamers0V(selected, users, channels), boxArt };
 }
 
 // stale 60 = old page revalidate, revalidate 240 = old crawl window.
