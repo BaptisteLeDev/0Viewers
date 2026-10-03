@@ -62,10 +62,7 @@
   background: var(--color-bg);
 }
 
-.mission { margin-block: var(--section-gap); }
+.mission { margin-block: var(--section-gap); text-align: center; }
 .mission h2 { margin: 0 0 var(--space-4); font-size: var(--text-xl); }
-.mission p { max-width: 65ch; margin: 0 0 var(--space-4); line-height: 1.75; color: var(--color-text-muted); text-wrap: pretty; }
+.mission p { max-width: 65ch; margin: 0 auto var(--space-4); line-height: 1.75; color: var(--color-text-muted); text-wrap: pretty; }
 
-@media (min-width: 1024px) {
-  .mission { padding-left: 20%; }
-}
