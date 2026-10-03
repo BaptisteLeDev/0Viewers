@@ -37,6 +37,11 @@ export default function Algo() {
         Le pseudo est traité avec plus de souplesse : un streamer dont le pseudo contient un de ces mots (par
         exemple « MaxTV ») reste affiché, mais en fin de liste.
       </p>
+      <p>
+        Même idée pour le trading et les cryptos (<em>trading</em>, <em>crypto</em>, <em>BTC</em>) : une chaîne qui
+        en parle dans son pseudo, sa bio, ses tags ou sa catégorie est écartée. Si le mot n&apos;apparaît que dans
+        le titre du live, le streamer reste affiché, en fin de liste.
+      </p>
 
       <h2>Le reste</h2>
       <p>

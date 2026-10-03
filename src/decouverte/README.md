@@ -19,6 +19,7 @@ Contexte qui trouve les streamers Twitch français en live devant (presque) pers
 - En live depuis plus de `MIN_LIVE_MINUTES = 10` minutes.
 - Exclus : streams dont le titre ou la catégorie contient le mot `radio`, `tv`, `france` ou `ville` (mot entier, camelCase découpé : `FranceTV` exclu, `souffrance` gardé), ou dont un tag contient ces mots, `oldies`, `annee70` ou `annee80` (sous-chaîne, accents ignorés : `webradio`, `Années80`).
 - Un pseudo (login) contenant un de ces mots n'exclut pas : le streamer passe en fin de liste.
+- Crypto (`trading`, `crypto`, `btc`) : exclu si dans le pseudo, un tag, la catégorie ou la bio de la chaîne (`/users`), en fin de liste si seulement dans le titre. La bio arrive après la coupe à 150 : la liste peut finir un peu en dessous.
 - Tri par viewers croissants, puis par `started_at` croissant.
 - Au plus `MAX_STREAMERS = 150` résultats (`/users` et `/channels` découpés en lots de 100 ids, plafond Helix).
 - `mature` vaut `true` si la chaîne a au moins un label de classification de contenu (CCL).
