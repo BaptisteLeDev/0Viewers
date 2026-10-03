@@ -22,13 +22,12 @@
 .video {
   display: grid;
   place-items: center;
-  min-height: min(92svh, 64rem);
-  padding-block: var(--space-6);
+  padding-block: var(--section-gap);
   text-align: center;
   background:
     radial-gradient(40rem 28rem at 15% 20%, rgba(255, 88, 228, 0.22), transparent 70%),
     radial-gradient(36rem 26rem at 85% 85%, rgba(24, 160, 251, 0.2), transparent 70%);
-  border-bottom: 1px solid var(--glass-border);
+  border-block: 1px solid var(--glass-border);
 }
 .video > div { display: grid; justify-items: center; gap: var(--space-4); }
 .kicker {
