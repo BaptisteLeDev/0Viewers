@@ -15,9 +15,10 @@ export const metadata: Metadata = {
 };
 
 const plural = (n: number, word: string) => `${word}${n > 1 ? "s" : ""}`;
+const fr = (n: number) => n.toLocaleString("fr-FR");
 
 export default async function Home() {
-  const { streamers, boxArt } = await getCrawl();
+  const { streamers, boxArt, liveCount, zeroCount } = await getCrawl();
   const zeros = streamers.filter((s) => s.viewerCount === 0).length;
   const categories = groupByCategory(streamers, boxArt);
   return (
@@ -39,8 +40,17 @@ export default async function Home() {
           </section>
         }
       >
-        <h1 id="hero-title">Découvre les streamers Twitch français à <span className="highlight">0 spectateur</span></h1>
-        <p>Un clic pour lancer leur live, un mot dans le chat, et tu deviens leur premier spectateur.</p>
+        {/* one fragment: an array of RSC children trips the key warning */}
+        <>
+          <h1 id="hero-title">Découvre les streamers Twitch français à <span className="highlight">0 spectateur</span></h1>
+          <p>Un clic pour lancer leur live, un mot dans le chat, et tu deviens leur premier spectateur.</p>
+          {liveCount > 0 && (
+            <p className={styles.count}>
+              En ce moment, <strong>{fr(zeroCount)}</strong> {plural(zeroCount, "live")} sur <strong>{fr(liveCount)}</strong> en français
+              {zeroCount > 1 ? " sont" : " est"} à 0 spectateur ({Math.round((zeroCount / liveCount) * 100)} %).
+            </p>
+          )}
+        </>
       </Reco>
       <section className={`container ${styles.mission}`} aria-labelledby="mission-title">
         <h2 id="mission-title">Pourquoi un premier spectateur compte</h2>
@@ -73,7 +83,8 @@ export default async function Home() {
           <h2 id="stats-title" className="visually-hidden">En chiffres</h2>
           <p>
             En ce moment, <strong>{zeros}</strong> {plural(zeros, "streamer")} français {zeros > 1 ? "sont" : "est"} en live devant 0 spectateur,
-            sur <strong>{streamers.length}</strong> {plural(streamers.length, "live")} à {MAX_VIEWERS} spectateurs ou moins.
+            sur <strong>{streamers.length}</strong> {plural(streamers.length, "live")} à {MAX_VIEWERS} spectateurs ou moins
+            et <strong>{fr(liveCount)}</strong> {plural(liveCount, "live")} en français au total.
           </p>
         </div>
       </section>

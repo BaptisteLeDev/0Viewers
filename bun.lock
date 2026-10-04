@@ -5,6 +5,7 @@
     "": {
       "name": "0viewers",
       "dependencies": {
+        "@neondatabase/serverless": "^1.2.0",
         "next": "^16.3.8",
         "react": "^19.3.0",
         "react-dom": "^19.3.0",
@@ -168,6 +169,8 @@
     "@lhci/utils": ["@lhci/utils@0.15.1", "", { "dependencies": { "debug": "4.4.3", "isomorphic-fetch": "3.0.0", "js-yaml": "3.15.2", "lighthouse": "12.6.1", "tree-kill": "1.2.2" } }, "sha512-WclJnUQJeOMY271JSuaOjCv/aA0pgvuHZS29NFNdIeI14id8eiFsjith85EGKYhljgoQhJ2SiW4PsVfFiakNNw=="],
 
     "@napi-rs/wasm-runtime": ["@napi-rs/wasm-runtime@1.2.4", "", { "dependencies": { "@tybys/wasm-util": "0.10.4" }, "peerDependencies": { "@emnapi/core": "1.10.0", "@emnapi/runtime": "1.10.0" } }, "sha512-AJxoUD2/15ESHbvpcyjU274nsAPLuOtPHCk0vKJM5pj//Fg/B1FXNWjPnXTT9PymCYYiHo4zPj0ZomXBKhoy7g=="],
+
+    "@neondatabase/serverless": ["@neondatabase/serverless@1.2.0", "", {}, "sha512-tnaqgixUengZQNd9ZrS3ytQfamJzLKY8QxgqWQTNHHtB+KrFQWk77JTbbpg4RD+J3qE4eO2lVytvGDX5Kj6FdQ=="],
 
     "@next/env": ["@next/env@16.3.8", "", {}, "sha512-Al9zqHVV7TJv0eFuOU4U7Lvv74PTih4Ch63sk2xCIpSTkE3udFnaOcnzP2lQVymiL7yS9Cj2iClUXlR3EQ5sEw=="],
 

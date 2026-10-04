@@ -55,5 +55,6 @@
   .theater[open] { animation: theater-in var(--duration) ease-out; }
   .theater[open]::backdrop { animation: backdrop-in var(--duration) ease-out; }
 }
-@keyframes theater-in { from { opacity: 0; transform: translateY(1rem) scale(0.98); } }
+/* no opacity: Twitch drops autoplay if the player loads invisible */
+@keyframes theater-in { from { transform: translateY(1rem) scale(0.98); } }
 @keyframes backdrop-in { from { opacity: 0; } }

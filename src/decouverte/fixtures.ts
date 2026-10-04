@@ -23,7 +23,7 @@ export function fixtureUsers(ids: string[]): Map<string, HelixUser> {
 }
 
 export function fixtureChannels(ids: string[]): Map<string, HelixChannel> {
-  return new Map(ids.map((id, i) => [id, { broadcaster_id: id, content_classification_labels: i % 3 === 2 ? ["MatureGame"] : [] }]));
+  return new Map(ids.map((id, i) => [id, { broadcaster_id: id, content_classification_labels: i === 4 ? ["Gambling"] : i % 3 === 2 ? ["MatureGame"] : [] }]));
 }
 
 export function fixtureGames(ids: string[]): HelixCategory[] {

@@ -38,3 +38,9 @@ export type Streamer0V = {
   profileImageUrl: string;
   mature: boolean;
 };
+
+export type SetAsideReason = "media" | "crypto" | "gambling" | "signalements";
+
+export type SetAsideStream = Pick<Streamer0V, "id" | "login" | "displayName" | "title" | "categoryName" | "viewerCount"> & { reason: SetAsideReason };
+
+export type LivePoint = { at: number; lives: number };
