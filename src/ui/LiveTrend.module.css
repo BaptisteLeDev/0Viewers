@@ -1,0 +1,9 @@
+.figure { margin: var(--space-4) 0; }
+.chart { display: block; width: 100%; height: auto; touch-action: pan-y; }
+.grid { stroke: var(--color-border-strong); stroke-width: 1; stroke-dasharray: 2 4; }
+.axis { fill: var(--color-text-muted); font-size: 12px; }
+.line { fill: none; stroke: var(--color-pink); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.crosshair { stroke: var(--color-text-muted); stroke-width: 1; }
+.dot { fill: var(--color-pink); stroke: var(--color-bg); stroke-width: 2; }
+.tooltip { min-height: 1.5em; color: var(--color-text-muted); font-size: var(--text-sm); }
+.tooltip strong { color: var(--color-text); }

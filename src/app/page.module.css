@@ -66,3 +66,6 @@
 .mission h2 { margin: 0 0 var(--space-4); font-size: var(--text-xl); }
 .mission p { max-width: 65ch; margin: 0 auto var(--space-4); line-height: 1.75; color: var(--color-text-muted); text-wrap: pretty; }
 
+
+.count { color: var(--color-text-muted); }
+.count strong { color: var(--color-text); font-variant-numeric: tabular-nums; }
