@@ -1,0 +1,23 @@
+.form {
+  display: grid;
+  gap: 0.5rem;
+  max-width: 40rem;
+}
+
+.form select,
+.form textarea {
+  font: inherit;
+  padding: 0.5rem;
+  border: 1px solid currentColor;
+  border-radius: 0.5rem;
+  background: transparent;
+  color: inherit;
+}
+
+.form button {
+  justify-self: start;
+}
+
+.error {
+  color: #ff6b6b;
+}

@@ -10,6 +10,8 @@ export function Footer() {
       <p>0Viewers n&apos;est pas affilié à Twitch.</p>
       <ul className={styles.links}>
         <li><Link href="/algo">Algo</Link></li>
+        <li><Link href="/stats">Stats</Link></li>
+        <li><Link href="/suggestions">Boîte à idées</Link></li>
         <li><Link href="/mentions-legales">Mentions légales et confidentialité</Link></li>
         <li><Link href="/credits">Crédits</Link></li>
         <li><a href={REPO_URL} rel="noopener">Code source</a></li>
