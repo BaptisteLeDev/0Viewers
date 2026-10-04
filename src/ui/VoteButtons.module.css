@@ -1,0 +1,12 @@
+.votes { display: flex; align-items: center; gap: var(--space-1); }
+.vote {
+  display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px;
+  border: 0; border-radius: var(--radius-full); background: none; color: var(--color-text-muted);
+  cursor: pointer; transition: color var(--duration), background var(--duration);
+}
+.vote:hover { background: rgba(255, 255, 255, 0.08); color: var(--color-pink); }
+.vote[aria-pressed="true"] { color: var(--color-pink); }
+.flag:hover, .flag[aria-pressed="true"] { color: var(--color-yellow); }
+.vote:disabled { cursor: wait; }
+.error { font-size: var(--text-xs); color: var(--color-yellow); }
+.error:empty { display: none; }

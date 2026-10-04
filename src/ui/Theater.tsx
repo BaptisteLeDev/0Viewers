@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react"
 import type { Streamer0V } from "@/decouverte/types";
 import { twitchChannelUrl, twitchChatSrc, twitchPlayerSrc } from "./player";
 import { viewerLabel } from "./search";
+import { VoteButtons } from "./VoteButtons";
 import styles from "./Theater.module.css";
 
 const WIDE = "(min-width: 1024px)";
@@ -77,6 +78,7 @@ export function Theater({ streamer, onClose, onNext }: Props) {
             <iframe key={`chat-${streamer.id}`} className={styles.chat} src={twitchChatSrc(streamer.login, host)} title={`Chat de ${streamer.displayName}`} />
           )}
           <footer className={styles.foot}>
+            <VoteButtons broadcasterId={streamer.id} name={streamer.displayName} />
             <a className="btn btn-ghost" href={twitchChannelUrl(streamer.login)} target="_blank" rel="noopener noreferrer">
               Ouvrir sur Twitch<span className="visually-hidden"> (nouvel onglet)</span>
             </a>

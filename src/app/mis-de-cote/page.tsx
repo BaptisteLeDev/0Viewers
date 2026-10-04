@@ -16,6 +16,7 @@ const REASONS: Record<SetAsideReason, string> = {
   media: "Radio, TV, diffusion automatique",
   crypto: "Trading, crypto",
   gambling: "Paris (jeux d'argent)",
+  signalements: "Signalé par la communauté (10 signalements ou plus)",
 };
 
 export default async function SetAsidePage() {

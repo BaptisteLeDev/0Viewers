@@ -3,8 +3,9 @@ import { cacheLife, cacheTag } from "next/cache";
 import { fixtureCategories, fixtureChannels, fixtureGames, fixtureStreams, fixtureUsers } from "./fixtures";
 import { slugifyCategory, type BoxArt } from "./categories";
 import { saveLiveCount } from "./live-count";
-import { selectStreams, toStreamers0V } from "./rule";
+import { selectStreams, toSetAside, toStreamers0V } from "./rule";
 import { fetchAppToken, fetchChannels, fetchFrenchStreams, fetchGames, fetchUsers, searchHelixCategories } from "./twitch";
+import { getHiddenBroadcasters } from "@/vote";
 import type { Category, HelixCategory, HelixStream, SetAsideStream, Streamer0V } from "./types";
 
 export type { Category, LivePoint, SetAsideReason, SetAsideStream, Streamer0V } from "./types";
@@ -45,13 +46,22 @@ async function crawl(): Promise<Omit<Crawl, "crawledAt">> {
 
 // Full crawl: ~100 Helix pages, every 4 min. Not less: each page
 // re-renders at this pace (Vercel Hobby: 4 CPU-h). Throw never cached.
-export async function getCrawl(): Promise<Crawl> {
+async function cachedCrawl(): Promise<Crawl> {
   "use cache";
   cacheLife({ stale: 60, revalidate: 240, expire: 3600 });
   cacheTag("streams");
   const full = { ...(await crawl()), crawledAt: Date.now() };
   await saveLiveCount(full.liveCount, full.crawledAt);
   return full;
+}
+
+// Outside the crawl cache: a vote busting "hidden" must not re-crawl Twitch.
+export async function getCrawl(): Promise<Crawl> {
+  const [crawl, hidden] = await Promise.all([cachedCrawl(), getHiddenBroadcasters()]);
+  if (hidden.length === 0) return crawl;
+  const ids = new Set(hidden);
+  const flagged = crawl.streamers.filter((s) => ids.has(s.id)).map((s) => toSetAside(s, "signalements"));
+  return { ...crawl, streamers: crawl.streamers.filter((s) => !ids.has(s.id)), setAside: [...crawl.setAside, ...flagged] };
 }
 
 export async function getZeroViewersStreamers(): Promise<Streamer0V[]> {

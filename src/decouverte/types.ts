@@ -39,7 +39,7 @@ export type Streamer0V = {
   mature: boolean;
 };
 
-export type SetAsideReason = "media" | "crypto" | "gambling";
+export type SetAsideReason = "media" | "crypto" | "gambling" | "signalements";
 
 export type SetAsideStream = Pick<Streamer0V, "id" | "login" | "displayName" | "title" | "categoryName" | "viewerCount"> & { reason: SetAsideReason };
 
