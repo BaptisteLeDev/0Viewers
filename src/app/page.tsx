@@ -40,14 +40,17 @@ export default async function Home() {
           </section>
         }
       >
-        <h1 id="hero-title">Découvre les streamers Twitch français à <span className="highlight">0 spectateur</span></h1>
-        <p>Un clic pour lancer leur live, un mot dans le chat, et tu deviens leur premier spectateur.</p>
-        {liveCount > 0 && (
-          <p className={styles.count}>
-            En ce moment, <strong>{fr(zeroCount)}</strong> {plural(zeroCount, "live")} sur <strong>{fr(liveCount)}</strong> en français
-            {zeroCount > 1 ? " sont" : " est"} à 0 spectateur ({Math.round((zeroCount / liveCount) * 100)} %).
-          </p>
-        )}
+        {/* one fragment: an array of RSC children trips the key warning */}
+        <>
+          <h1 id="hero-title">Découvre les streamers Twitch français à <span className="highlight">0 spectateur</span></h1>
+          <p>Un clic pour lancer leur live, un mot dans le chat, et tu deviens leur premier spectateur.</p>
+          {liveCount > 0 && (
+            <p className={styles.count}>
+              En ce moment, <strong>{fr(zeroCount)}</strong> {plural(zeroCount, "live")} sur <strong>{fr(liveCount)}</strong> en français
+              {zeroCount > 1 ? " sont" : " est"} à 0 spectateur ({Math.round((zeroCount / liveCount) * 100)} %).
+            </p>
+          )}
+        </>
       </Reco>
       <section className={`container ${styles.mission}`} aria-labelledby="mission-title">
         <h2 id="mission-title">Pourquoi un premier spectateur compte</h2>
