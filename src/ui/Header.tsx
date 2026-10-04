@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Account } from "./Account";
 import styles from "./Header.module.css";
 
 const LINKS = [
@@ -28,6 +29,7 @@ export function Header() {
             </li>
           ))}
         </ul>
+        <Account />
       </nav>
     </header>
   );
