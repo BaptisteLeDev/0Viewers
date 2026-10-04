@@ -11,7 +11,7 @@ function expectIn(path, body, needle) {
   if (!body.includes(needle)) failures.push(`${path} missing ${needle}`);
 }
 
-const PAGES = ["/", "/streamers", "/categories", "/categories/minecraft", "/mentions-legales", "/credits"];
+const PAGES = ["/", "/streamers", "/categories", "/categories/minecraft", "/algo", "/mentions-legales", "/credits"];
 
 for (const path of PAGES) {
   const html = await get(path);
