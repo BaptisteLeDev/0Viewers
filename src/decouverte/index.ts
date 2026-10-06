@@ -1,7 +1,7 @@
 import "server-only";
 import { cacheLife, cacheTag } from "next/cache";
 import { fixtureCategories, fixtureChannels, fixtureGames, fixtureStreams, fixtureUsers } from "./fixtures";
-import { slugifyCategory, type BoxArt } from "./categories";
+import { groupByCategory, slugifyCategory, type BoxArt, type LiveCategory } from "./categories";
 import { saveLiveCount } from "./live-count";
 import { selectStreams, toSetAside, toStreamers0V } from "./rule";
 import { fetchAppToken, fetchChannels, fetchFrenchStreams, fetchGames, fetchUsers, searchHelixCategories } from "./twitch";
@@ -83,6 +83,14 @@ export type LiveCrawl = Omit<Crawl, "setAside">;
 export async function getLiveCrawl(): Promise<LiveCrawl> {
   const { streamers, boxArt, liveCount, zeroCount, crawledAt } = await getCrawl();
   return { streamers, boxArt, liveCount, zeroCount, crawledAt };
+}
+
+// One write a day for pages that only need the category names (llms.txt,
+// ItemList JSON-LD): explicit outer cacheLife beats the crawl's 15 min.
+export async function getDailyCategories(): Promise<LiveCategory[]> {
+  "use cache";
+  cacheLife("days");
+  return groupByCategory((await getCrawl()).streamers);
 }
 
 export async function getZeroViewersStreamers(): Promise<Streamer0V[]> {

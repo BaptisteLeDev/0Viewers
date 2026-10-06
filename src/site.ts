@@ -3,6 +3,9 @@ export const SITE_DESCRIPTION =
   "Découvre les streamers Twitch français en live à 0 viewer et deviens leur premier spectateur.";
 export const PUBLIC_PATHS = ["/", "/streamers", "/categories", "/algo", "/stats", "/mentions-legales", "/credits"] as const;
 
+// Listed on purpose: AI search and training crawlers are welcome (issue #16).
+export const AI_CRAWLERS = ["GPTBot", "OAI-SearchBot", "ChatGPT-User", "ClaudeBot", "Claude-SearchBot", "Claude-User", "PerplexityBot", "Google-Extended", "Applebot-Extended", "CCBot"] as const;
+
 export function siteUrl(): string {
   const explicit = process.env.NEXT_PUBLIC_SITE_URL;
   if (explicit) return explicit.replace(/\/+$/, "");
