@@ -9,6 +9,6 @@ export default function Image() {
     eyebrow: "Sois le premier spectateur",
     title: "Découvre les streamers Twitch français à 0 spectateur",
     highlight: "0 spectateur",
-    subtitle: "Lives FR mis à jour toutes les 5 minutes",
+    subtitle: "Lives FR mis à jour toutes les 15 minutes",
   });
 }

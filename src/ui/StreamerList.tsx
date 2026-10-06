@@ -2,16 +2,18 @@
 
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useId, useMemo, useRef, useState } from "react";
-import { groupByCategory } from "@/decouverte/categories";
+import { groupByCategory, slugifyCategory } from "@/decouverte/categories";
 import type { Streamer0V } from "@/decouverte/types";
 import { DEFAULT_FILTERS, activeCount, applyFilters, parseFilters, toSearch, type Filters } from "./filters";
 import { Combobox } from "./Combobox";
 import { StreamerCard } from "./StreamerCard";
 import { nextIndex } from "./random";
 import { Theater } from "./Theater";
+import { useCrawl } from "./useCrawl";
 import styles from "./StreamerList.module.css";
 
 type Props = { streamers: Streamer0V[]; renderedAt: number; categoryPage?: boolean };
+type LiveProps = { category?: string; empty: React.ReactNode };
 
 const VIEWER_CHOICES: [Filters["viewers"], string][] = [["", "Tous"], ["0", "0"], ["1-2", "1 à 2"], ["3-5", "3 à 5"]];
 const DURATION_CHOICES: [Filters["duration"], string][] = [["", "Toutes"], ["moins-1h", "Moins d'1 h"], ["1-3h", "1 à 3 h"], ["plus-3h", "Plus de 3 h"]];
@@ -25,9 +27,14 @@ const NO_PARAMS = new URLSearchParams();
 const FIRST_PAGE = 10;
 const PAGE = 25;
 
-// useSearchParams bails out of prerender up to the nearest Suspense:
-// the fallback keeps the full default list in the static HTML for SEO.
-export function StreamerList(props: Props) {
+// category: slug, keeps only its lives
+export function StreamerList({ category, empty }: LiveProps) {
+  const { crawl, failed } = useCrawl();
+  if (failed) return <p>Liste indisponible pour l&apos;instant. Recharge la page dans un moment.</p>;
+  if (!crawl) return <p aria-busy="true" className={styles.loading}>Chargement des lives…</p>;
+  const streamers = category ? crawl.streamers.filter((s) => slugifyCategory(s.categoryName) === category) : crawl.streamers;
+  if (streamers.length === 0) return empty;
+  const props = { streamers, renderedAt: crawl.crawledAt, categoryPage: Boolean(category) };
   return (
     <Suspense fallback={<FilterableList {...props} params={NO_PARAMS} />}>
       <UrlStreamerList {...props} />

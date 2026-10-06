@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
+import { Suspense } from "react";
 import { getCrawl, type SetAsideReason } from "@/decouverte";
 import { twitchChannelUrl } from "@/ui/player";
 import { viewerLabel } from "@/ui/search";
@@ -19,11 +21,23 @@ const REASONS: Record<SetAsideReason, string> = {
   signalements: "Signalé par la communauté (10 signalements ou plus)",
 };
 
-export default async function SetAsidePage() {
-  const { setAside } = await getCrawl();
+// Rare, noindex: rendered per request, no ISR entry rewritten every crawl.
+export default function SetAsidePage() {
   return (
     <article className="container">
       <h1>Streams mis de côté</h1>
+      <Suspense fallback={<p>Chargement…</p>}>
+        <SetAside />
+      </Suspense>
+    </article>
+  );
+}
+
+async function SetAside() {
+  await connection();
+  const { setAside } = await getCrawl();
+  return (
+    <>
       <p>Lives qui remplissent les critères de viewers et de durée, mais que l&apos;algo écarte. {setAside.length} en ce moment.</p>
       {(Object.keys(REASONS) as SetAsideReason[]).map((reason) => {
         const streams = setAside.filter((s) => s.reason === reason);
@@ -42,6 +56,6 @@ export default async function SetAsidePage() {
           </section>
         );
       })}
-    </article>
+    </>
   );
 }

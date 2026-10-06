@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
-import { MAX_VIEWERS, getCrawl, groupByCategory } from "@/decouverte";
+import { MAX_VIEWERS } from "@/decouverte";
 import { CategorySearch } from "@/ui/CategorySearch";
-import { CategoryLinks } from "@/ui/CategoryLinks";
+import { LiveCategoryLinks } from "@/ui/CategoryLinks";
 import styles from "./categories.module.css";
-
-export const maxDuration = 60;
 
 export const metadata: Metadata = {
   title: "Catégories en direct avec des petits streamers FR",
@@ -12,9 +10,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/categories" },
 };
 
-export default async function CategoriesPage() {
-  const { streamers, boxArt } = await getCrawl();
-  const categories = groupByCategory(streamers, boxArt);
+export default function CategoriesPage() {
   return (
     <section className={`container ${styles.page}`} aria-labelledby="categories-title">
       <h1 id="categories-title">Catégories en direct avec des <span className="highlight">petits streamers FR</span></h1>
@@ -23,9 +19,9 @@ export default async function CategoriesPage() {
         Choisis une catégorie pour voir qui la streame.
       </p>
       <div className={styles.search}>
-        <CategorySearch live={Object.fromEntries(categories.map((g) => [g.slug, g.count]))} />
+        <CategorySearch />
       </div>
-      {categories.length > 0 ? <CategoryLinks categories={categories} /> : <p>Aucune catégorie en direct pour l&apos;instant. Repasse dans quelques minutes.</p>}
+      <LiveCategoryLinks empty={<p>Aucune catégorie en direct pour l&apos;instant. Repasse dans quelques minutes.</p>} />
     </section>
   );
 }

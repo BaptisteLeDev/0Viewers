@@ -2,24 +2,25 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import type { Streamer0V } from "@/decouverte/types";
 import { CardStack } from "./CardStack";
 import { nextIndex, sample } from "./random";
 import { StreamerCard } from "./StreamerCard";
 import { Theater } from "./Theater";
+import { useCrawl } from "./useCrawl";
 import styles from "./Reco.module.css";
 
 const STACK_SIZE = 5;
 const CAROUSEL_SIZE = 12;
 
-type Props = { streamers: Streamer0V[]; children: React.ReactNode; featured?: React.ReactNode };
+type Props = { children: React.ReactNode; featured?: React.ReactNode };
 
-export function Reco({ streamers, children, featured }: Props) {
+export function Reco({ children, featured }: Props) {
+  const { crawl, failed } = useCrawl();
+  const streamers = crawl?.streamers ?? [];
   const [picks, setPicks] = useState(() => streamers.slice(0, STACK_SIZE).map((_, i) => i));
   const [theater, setTheater] = useState<{ id: string } | null>(null);
 
   useEffect(() => {
-    // random pick after hydration keeps ISR HTML identical for everyone
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setPicks(sample(streamers.length, STACK_SIZE));
   }, [streamers.length]);
@@ -40,9 +41,10 @@ export function Reco({ streamers, children, featured }: Props) {
               {stack[0] && <button type="button" className="btn" onClick={() => openTheater(stack[0].id)}>Regarder maintenant</button>}
               <Link href="/streamers" className="btn btn-ghost">{listLabel}</Link>
             </div>
-            {!stack[0] && <p className={styles.empty}>Aucun streamer français à 0 spectateur en ce moment. Repasse dans quelques minutes.</p>}
+            {crawl && !stack[0] && <p className={styles.empty}>Aucun streamer français à 0 spectateur en ce moment. Repasse dans quelques minutes.</p>}
+            {failed && <p className={styles.empty}>Liste indisponible pour l&apos;instant. Recharge la page dans un moment.</p>}
           </div>
-          {stack.length > 0 && (
+          {(!crawl || stack.length > 0) && (
             <div className={styles.stack}>
               <h2>Cinq lives pris au hasard</h2>
               <CardStack streamers={stack} onPick={openTheater} />

@@ -38,17 +38,31 @@ async function crawl(): Promise<Omit<Crawl, "crawledAt">> {
   const selected = selectStreams(streams, now);
   const ids = selected.kept.map((s) => s.user_id);
   const gameIds = [...new Set(selected.kept.map((s) => s.game_id).filter(Boolean))];
-  // box art is cosmetic: a /categories failure must not kill the crawl
-  const categories = fetchGames(gameIds, token).catch((error) => (console.error(error), []));
-  const [users, channels, boxArt] = await Promise.all([fetchUsers(ids, token), fetchChannels(ids, token), categories.then(toBoxArt)]);
+  const [users, channels, boxArt] = await Promise.all([fetchUsers(ids, token), fetchChannels(ids, token), knownBoxArt(gameIds, token)]);
   return merge(selected, toStreamers0V(selected.kept, users, channels), boxArt, streams);
 }
 
-// Full crawl: ~100 Helix pages, every 4 min. Not less: each page
-// re-renders at this pace (Vercel Hobby: 4 CPU-h). Throw never cached.
+// Box art never changes per game: only unseen ids hit /games.
+// ponytail: per-instance memory, unbounded (FR games seen stay ~thousands)
+const boxArtSeen: BoxArt = {};
+
+async function knownBoxArt(gameIds: string[], token: string): Promise<BoxArt> {
+  const missing = gameIds.filter((id) => !(id in boxArtSeen));
+  if (missing.length > 0) {
+    // box art is cosmetic: a /games failure must not kill the crawl
+    const fetched = await fetchGames(missing, token).catch((error) => (console.error(error), []));
+    Object.assign(boxArtSeen, toBoxArt(fetched));
+  }
+  return Object.fromEntries(gameIds.filter((id) => id in boxArtSeen).map((id) => [id, boxArtSeen[id]]));
+}
+
+// Full crawl: ~100 Helix pages. Same 15 min as the /api/crawl CDN cache:
+// Hobby quota (4 CPU-h). Throw never cached. ADR 0002.
+export const CRAWL_SECONDS = 900;
+
 async function cachedCrawl(): Promise<Crawl> {
   "use cache";
-  cacheLife({ stale: 60, revalidate: 240, expire: 3600 });
+  cacheLife({ stale: 60, revalidate: CRAWL_SECONDS, expire: 3600 });
   cacheTag("streams");
   const full = { ...(await crawl()), crawledAt: Date.now() };
   await saveLiveCount(full.liveCount, full.crawledAt);
@@ -62,6 +76,13 @@ export async function getCrawl(): Promise<Crawl> {
   const ids = new Set(hidden);
   const flagged = crawl.streamers.filter((s) => ids.has(s.id)).map((s) => toSetAside(s, "signalements"));
   return { ...crawl, streamers: crawl.streamers.filter((s) => !ids.has(s.id)), setAside: [...crawl.setAside, ...flagged] };
+}
+
+export type LiveCrawl = Omit<Crawl, "setAside">;
+
+export async function getLiveCrawl(): Promise<LiveCrawl> {
+  const { streamers, boxArt, liveCount, zeroCount, crawledAt } = await getCrawl();
+  return { streamers, boxArt, liveCount, zeroCount, crawledAt };
 }
 
 export async function getZeroViewersStreamers(): Promise<Streamer0V[]> {
@@ -79,4 +100,13 @@ export async function searchCategories(query: string): Promise<Category[]> {
   cacheLife("days");
   const found = process.env.TWITCH_FIXTURES === "1" ? fixtureCategories(query) : await searchHelixCategories(query, await fetchAppToken());
   return found.map(toCategory).filter((c) => c.slug);
+}
+
+// Twitch search is fuzzy: slug words as query, exact slug match only.
+// Names never change, hence weeks; a throw is not cached.
+export async function findCategory(slug: string): Promise<Category | null> {
+  "use cache";
+  cacheLife("weeks");
+  const found = await searchCategories(slug.replace(/-/g, " "));
+  return found.find((c) => c.slug === slug) ?? null;
 }

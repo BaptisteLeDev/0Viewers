@@ -23,8 +23,9 @@ for (const path of PAGES) {
 
 const sitemap = await get("/sitemap.xml");
 const urls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) => new URL(m[1]).pathname);
-for (const path of PAGES) if (!urls.includes(path)) failures.push(`sitemap missing ${path}`);
-const strays = urls.filter((u) => !PAGES.includes(u) && !/^\/categories\/[a-z0-9-]+$/.test(u));
+const STATIC_PAGES = PAGES.filter((p) => !p.startsWith("/categories/"));
+for (const path of STATIC_PAGES) if (!urls.includes(path)) failures.push(`sitemap missing ${path}`);
+const strays = urls.filter((u) => !STATIC_PAGES.includes(u));
 if (strays.length) failures.push(`sitemap unexpected ${strays}`);
 
 const empty = "/categories/aucun-live-ici";

@@ -1,17 +1,25 @@
+import { cacheLife } from "next/cache";
 import { MAX_VIEWERS, MIN_LIVE_MINUTES, getCrawl, groupByCategory } from "@/decouverte";
 import { SITE_DESCRIPTION, SITE_NAME, siteUrl } from "@/site";
 
-export async function GET() {
-  const url = siteUrl();
+// Explicit outer cacheLife beats the crawl's 15 min: one write a day.
+async function liveCategories(url: string) {
+  "use cache";
+  cacheLife("days");
   const { streamers } = await getCrawl();
-  const categories = groupByCategory(streamers)
+  return groupByCategory(streamers)
     .map((g) => `- [${g.name}](${url}/categories/${g.slug}): ${g.count} ${g.count > 1 ? "lives FR" : "live FR"} à ${MAX_VIEWERS} spectateurs ou moins`)
     .join("\n");
+}
+
+export async function GET() {
+  const url = siteUrl();
+  const categories = await liveCategories(url);
   const body = `# ${SITE_NAME}
 
 > ${SITE_DESCRIPTION}
 
-${SITE_NAME} liste les lives Twitch en français, lancés depuis plus de ${MIN_LIVE_MINUTES} minutes et qui comptent ${MAX_VIEWERS} spectateurs ou moins, en commençant par ceux à 0. Liste mise à jour toutes les 5 minutes. Gratuit, sans compte.
+${SITE_NAME} liste les lives Twitch en français, lancés depuis plus de ${MIN_LIVE_MINUTES} minutes et qui comptent ${MAX_VIEWERS} spectateurs ou moins, en commençant par ceux à 0. Liste mise à jour toutes les 15 minutes. Gratuit, sans compte.
 
 ## Pages
 
