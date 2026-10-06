@@ -5,8 +5,8 @@ import { LiveCategories, LiveCount, LiveStats } from "./live";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
-  title: { absolute: "Streamers Twitch français à 0 spectateur en live | 0Viewers" },
-  description: "Découvre des streamers Twitch français en live devant 0 spectateur et deviens leur premier viewer. Gratuit, sans compte, mis à jour toutes les 15 minutes.",
+  title: { absolute: "Petit streamer Twitch FR : lives à 0 viewer en direct | 0Viewers" },
+  description: "Découvre un petit streamer Twitch français en live devant 0 spectateur et deviens son premier viewer. Gratuit, sans compte, mis à jour toutes les 15 minutes.",
   alternates: { canonical: "/" },
 };
 

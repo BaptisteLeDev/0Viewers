@@ -1,0 +1,5 @@
+-P ubuntu-latest=catthehacker/ubuntu:act-latest
+--pull=false
+--container-daemon-socket -
+--artifact-server-path .act-artifacts
+--container-options --dns=1.1.1.1 --dns=8.8.8.8

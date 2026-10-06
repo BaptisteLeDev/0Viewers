@@ -40,3 +40,14 @@ describe("isIndexable", () => {
     expect(isIndexable()).toBe(true);
   });
 });
+
+describe("robots", () => {
+  it("names AI crawlers explicitly, api stays closed", async () => {
+    vi.stubEnv("VERCEL_ENV", "production");
+    const { default: robots } = await import("@/app/robots");
+    const { rules } = robots();
+    const named = (Array.isArray(rules) ? rules : [rules]).flatMap((r) => r.userAgent ?? []).flat();
+    expect(named).toEqual(expect.arrayContaining(["GPTBot", "ClaudeBot", "PerplexityBot"]));
+    expect(JSON.stringify(rules)).toContain("/api/");
+  });
+});

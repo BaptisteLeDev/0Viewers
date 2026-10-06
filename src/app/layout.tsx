@@ -18,12 +18,15 @@ export const metadata: Metadata = {
   openGraph: { type: "website", locale: "fr_FR", siteName: SITE_NAME },
   twitter: { card: "summary_large_image" },
   robots: isIndexable() ? { index: true, follow: true } : { index: false, follow: false },
-  verification: process.env.GOOGLE_SITE_VERIFICATION ? { google: process.env.GOOGLE_SITE_VERIFICATION } : undefined,
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION || undefined,
+    other: process.env.BING_SITE_VERIFICATION ? { "msvalidate.01": process.env.BING_SITE_VERIFICATION } : undefined,
+  },
 };
 
 const siteLd = jsonLd({
   "@graph": [
-    { "@type": "Organization", "@id": `${siteUrl()}/#org`, name: SITE_NAME, url: siteUrl(), logo: `${siteUrl()}/icon.svg` },
+    { "@type": "Organization", "@id": `${siteUrl()}/#org`, name: SITE_NAME, url: siteUrl() },
     { "@type": "WebSite", name: SITE_NAME, url: siteUrl(), description: SITE_DESCRIPTION, inLanguage: "fr-FR", publisher: { "@id": `${siteUrl()}/#org` } },
   ],
 });

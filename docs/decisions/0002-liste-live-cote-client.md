@@ -20,7 +20,7 @@ Toutes les pages qui lisaient `getCrawl()` héritaient de son `revalidate` de 24
 ## Conséquences
 
 - Les écritures ISR ne viennent plus que des pages de catégorie (une fois par semaine et par slug), et de `llms.txt` (une fois par jour).
-- Le HTML ne contient plus la liste des streamers ni le JSON-LD `ItemList` de `/streamers` : moins de contenu indexable sur ces pages.
+- Le HTML ne contient plus la liste des streamers : moins de contenu indexable sur ces pages. `/streamers` garde un JSON-LD `ItemList` des catégories en direct, via `getDailyCategories` (1 jour, même coût que `llms.txt`).
 - Un signalement qui masque un streamer met jusqu'à 15 min à atteindre le cache CDN.
 - `findCategory` fait une recherche floue : une catégorie au nom exotique peut ne pas être retrouvée et passer en `noindex`.
 

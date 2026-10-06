@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { MAX_STREAMERS, selectStreams, toStreamer0V, toStreamers0V } from "@/decouverte/rule";
+import { MAX_STREAMERS, rankBySoutiens, selectStreams, toStreamer0V, toStreamers0V } from "@/decouverte/rule";
 import type { HelixStream } from "@/decouverte/types";
 
 const now = new Date("2026-10-02T20:00:00Z");
@@ -116,5 +116,20 @@ describe("toStreamer0V", () => {
     const channel = (labels: string[]) => ({ broadcaster_id: "a", content_classification_labels: labels });
     expect(toStreamer0V(stream("a", 0, 30), undefined, channel(["MatureGame"])).mature).toBe(true);
     expect(toStreamer0V(stream("a", 0, 30), undefined, channel([])).mature).toBe(false);
+  });
+});
+
+describe("rankBySoutiens", () => {
+  const streamer = (id: string, viewers: number, liveMinutes: number) => toStreamer0V(stream(id, viewers, liveMinutes), undefined);
+
+  it("puts loved streamers first inside each viewer tier, never across tiers", () => {
+    const list = [streamer("a", 0, 90), streamer("b", 0, 30), streamer("c", 1, 90), streamer("d", 1, 30), streamer("e", 2, 30)];
+    const ids = rankBySoutiens(list, { b: 1, d: 3, e: 9 }).map((s) => s.id);
+    expect(ids).toEqual(["b", "a", "d", "c", "e"]);
+  });
+
+  it("orders loved streamers by Soutiens, then longest live", () => {
+    const list = [streamer("a", 0, 30), streamer("b", 0, 90), streamer("c", 0, 60)];
+    expect(rankBySoutiens(list, { a: 5, b: 2, c: 2 }).map((s) => s.id)).toEqual(["a", "b", "c"]);
   });
 });

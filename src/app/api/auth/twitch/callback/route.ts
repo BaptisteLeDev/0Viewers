@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { SESSION_COOKIE, SESSION_MAX_AGE, STATE_COOKIE, cookieOptions, signSession } from "@/compte/session";
+import { SESSION_COOKIE, SESSION_MAX_AGE, STATE_COOKIE, cookieOptions, isOwner, signSession } from "@/compte/session";
 import { DISPLAY_COOKIE, toDisplayCookie } from "@/compte/display";
 import { fetchTwitchViewer, saveViewer, sessionSecret } from "@/compte/twitch";
 
@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
     const viewer = await fetchTwitchViewer(code, new URL("/api/auth/twitch/callback", url).toString());
     await saveViewer(viewer);
     res.cookies.set(SESSION_COOKIE, signSession(viewer, sessionSecret()), cookieOptions(SESSION_MAX_AGE));
-    res.cookies.set(DISPLAY_COOKIE, toDisplayCookie(viewer), { ...cookieOptions(SESSION_MAX_AGE), httpOnly: false });
+    res.cookies.set(DISPLAY_COOKIE, toDisplayCookie(viewer, isOwner(viewer.id, process.env.OWNER_TWITCH_ID)), { ...cookieOptions(SESSION_MAX_AGE), httpOnly: false });
   } catch (error) {
     console.error(error);
   }

@@ -1,13 +1,8 @@
-import { cacheLife } from "next/cache";
-import { MAX_VIEWERS, MIN_LIVE_MINUTES, getCrawl, groupByCategory } from "@/decouverte";
+import { MAX_VIEWERS, MIN_LIVE_MINUTES, getDailyCategories } from "@/decouverte";
 import { SITE_DESCRIPTION, SITE_NAME, siteUrl } from "@/site";
 
-// Explicit outer cacheLife beats the crawl's 15 min: one write a day.
 async function liveCategories(url: string) {
-  "use cache";
-  cacheLife("days");
-  const { streamers } = await getCrawl();
-  return groupByCategory(streamers)
+  return (await getDailyCategories())
     .map((g) => `- [${g.name}](${url}/categories/${g.slug}): ${g.count} ${g.count > 1 ? "lives FR" : "live FR"} à ${MAX_VIEWERS} spectateurs ou moins`)
     .join("\n");
 }

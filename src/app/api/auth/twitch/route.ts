@@ -5,7 +5,13 @@ import { authorizeUrl } from "@/compte/twitch";
 
 export function GET(request: NextRequest) {
   const state = randomBytes(16).toString("base64url");
-  const res = NextResponse.redirect(authorizeUrl(new URL("/api/auth/twitch/callback", request.url).toString(), state));
-  res.cookies.set(STATE_COOKIE, state, cookieOptions(600));
-  return res;
+  try {
+    const res = NextResponse.redirect(authorizeUrl(new URL("/api/auth/twitch/callback", request.url).toString(), state));
+    res.cookies.set(STATE_COOKIE, state, cookieOptions(600));
+    return res;
+  } catch (error) {
+    // missing Twitch env: log it, send the visitor home like the callback
+    console.error(error);
+    return NextResponse.redirect(new URL("/", request.url), 303);
+  }
 }

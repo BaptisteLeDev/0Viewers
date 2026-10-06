@@ -1,0 +1,54 @@
+name: security
+
+# Local only, like ci.yml: scripts/security-local.sh runs it via gh act.
+on:
+  workflow_dispatch:
+
+jobs:
+  codeql:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: install codeql bundle
+        run: |
+          curl -sSL https://github.com/github/codeql-action/releases/latest/download/codeql-bundle-linux64.tar.gz | tar xz -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/codeql" >> "$GITHUB_PATH"
+      - run: codeql database create "$RUNNER_TEMP/db" --language=javascript-typescript --source-root .
+      - run: |
+          codeql database analyze "$RUNNER_TEMP/db" codeql/javascript-queries:codeql-suites/javascript-security-and-quality.qls \
+            --format=sarif-latest --output=codeql.sarif
+      # Gate on error level only: quality notes are printed, not blocking.
+      - name: report
+        run: |
+          jq -r '.runs[].results[] | "\(.level // "warning")\t\(.ruleId)\t\(.locations[0].physicalLocation.artifactLocation.uri):\(.locations[0].physicalLocation.region.startLine)"' codeql.sarif
+          test "$(jq '[.runs[].results[] | select(.level == "error")] | length' codeql.sarif)" -eq 0
+
+  zap:
+    runs-on: ubuntu-latest
+    env:
+      TWITCH_FIXTURES: "1"
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+      # official script: setup-bun took ~5 min under act
+      - name: install bun
+        run: |
+          curl -fsSL https://bun.sh/install | bash -s "bun-v1.3.11"
+          echo "$HOME/.bun/bin" >> "$GITHUB_PATH"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: bun install --frozen-lockfile
+      - run: bun run build
+      - name: start server
+        run: |
+          bun run start &
+          for i in $(seq 1 30); do curl -sf http://localhost:3000 >/dev/null && exit 0; sleep 1; done
+          exit 1
+      # Step container shares the job network: localhost is the app.
+      # Fails on any WARN: silence a reviewed rule in .zap/rules.tsv, never -I.
+      # -c reads from /zap/wrk only, hence the copy.
+      - uses: docker://ghcr.io/zaproxy/zaproxy:stable
+        with:
+          entrypoint: sh
+          args: -c "mkdir -p /zap/wrk && cp .zap/rules.tsv /zap/wrk/ && zap-baseline.py -t http://localhost:3000 -c rules.tsv"
