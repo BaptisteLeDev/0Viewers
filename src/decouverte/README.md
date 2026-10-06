@@ -36,7 +36,7 @@ Tests : `rule.test.ts` (règle), `twitch.test.ts` (appels et erreurs), `games.te
 
 ## Neon (compteur de lives FR)
 
-`live-count.ts` écrit le nombre total de lives FR vus par le crawl dans `live_count`, une ligne par heure UTC (le max de l'heure). La page `/stats` les relit (cache 1 h).
+`live-count.ts` écrit le nombre total de lives FR vus par le crawl dans `live_count`, une ligne par heure UTC (le max de l'heure). La page `/stats` relit les 7 derniers jours (cache 1 h).
 
 Budget du plan gratuit Neon (compute 0,25 CU fixe, mise en veille après 5 min) :
 

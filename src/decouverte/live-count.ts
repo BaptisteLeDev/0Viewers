@@ -28,7 +28,8 @@ export async function getLiveCounts(): Promise<LivePoint[]> {
   cacheLife("hours");
   if (!sql) return [];
   try {
-    const rows = await sql`SELECT extract(epoch FROM crawled_at) * 1000 AS at, lives FROM live_count ORDER BY crawled_at`;
+    const rows = await sql`SELECT extract(epoch FROM crawled_at) * 1000 AS at, lives FROM live_count
+      WHERE crawled_at > now() - interval '7 days' ORDER BY crawled_at`;
     return rows.map((r) => ({ at: Number(r.at), lives: Number(r.lives) }));
   } catch (error) {
     console.error(error);

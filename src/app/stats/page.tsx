@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/stats" },
 };
 
+const WEEK = 7 * 24 * 3_600_000;
 const num = new Intl.NumberFormat("fr-FR");
 const day = new Intl.DateTimeFormat("fr-FR", { timeZone: "Europe/Paris", day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" });
 
@@ -23,11 +24,11 @@ export default async function Stats() {
         <>
           <p>
             <strong>{num.format(last.lives)}</strong> streams en français en live au dernier passage.
-            Depuis le début de la collecte ({day.format(first.at)}) : {last.lives >= first.lives ? "+" : ""}
+            Sur 7 jours (depuis le {day.format(first.at)}) : {last.lives >= first.lives ? "+" : ""}
             {num.format(last.lives - first.lives)}.
           </p>
-          <LiveTrend points={points} />
-          <p>Un point par heure (le maximum vu dans l&apos;heure), gardé un an. Au-delà de 10 000 lives, le compte est un minimum.</p>
+          <LiveTrend points={points} from={last.at - WEEK} />
+          <p>Un point par heure (le maximum vu dans l&apos;heure), sur les 7 derniers jours. Au-delà de 10 000 lives, le compte est un minimum.</p>
         </>
       ) : (
         <p>Collecte en cours : la courbe apparaît après le premier passage.</p>

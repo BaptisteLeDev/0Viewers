@@ -11,7 +11,7 @@ const PAD = { top: 16, right: 16, bottom: 28, left: 48 };
 const time = new Intl.DateTimeFormat("fr-FR", { timeZone: "Europe/Paris", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 const num = new Intl.NumberFormat("fr-FR");
 
-export function LiveTrend({ points }: { points: LivePoint[] }) {
+export function LiveTrend({ points, from }: { points: LivePoint[]; from?: number }) {
   const [active, setActive] = useState<number | null>(null);
   const first = points[0];
   const last = points[points.length - 1];
@@ -19,7 +19,7 @@ export function LiveTrend({ points }: { points: LivePoint[] }) {
   const min = Math.min(...values);
   const max = Math.max(...values);
   const span = max - min || 1;
-  const t0 = first.at;
+  const t0 = Math.min(from ?? first.at, first.at);
   const tSpan = last.at - t0 || 1;
   const x = (at: number) => PAD.left + ((at - t0) / tSpan) * (W - PAD.left - PAD.right);
   const y = (lives: number) => PAD.top + (1 - (lives - min) / span) * (H - PAD.top - PAD.bottom);
@@ -37,7 +37,7 @@ export function LiveTrend({ points }: { points: LivePoint[] }) {
   return (
     <figure className={styles.figure}>
       <svg viewBox={`0 0 ${W} ${H}`} className={styles.chart} role="img"
-        aria-label={`Lives FR de ${num.format(first.lives)} à ${num.format(last.lives)}, du ${time.format(first.at)} au ${time.format(last.at)}`}
+        aria-label={`Lives FR de ${num.format(first.lives)} à ${num.format(last.lives)}, du ${time.format(t0)} au ${time.format(last.at)}`}
         onPointerMove={points.length > 1 ? onMove : undefined} onPointerLeave={() => setActive(null)}>
         {[...new Set([min, max])].map((v) => (
           <g key={v}>
@@ -45,7 +45,7 @@ export function LiveTrend({ points }: { points: LivePoint[] }) {
             <text x={PAD.left - 8} y={y(v)} className={styles.axis} textAnchor="end" dominantBaseline="middle">{num.format(v)}</text>
           </g>
         ))}
-        <text x={PAD.left} y={H - 8} className={styles.axis}>{time.format(first.at)}</text>
+        <text x={PAD.left} y={H - 8} className={styles.axis}>{time.format(t0)}</text>
         <text x={W - PAD.right} y={H - 8} className={styles.axis} textAnchor="end">{time.format(last.at)}</text>
         {points.length > 1 && <path d={d} className={styles.line} />}
         {shown && <line x1={x(shown.at)} x2={x(shown.at)} y1={PAD.top} y2={H - PAD.bottom} className={styles.crosshair} />}
