@@ -89,6 +89,15 @@ export async function getZeroViewersStreamers(): Promise<Streamer0V[]> {
   return (await getCrawl()).streamers;
 }
 
+export type Channel = { login: string; displayName: string };
+
+// Admin only (a few ids): resolves Twitch broadcaster ids to channel names.
+export async function findChannels(ids: string[]): Promise<Map<string, Channel>> {
+  if (ids.length === 0) return new Map();
+  const users = process.env.TWITCH_FIXTURES === "1" ? fixtureUsers(ids) : await fetchUsers(ids, await fetchAppToken());
+  return new Map([...users].map(([id, u]) => [id, { login: u.login, displayName: u.display_name }]));
+}
+
 const toCategory = (c: HelixCategory): Category => ({
   id: c.id, name: c.name, slug: slugifyCategory(c.name), boxArtUrl: c.box_art_url.replace(/\{width\}x\{height\}|\d+x\d+/, "52x72"),
 });

@@ -25,6 +25,12 @@ SELECT broadcaster_id,
 FROM vote
 GROUP BY broadcaster_id;
 
+-- Admin unhide: only Signalements cast after unhidden_at count again.
+CREATE TABLE IF NOT EXISTS vote_override (
+  broadcaster_id text PRIMARY KEY,
+  unhidden_at    timestamptz NOT NULL DEFAULT now()
+);
+
 -- one row per UTC hour (max FR live count), purged after 1 year.
 CREATE TABLE IF NOT EXISTS live_count (
   crawled_at timestamptz PRIMARY KEY,

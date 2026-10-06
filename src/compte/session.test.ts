@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { SESSION_MAX_AGE, signSession, verifySession, type Viewer } from "./session";
+import { SESSION_MAX_AGE, isOwner, signSession, verifySession, type Viewer } from "./session";
 
 const viewer: Viewer = { id: "123", login: "pseudo", displayName: "Pseudo", avatarUrl: "https://x/a.png" };
 const secret = "s3cret";
@@ -27,5 +27,19 @@ describe("session", () => {
 
   it("rejects garbage", () => {
     for (const token of ["", "abc", "a.b", "..", "e30.x"]) expect(verifySession(token, secret, now)).toBeNull();
+  });
+});
+
+describe("isOwner", () => {
+  it("only the configured Twitch id is owner", () => {
+    expect(isOwner("123", "123")).toBe(true);
+    expect(isOwner("124", "123")).toBe(false);
+    expect(isOwner(undefined, "123")).toBe(false);
+  });
+
+  it("denies everyone when the env is missing or empty", () => {
+    expect(isOwner("123", undefined)).toBe(false);
+    expect(isOwner("", "")).toBe(false);
+    expect(isOwner(undefined, undefined)).toBe(false);
   });
 });

@@ -31,7 +31,7 @@ Pourquoi la liste n'est pas dans le HTML : [ADR 0002](docs/decisions/0002-liste-
 
 ## Connexion Twitch
 
-`/api/auth/twitch` redirige vers Twitch avec un `state` en cookie. `/api/auth/twitch/callback` vérifie ce `state`, échange le code, lit `/users`, fait un upsert dans `viewer` (Neon, `src/db.ts`) puis pose deux cookies de 30 jours : `0v_session` (httpOnly, signé avec `SESSION_SECRET`, seul cookie de confiance côté serveur, lu par `currentViewer()`) et `0v_viewer` (pseudo + avatar, lisible en JS, affichage seul). Le header lit `0v_viewer` côté client : les pages restent statiques et une visite ne déclenche aucune fonction Vercel ni requête Neon. Seules `/profil`, les routes d'auth et les votes s'exécutent côté serveur. Schéma : `db/schema.sql`.
+`/api/auth/twitch` redirige vers Twitch avec un `state` en cookie. `/api/auth/twitch/callback` vérifie ce `state`, échange le code, lit `/users`, fait un upsert dans `viewer` (Neon, `src/db.ts`) puis pose deux cookies de 30 jours : `0v_session` (httpOnly, signé avec `SESSION_SECRET`, seul cookie de confiance côté serveur, lu par `currentViewer()`) et `0v_viewer` (pseudo + avatar, lisible en JS, affichage seul). Le header lit `0v_viewer` côté client : les pages restent statiques et une visite ne déclenche aucune fonction Vercel ni requête Neon. Seules `/profil`, `/admin` (propriétaire seul, 404 pour les autres via `src/proxy.ts`, voir `src/vote/README.md`), les routes d'auth et les votes s'exécutent côté serveur. Schéma : `db/schema.sql`.
 
 ## Cache et échec Twitch
 

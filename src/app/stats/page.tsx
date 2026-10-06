@@ -27,7 +27,7 @@ export default async function Stats() {
             Sur 7 jours (depuis le {day.format(first.at)}) : {last.lives >= first.lives ? "+" : ""}
             {num.format(last.lives - first.lives)}.
           </p>
-          <LiveTrend points={points} from={last.at - WEEK} />
+          <LiveTrend points={points} from={last.at - WEEK} unit="lives FR" />
           <p>Un point par heure (le maximum vu dans l&apos;heure), sur les 7 derniers jours. Au-delà de 10 000 lives, le compte est un minimum.</p>
         </>
       ) : (
