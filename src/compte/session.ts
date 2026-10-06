@@ -9,6 +9,9 @@ export const STATE_COOKIE = "0v_oauth_state";
 export const cookieOptions = (maxAge: number) =>
   ({ httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", path: "/", maxAge }) as const;
 
+// Deny by default: no OWNER_TWITCH_ID means no owner at all.
+export const isOwner = (viewerId: string | undefined, ownerId: string | undefined): boolean => Boolean(ownerId) && viewerId === ownerId;
+
 const mac = (payload: string, secret: string) => createHmac("sha256", secret).update(payload).digest("base64url");
 
 export function signSession(viewer: Viewer, secret: string, now = Date.now()): string {
