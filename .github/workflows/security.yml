@@ -8,7 +8,7 @@ jobs:
   codeql:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: install codeql bundle
         run: |
           curl -sSL https://github.com/github/codeql-action/releases/latest/download/codeql-bundle-linux64.tar.gz | tar xz -C "$RUNNER_TEMP"
@@ -29,7 +29,7 @@ jobs:
       TWITCH_FIXTURES: "1"
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       # official script: setup-bun took ~5 min under act
       - name: install bun
         run: |
