@@ -9,6 +9,13 @@ describe("display cookie", () => {
     expect(parseDisplayCookie(header(toDisplayCookie(viewer)))).toEqual({ displayName: "Pseudo é", avatarUrl: viewer.avatarUrl });
   });
 
+  it("carries the owner flag, never the id", () => {
+    const cookie = toDisplayCookie(viewer, true);
+    expect(cookie).not.toContain(viewer.id);
+    expect(parseDisplayCookie(header(cookie))).toEqual({ displayName: "Pseudo é", avatarUrl: viewer.avatarUrl, owner: true });
+    expect(parseDisplayCookie(header(JSON.stringify({ displayName: "x", avatarUrl: viewer.avatarUrl, owner: "yes" })))?.owner).toBeUndefined();
+  });
+
   it("rejects missing, garbage and non-https avatar", () => {
     expect(parseDisplayCookie("a=1")).toBeNull();
     expect(parseDisplayCookie(header("{oops"))).toBeNull();

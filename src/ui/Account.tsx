@@ -1,17 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useSyncExternalStore } from "react";
-import { parseDisplayCookie } from "@/compte/display";
+import type { ViewerDisplay } from "@/compte/display";
 import styles from "./Header.module.css";
 
-const noSubscribe = () => () => {};
-
-export function Account() {
-  // null on the server: header stays static, slot fills after hydration
-  const cookie = useSyncExternalStore(noSubscribe, () => document.cookie, () => null);
-  if (cookie === null) return null;
-  const viewer = parseDisplayCookie(cookie);
+// undefined = not hydrated yet: render nothing rather than guess
+export function Account({ viewer }: { viewer: ViewerDisplay | null | undefined }) {
+  if (viewer === undefined) return null;
   if (!viewer) {
     return (
       // plain <a>: route handler redirect, no client prefetch
