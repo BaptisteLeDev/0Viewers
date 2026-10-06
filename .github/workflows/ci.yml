@@ -1,8 +1,7 @@
 name: ci
 
+# Local only: scripts/ci-local.sh runs it via gh act. No auto trigger.
 on:
-  pull_request:
-    branches: [main, dev]
   workflow_dispatch:
 
 jobs:
@@ -13,9 +12,11 @@ jobs:
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: 1.3.11
+      # official script: setup-bun took ~5 min under act
+      - name: install bun
+        run: |
+          curl -fsSL https://bun.sh/install | bash -s "bun-v1.3.11"
+          echo "$HOME/.bun/bin" >> "$GITHUB_PATH"
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -30,7 +31,11 @@ jobs:
           for i in $(seq 1 30); do curl -sf http://localhost:3000 >/dev/null && exit 0; sleep 1; done
           exit 1
       - run: bun run smoke
+      - uses: browser-actions/setup-chrome@v1
+        id: chrome
       - run: bunx lhci autorun
+        env:
+          CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

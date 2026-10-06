@@ -21,7 +21,7 @@ bun run typecheck && bun run lint && bun run test
 TWITCH_FIXTURES=1 bun run build && bun run start   # puis bun run smoke
 ```
 
-La CI GitHub ajoute le smoke test et Lighthouse (budgets dans `lighthouserc.json`). En local : `/ci-local`.
+La CI tourne uniquement en local avec `gh act` (rien ne part sur GitHub Actions) : `bun run ci`. Elle ajoute le smoke test et Lighthouse (budgets dans `lighthouserc.json`). Prérequis : `gh extension install nektos/gh-act`, plus Podman sous Windows (le script démarre la machine) ou Docker sous Linux.
 
 ## Déploiement (Vercel)
 

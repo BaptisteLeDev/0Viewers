@@ -45,4 +45,4 @@ Pourquoi la liste n'est pas dans le HTML : [ADR 0002](docs/decisions/0002-liste-
 
 ## Qualité
 
-La CI (`.github/workflows/ci.yml`) enchaîne typecheck, lint, tests, build, smoke test et Lighthouse mobile sur `/`, `/streamers` et `/categories/minecraft` (budgets dans `lighthouserc.json` : performance 0,90, accessibilité 1, SEO 1, bonnes pratiques 0,95). Dependabot tourne chaque semaine.
+La CI (`.github/workflows/ci.yml`, exécutée en local par `gh act` via `scripts/ci-local.sh`, jamais sur GitHub) enchaîne typecheck, lint, tests, build, smoke test et Lighthouse mobile sur `/`, `/streamers` et `/categories/minecraft` (budgets dans `lighthouserc.json` : performance 0,90, accessibilité 1, SEO 1, bonnes pratiques 0,95). Dependabot tourne chaque semaine.
