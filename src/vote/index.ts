@@ -60,7 +60,44 @@ export async function unhide(broadcasterId: string): Promise<void> {
     ON CONFLICT (broadcaster_id) DO UPDATE SET unhidden_at = now()`;
 }
 
-export type ActivityDay = { at: number; viewers: number; signalements: number };
+export type Score = { broadcasterId: string; soutiens: number; signalements: number };
+export type Unhidden = Score & { unhiddenAt: number };
+
+const toScore = (r: Record<string, unknown>): Score => ({
+  broadcasterId: String(r.broadcaster_id), soutiens: Number(r.soutiens), signalements: Number(r.signalements),
+});
+
+// Most loved first. Uncached: admin only, callers go through the cache.
+export async function listLoved(): Promise<Score[]> {
+  if (!sql) return [];
+  const rows = await sql`SELECT broadcaster_id, soutiens, signalements FROM broadcaster_score
+    WHERE soutiens > 0 ORDER BY soutiens DESC, signalements`;
+  return rows.map(toScore);
+}
+
+// Last unhidden first, with every Signalement ever cast. Admin only.
+export async function listUnhidden(): Promise<Unhidden[]> {
+  if (!sql) return [];
+  const rows = await sql`SELECT o.broadcaster_id, extract(epoch FROM o.unhidden_at) * 1000 AS unhidden_at,
+      coalesce(s.soutiens, 0) AS soutiens, coalesce(s.signalements, 0) AS signalements
+    FROM vote_override o LEFT JOIN broadcaster_score s USING (broadcaster_id) ORDER BY o.unhidden_at DESC`;
+  return rows.map((r) => ({ ...toScore(r), unhiddenAt: Number(r.unhidden_at) }));
+}
+
+// Soutiens per broadcaster for the list order. A ranking, not a gate:
+// one hour stale is fine, no tag.
+export async function getSoutiens(): Promise<Record<string, number>> {
+  "use cache: remote";
+  cacheLife("hours");
+  try {
+    return Object.fromEntries((await listLoved()).map((s) => [s.broadcasterId, s.soutiens]));
+  } catch (error) {
+    console.error(error);
+    return {};
+  }
+}
+
+export type ActivityDay ={ at: number; viewers: number; signalements: number };
 
 // New viewers and Signalements per UTC day, last 7 days. Admin only.
 export async function communityActivity(): Promise<ActivityDay[]> {

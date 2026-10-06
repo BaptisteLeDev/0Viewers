@@ -19,19 +19,33 @@ const MEDIA_TAG = new RegExp([...MEDIA_WORDS, ...MEDIA_TAG_WORDS].join("|"));
 
 const isMediaStream = (s: HelixStream) =>
   MEDIA_TEXT.test(fold(splitCamel(`${s.title} ${s.game_name}`))) || (s.tags ?? []).some((t) => MEDIA_TAG.test(fold(t)));
-const hasMediaLogin = (s: HelixStream) => MEDIA_WORDS.some((w) => s.user_login.toLowerCase().includes(w));
 
 // prefix match: "cryptomonnaie", "BTCUSD"
 const CRYPTO = new RegExp(`(?<!\\p{L})(${CRYPTO_WORDS.join("|")})`, "iu");
 const CRYPTO_GLUED = new RegExp(CRYPTO_WORDS.join("|"));
 const isCryptoChannel = (s: HelixStream) =>
   CRYPTO_GLUED.test(s.user_login.toLowerCase()) || CRYPTO.test(s.game_name) || (s.tags ?? []).some((t) => CRYPTO_GLUED.test(fold(t)));
-const isRankedLast = (s: HelixStream) => hasMediaLogin(s) || CRYPTO.test(splitCamel(s.title));
+const isRankedLast = (login: string, title: string) =>
+  MEDIA_WORDS.some((w) => login.toLowerCase().includes(w)) || CRYPTO.test(splitCamel(title));
 
 const streamReason = (s: HelixStream): SetAsideReason | null => (isMediaStream(s) ? "media" : isCryptoChannel(s) ? "crypto" : null);
 
 const byRank = (a: HelixStream, b: HelixStream) =>
-  +isRankedLast(a) - +isRankedLast(b) || a.viewer_count - b.viewer_count || Date.parse(a.started_at) - Date.parse(b.started_at);
+  +isRankedLast(a.user_login, a.title) - +isRankedLast(b.user_login, b.title) ||
+  a.viewer_count - b.viewer_count ||
+  Date.parse(a.started_at) - Date.parse(b.started_at);
+
+// Viewer tier first, then most Soutiens inside the tier.
+export function rankBySoutiens(streamers: Streamer0V[], soutiens: Record<string, number>): Streamer0V[] {
+  const loved = (s: Streamer0V) => soutiens[s.id] ?? 0;
+  return [...streamers].sort(
+    (a, b) =>
+      +isRankedLast(a.login, a.title) - +isRankedLast(b.login, b.title) ||
+      a.viewerCount - b.viewerCount ||
+      loved(b) - loved(a) ||
+      Date.parse(a.startedAt) - Date.parse(b.startedAt),
+  );
+}
 
 export function toSetAside(s: Omit<SetAsideStream, "reason">, reason: SetAsideReason): SetAsideStream {
   const { id, login, displayName, title, categoryName, viewerCount } = s;
