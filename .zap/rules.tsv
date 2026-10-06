@@ -1,0 +1,4 @@
+10049	IGNORE	(Non-Storable Content: auth, /api/me and admin are no-store on purpose)
+90004	IGNORE	(COEP require-corp would block Twitch embeds and CDN avatars)
+10019	IGNORE	(only Next trailing-slash 308 on /api/, empty body)
+10055	IGNORE	(CSP has no script-src on purpose: nonce = dynamic pages, ADR 0002)
