@@ -1,8 +1,8 @@
 "use server";
 
 import { updateTag } from "next/cache";
-import { currentViewer } from "@/compte/viewer";
-import { HIDDEN_TAG, HIDE_AT, castVote, parseVote } from "@/vote";
+import { currentOwner, currentViewer } from "@/compte/viewer";
+import { HIDDEN_TAG, HIDE_AT, castVote, parseBroadcasterId, parseVote, unhide } from "@/vote";
 
 export type VoteResult = { ok: true } | { ok: false; message: string };
 
@@ -19,4 +19,12 @@ export async function vote(broadcasterId: string, value: number): Promise<VoteRe
     console.error(error);
     return { ok: false, message: "Vote impossible pour le moment." };
   }
+}
+
+export async function unhideBroadcaster(formData: FormData): Promise<void> {
+  if (!(await currentOwner())) return;
+  const broadcasterId = parseBroadcasterId(formData.get("broadcasterId"));
+  if (!broadcasterId) return;
+  await unhide(broadcasterId);
+  updateTag(HIDDEN_TAG);
 }
