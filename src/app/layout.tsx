@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 
 const siteLd = jsonLd({
   "@graph": [
-    { "@type": "Organization", "@id": `${siteUrl()}/#org`, name: SITE_NAME, url: siteUrl(), logo: `${siteUrl()}/icon.svg` },
+    { "@type": "Organization", "@id": `${siteUrl()}/#org`, name: SITE_NAME, url: siteUrl() },
     { "@type": "WebSite", name: SITE_NAME, url: siteUrl(), description: SITE_DESCRIPTION, inLanguage: "fr-FR", publisher: { "@id": `${siteUrl()}/#org` } },
   ],
 });

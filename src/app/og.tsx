@@ -8,7 +8,6 @@ export const OG_SIZE = { width: 1200, height: 630 };
 const assets = Promise.all([
   readFile(join(process.cwd(), "assets/fonts/Iceland-Regular.ttf")),
   readFile(join(process.cwd(), "assets/fonts/Geist-Bold.ttf")),
-  readFile(join(process.cwd(), "src/app/icon.svg"), "base64"),
 ]);
 
 const BG = "#050508";
@@ -46,7 +45,7 @@ function Title({ title, highlight }: Pick<OgCard, "title" | "highlight">) {
 }
 
 export async function ogImage({ eyebrow, title, highlight, subtitle, art }: OgCard) {
-  const [iceland, geist, icon] = await assets;
+  const [iceland, geist] = await assets;
   return new ImageResponse(
     (
       <div
@@ -69,8 +68,6 @@ export async function ogImage({ eyebrow, title, highlight, subtitle, art }: OgCa
         <div style={{ position: "absolute", top: 0, left: 0, width: 1200, height: 10, backgroundImage: BRAND }} />
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-            {/* eslint-disable-next-line @next/next/no-img-element -- satori renders plain img only */}
-            <img src={`data:image/svg+xml;base64,${icon}`} width={64} height={64} alt="" />
             <span style={{ fontFamily: "Iceland", fontSize: 64 }}>0Viewers</span>
           </div>
           <div
