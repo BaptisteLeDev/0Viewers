@@ -67,5 +67,6 @@
 .mission p { max-width: 65ch; margin: 0 auto var(--space-4); line-height: 1.75; color: var(--color-text-muted); text-wrap: pretty; }
 
 
-.count { color: var(--color-text-muted); }
+.count { min-height: 3lh; color: var(--color-text-muted); }
+@media (min-width: 900px) { .count { min-height: 2lh; } }
 .count strong { color: var(--color-text); font-variant-numeric: tabular-nums; }

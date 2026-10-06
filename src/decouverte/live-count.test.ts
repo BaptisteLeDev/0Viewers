@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("server-only", () => ({}));
 vi.mock("next/cache", () => ({ cacheLife: () => {} }));
@@ -6,6 +6,9 @@ const { sql } = vi.hoisted(() => ({ sql: vi.fn() }));
 vi.mock("@/db", () => ({ sql }));
 
 import { saveLiveCount } from "./live-count";
+
+// CI exports TWITCH_FIXTURES=1 for the whole job.
+beforeEach(() => vi.stubEnv("TWITCH_FIXTURES", ""));
 
 afterEach(() => {
   vi.unstubAllEnvs();

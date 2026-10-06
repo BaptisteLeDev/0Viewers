@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
-import type { LiveCategory } from "@/decouverte/categories";
+import { groupByCategory, type LiveCategory } from "@/decouverte/categories";
 import { thumbnailSrc } from "./player";
+import { useCrawl } from "./useCrawl";
 import styles from "./CategoryLinks.module.css";
 
 export function CategoryTile({ category }: { category: LiveCategory }) {
@@ -28,4 +31,12 @@ export function CategoryLinks({ categories }: { categories: LiveCategory[] }) {
       ))}
     </ul>
   );
+}
+
+// exclude: slug of the current category page
+export function LiveCategoryLinks({ exclude, empty }: { exclude?: string; empty: React.ReactNode }) {
+  const { crawl } = useCrawl();
+  if (!crawl) return null;
+  const categories = groupByCategory(crawl.streamers, crawl.boxArt).filter((g) => g.slug !== exclude);
+  return categories.length > 0 ? <CategoryLinks categories={categories} /> : empty;
 }

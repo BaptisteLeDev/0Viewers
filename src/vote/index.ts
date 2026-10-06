@@ -23,7 +23,7 @@ export async function castVote(viewerId: string, broadcasterId: string, value: V
 // Hourly + tag busted by votes near the threshold: never a Neon
 // read per visit (free plan budget, src/decouverte/README.md).
 export async function getHiddenBroadcasters(): Promise<string[]> {
-  "use cache";
+  "use cache: remote";
   cacheLife("hours");
   cacheTag(HIDDEN_TAG);
   if (!sql) return [];

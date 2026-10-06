@@ -2,12 +2,16 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { groupByCategory } from "@/decouverte/categories";
 import type { Category } from "@/decouverte/types";
 import { Combobox } from "./Combobox";
+import { useCrawl } from "./useCrawl";
 
 type Result = { term: string; categories: Category[] } | { term: string; error: true };
 
-export function CategorySearch({ live }: { live: Record<string, number> }) {
+export function CategorySearch() {
+  const { crawl } = useCrawl();
+  const live: Record<string, number> = Object.fromEntries(groupByCategory(crawl?.streamers ?? []).map((g) => [g.slug, g.count]));
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [result, setResult] = useState<Result | null>(null);

@@ -17,14 +17,17 @@ Les dépendances vont dans un seul sens : `app` utilise `decouverte` et `ui`, `u
 
 ```
 Twitch Helix -> twitch.ts (couche anticorruption) -> rule.ts (règle)
-  -> getCrawl() ("use cache", 240 s) -> pages prérendues (Cache Components) (/, /streamers, /categories, /categories/[slug], sitemap) -> composants client
+  -> getCrawl() ("use cache: remote", 900 s) -> GET /api/crawl (CDN s-maxage 900) -> useCrawl() dans les composants client
+  pages = coquilles statiques (/, /streamers, /categories, /categories/[slug]) ; sitemap statique, llms.txt en cache 1 jour
 ```
+
+Pourquoi la liste n'est pas dans le HTML : [ADR 0002](docs/decisions/0002-liste-live-cote-client.md).
 
 1. `twitch.ts` obtient un token d'application, lit les streams `language=fr` (100 par page, 100 pages max) puis, en parallèle, les profils (`/users`) et les labels de classification de contenu (`/channels`, `content_classification_labels`) des streamers retenus, et les jaquettes des catégories (`/games`, non bloquant : un échec donne des tuiles sans image). Un streamer est `mature` dès qu'il a un label : `is_mature` de `/streams` est déprécié et vaut toujours `false`.
 2. `rule.ts` garde les lives de plus de 10 minutes avec 5 viewers ou moins, trie par `viewer_count` croissant puis `started_at` croissant, et coupe à 150.
-3. `getCrawl()` renvoie les `Streamer0V`, `boxArt` (id de catégorie -> jaquette) et `crawledAt`. Un seul crawl Twitch est partagé par toutes les pages via `"use cache"` (`cacheComponents: true`, `cacheLife` stale 60 / revalidate 240 / expire 3600, tag `streams`). Les pages n'ont plus de `revalidate` : leur durée de vie vient de ce cache (4 min). Aucune page ne lit l'heure au rendu, elles utilisent `crawledAt` (Cache Components refuse `Date.now()` pendant le prérendu).
-4. Les composants client reçoivent la liste en props : recherche, tirage de la pile de cartes et lecteur Twitch n'appellent jamais Twitch.
-5. Seule exception : la recherche de catégorie de `/categories` appelle `GET /api/categories?q=` (2 à 100 caractères), qui passe par `searchCategories()` (`/search/categories`, `"use cache"` 1 jour par requête).
+3. `getCrawl()` renvoie les `Streamer0V`, `boxArt` (id de catégorie -> jaquette) et `crawledAt`. Le crawl est en `"use cache: remote"`, partagé entre instances Vercel (`cacheLife` stale 60 / revalidate 900 / expire 3600, tag `streams`). Les visiteurs ne le lisent qu'à travers `GET /api/crawl`, une route dynamique mise en cache par le CDN 15 min (aucune écriture ISR). Les pages ne lisent pas le crawl : leur HTML est statique.
+4. `useCrawl()` (`src/ui/useCrawl.ts`) fait une requête par vue de page, partagée par tous les blocs live (pile de cartes, compteurs, catégories, liste filtrable). Recherche, tirage et lecteur Twitch n'appellent jamais Twitch. Les durées de live se calculent à partir de `crawledAt`.
+5. Seule exception : la recherche de catégorie de `/categories` appelle `GET /api/categories?q=` (2 à 100 caractères), qui passe par `searchCategories()` (`/search/categories`, `"use cache: remote"` 1 jour par requête).
 
 ## Connexion Twitch
 

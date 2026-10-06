@@ -1,30 +1,19 @@
 import type { Metadata } from "next";
-import { MAX_VIEWERS, MIN_LIVE_MINUTES, getCrawl, groupByCategory } from "@/decouverte";
-import Link from "next/link";
-import { CategoryTile } from "@/ui/CategoryLinks";
-import { Marquee } from "@/ui/Marquee";
+import { MAX_VIEWERS, MIN_LIVE_MINUTES } from "@/decouverte";
 import { Reco } from "@/ui/Reco";
+import { LiveCategories, LiveCount, LiveStats } from "./live";
 import styles from "./page.module.css";
-
-export const maxDuration = 60;
 
 export const metadata: Metadata = {
   title: { absolute: "Streamers Twitch français à 0 spectateur en live | 0Viewers" },
-  description: "Découvre des streamers Twitch français en live devant 0 spectateur et deviens leur premier viewer. Gratuit, sans compte, mis à jour toutes les 5 minutes.",
+  description: "Découvre des streamers Twitch français en live devant 0 spectateur et deviens leur premier viewer. Gratuit, sans compte, mis à jour toutes les 15 minutes.",
   alternates: { canonical: "/" },
 };
 
-const plural = (n: number, word: string) => `${word}${n > 1 ? "s" : ""}`;
-const fr = (n: number) => n.toLocaleString("fr-FR");
-
-export default async function Home() {
-  const { streamers, boxArt, liveCount, zeroCount } = await getCrawl();
-  const zeros = streamers.filter((s) => s.viewerCount === 0).length;
-  const categories = groupByCategory(streamers, boxArt);
+export default function Home() {
   return (
     <>
       <Reco
-        streamers={streamers}
         featured={
           <section className={styles.video} aria-labelledby="video-title">
             <div className="container">
@@ -44,12 +33,7 @@ export default async function Home() {
         <>
           <h1 id="hero-title">Découvre les streamers Twitch français à <span className="highlight">0 spectateur</span></h1>
           <p>Un clic pour lancer leur live, un mot dans le chat, et tu deviens leur premier spectateur.</p>
-          {liveCount > 0 && (
-            <p className={styles.count}>
-              En ce moment, <strong>{fr(zeroCount)}</strong> {plural(zeroCount, "live")} sur <strong>{fr(liveCount)}</strong> en français
-              {zeroCount > 1 ? " sont" : " est"} à 0 spectateur ({Math.round((zeroCount / liveCount) * 100)} %).
-            </p>
-          )}
+          <LiveCount />
         </>
       </Reco>
       <section className={`container ${styles.mission}`} aria-labelledby="mission-title">
@@ -65,29 +49,14 @@ export default async function Home() {
           beaucoup pour quelqu&apos;un qui streame seul. De ton côté, tu découvres des chaînes que tu ne connaissais pas.
         </p>
         <p>
-          0Viewers fait le tri pour toi, et ici les petits lives passent en premier. Toutes les 5 minutes, le site récupère les lives Twitch
+          0Viewers fait le tri pour toi, et ici les petits lives passent en premier. Toutes les 15 minutes, le site récupère les lives Twitch
           en français lancés depuis plus de {MIN_LIVE_MINUTES} minutes et qui comptent {MAX_VIEWERS} spectateurs ou moins, en commençant par ceux à 0.
           Tu choisis un live, tu le regardes ici ou sur Twitch, et tu passes dire bonjour. C&apos;est gratuit et tu n&apos;as pas besoin de compte
           sur 0Viewers. Pour écrire dans le chat, il te faut juste ton compte Twitch.
         </p>
       </section>
-      {categories.length > 0 && (
-        <section className={`container ${styles.categories}`} aria-labelledby="categories-title">
-          <h2 id="categories-title">Parcours par catégorie</h2>
-          <Marquee itemWidth="9rem" secondsPerItem={4} items={categories.map((g) => ({ key: g.slug, node: <CategoryTile category={g} /> }))} />
-          <Link href="/categories" className="btn btn-ghost">Toutes les catégories en direct</Link>
-        </section>
-      )}
-      <section className={styles.stats} aria-labelledby="stats-title">
-        <div className="container">
-          <h2 id="stats-title" className="visually-hidden">En chiffres</h2>
-          <p>
-            En ce moment, <strong>{zeros}</strong> {plural(zeros, "streamer")} français {zeros > 1 ? "sont" : "est"} en live devant 0 spectateur,
-            sur <strong>{streamers.length}</strong> {plural(streamers.length, "live")} à {MAX_VIEWERS} spectateurs ou moins
-            et <strong>{fr(liveCount)}</strong> {plural(liveCount, "live")} en français au total.
-          </p>
-        </div>
-      </section>
+      <LiveCategories />
+      <LiveStats />
     </>
   );
 }

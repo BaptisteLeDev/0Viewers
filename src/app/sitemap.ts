@@ -1,13 +1,8 @@
 import type { MetadataRoute } from "next";
-import { getCrawl, groupByCategory } from "@/decouverte";
 import { PUBLIC_PATHS, siteUrl } from "@/site";
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const { streamers, crawledAt } = await getCrawl();
-  const categories = groupByCategory(streamers).map((g) => `/categories/${g.slug}`);
-  return [...PUBLIC_PATHS, ...categories].map((path) => ({
-    url: `${siteUrl()}${path === "/" ? "" : path}`,
-    lastModified: new Date(crawledAt),
-    changeFrequency: "always",
-  }));
+// Live categories left out: they churn faster than Google recrawls.
+// Category pages are found through internal links. ADR 0002.
+export default function sitemap(): MetadataRoute.Sitemap {
+  return PUBLIC_PATHS.map((path) => ({ url: `${siteUrl()}${path === "/" ? "" : path}`, changeFrequency: "daily" }));
 }

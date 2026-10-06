@@ -24,11 +24,12 @@ export async function saveLiveCount(lives: number, crawledAt: number): Promise<v
 
 // Hourly like the writes: a faster read would wake Neon for nothing.
 export async function getLiveCounts(): Promise<LivePoint[]> {
-  "use cache";
+  "use cache: remote";
   cacheLife("hours");
   if (!sql) return [];
   try {
-    const rows = await sql`SELECT extract(epoch FROM crawled_at) * 1000 AS at, lives FROM live_count ORDER BY crawled_at`;
+    const rows = await sql`SELECT extract(epoch FROM crawled_at) * 1000 AS at, lives FROM live_count
+      WHERE crawled_at > now() - interval '7 days' ORDER BY crawled_at`;
     return rows.map((r) => ({ at: Number(r.at), lives: Number(r.lives) }));
   } catch (error) {
     console.error(error);

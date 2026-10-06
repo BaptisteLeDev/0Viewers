@@ -8,6 +8,8 @@ type Props = { streamers: Streamer0V[]; onPick: (id: string) => void };
 
 export function CardStack({ streamers, onPick }: Props) {
   const middle = (streamers.length - 1) / 2;
+  // empty = loading: one ghost card holds the box, no layout shift
+  if (streamers.length === 0) return <ul className={styles.stack} aria-hidden="true"><li className={styles.card} /></ul>;
   return (
     <ul className={styles.stack}>
       {streamers.map((s, i) => (
