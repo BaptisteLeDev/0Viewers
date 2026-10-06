@@ -1,23 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 200 200">
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 64 64">
   <defs>
-    <mask id="m" maskUnits="userSpaceOnUse" x="0" y="0" width="200" height="200" style="mask-type:alpha">
-      <path fill="#fff" d="M200 50c0-27.614-22.386-50-50-50s-50 22.386-50 50c0-27.614-22.386-50-50-50S0 22.386 0 50s22.386 50 50 50c-27.614 0-50 22.386-50 50s22.386 50 50 50 50-22.386 50-50c0 27.614 22.386 50 50 50s50-22.386 50-50c0-27.608-22.375-49.989-49.98-50C177.625 99.99 200 77.608 200 50z"/>
-    </mask>
-    <filter id="b" x="-72" y="-61.593" width="361.583" height="346.593" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-      <feGaussianBlur stdDeviation="30"/>
-    </filter>
-    <linearGradient id="g" x1="200" x2="0" y1="0" y2="200" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#FF1F00"/>
-      <stop offset="1" stop-color="#FFD600"/>
+    <linearGradient id="g" x1="8" x2="56" y1="6" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#18A0FB"/>
+      <stop offset=".5" stop-color="#FF58E4"/>
+      <stop offset="1" stop-color="#FFD749"/>
     </linearGradient>
   </defs>
-  <g mask="url(#m)">
-    <path fill="#fff" d="M0 0h200v200H0z"/>
-    <path fill="url(#g)" fill-opacity=".55" d="M0 0h200v200H0z"/>
-    <g filter="url(#b)">
-      <path fill="#18A0FB" d="M-12 3h143v108H-12z"/>
-      <path fill="#FF58E4" d="M0 109h190v116H0z"/>
-      <ellipse cx="153.682" cy="64.587" rx="83" ry="57" fill="#FFD749" transform="rotate(-33.875 153.682 64.587)"/>
-    </g>
-  </g>
+  <rect width="64" height="64" rx="16" fill="#050508"/>
+  <ellipse cx="32" cy="32" rx="14" ry="21" stroke="url(#g)" stroke-width="7"/>
+  <circle cx="32" cy="32" r="4.5" fill="#fff"/>
 </svg>
