@@ -61,7 +61,7 @@ async function knownBoxArt(gameIds: string[], token: string): Promise<BoxArt> {
 export const CRAWL_SECONDS = 900;
 
 async function cachedCrawl(): Promise<Crawl> {
-  "use cache";
+  "use cache: remote";
   cacheLife({ stale: 60, revalidate: CRAWL_SECONDS, expire: 3600 });
   cacheTag("streams");
   const full = { ...(await crawl()), crawledAt: Date.now() };
@@ -96,7 +96,7 @@ const toCategory = (c: HelixCategory): Category => ({
 // Caller validates query length. Categories barely change: 1 day.
 // ponytail: one app token per uncached query, cache the token if rate-limited
 export async function searchCategories(query: string): Promise<Category[]> {
-  "use cache";
+  "use cache: remote";
   cacheLife("days");
   const found = process.env.TWITCH_FIXTURES === "1" ? fixtureCategories(query) : await searchHelixCategories(query, await fetchAppToken());
   return found.map(toCategory).filter((c) => c.slug);
@@ -105,7 +105,7 @@ export async function searchCategories(query: string): Promise<Category[]> {
 // Twitch search is fuzzy: slug words as query, exact slug match only.
 // Names never change, hence weeks; a throw is not cached.
 export async function findCategory(slug: string): Promise<Category | null> {
-  "use cache";
+  "use cache: remote";
   cacheLife("weeks");
   const found = await searchCategories(slug.replace(/-/g, " "));
   return found.find((c) => c.slug === slug) ?? null;

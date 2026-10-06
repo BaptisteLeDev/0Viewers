@@ -11,7 +11,7 @@ Contexte qui trouve les streamers Twitch français en live devant (presque) pers
 
 ## API publique
 
-`getCrawl(): Promise<{ streamers, setAside, boxArt, crawledAt }>` dans `index.ts`, réservé au serveur : un crawl partagé (`"use cache"`, revalidate `CRAWL_SECONDS` = 900 s, tag `streams`). Les visiteurs le lisent via `getLiveCrawl()` (sans `setAside`) derrière `GET /api/crawl`, mis en cache par le CDN : une page qui appelle `getCrawl()` redevient une entrée ISR réécrite à chaque crawl ([ADR 0002](../../docs/decisions/0002-liste-live-cote-client.md)). `findCategory(slug)` retrouve le nom Twitch d'un slug (cache de plusieurs semaines). `setAside` liste les **Streams mis de côté** avec leur raison (`media`, `crypto`, `gambling`), affichés sur `/mis-de-cote`. `crawledAt` sert d'heure de référence aux pages (durées de live, filtres, sitemap). `getZeroViewersStreamers()` en renvoie juste la liste. `searchCategories(q)` cherche une **Catégorie** Twitch (`Category` : id, nom, slug, jaquette), mise en cache 1 jour par requête. Le type `Streamer0V` est ré-exporté, ainsi que `groupByCategory` et `slugifyCategory` (purs, `categories.ts`, aussi importables côté client). Le reste du dossier est interne.
+`getCrawl(): Promise<{ streamers, setAside, boxArt, crawledAt }>` dans `index.ts`, réservé au serveur : un crawl partagé (`"use cache: remote"`, revalidate `CRAWL_SECONDS` = 900 s, tag `streams`). Les visiteurs le lisent via `getLiveCrawl()` (sans `setAside`) derrière `GET /api/crawl`, mis en cache par le CDN : une page qui appelle `getCrawl()` redevient une entrée ISR réécrite à chaque crawl ([ADR 0002](../../docs/decisions/0002-liste-live-cote-client.md)). `findCategory(slug)` retrouve le nom Twitch d'un slug (cache de plusieurs semaines). `setAside` liste les **Streams mis de côté** avec leur raison (`media`, `crypto`, `gambling`), affichés sur `/mis-de-cote`. `crawledAt` sert d'heure de référence aux pages (durées de live, filtres, sitemap). `getZeroViewersStreamers()` en renvoie juste la liste. `searchCategories(q)` cherche une **Catégorie** Twitch (`Category` : id, nom, slug, jaquette), mise en cache 1 jour par requête. Le type `Streamer0V` est ré-exporté, ainsi que `groupByCategory` et `slugifyCategory` (purs, `categories.ts`, aussi importables côté client). Le reste du dossier est interne.
 
 ## Invariants
 
@@ -45,7 +45,7 @@ Budget du plan gratuit Neon (compute 0,25 CU fixe, mise en veille après 5 min) 
 | Compute | 100 CU-h/mois, soit ~400 h éveillé | 1 écriture par heure et par instance + 1 lecture par heure : ~10 à 20 min éveillé par heure, 30 à 60 CU-h/mois |
 | Stockage | 1 Go | 24 lignes/jour, purgées après 1 an : moins de 1 Mo |
 
-Règle : aucune requête Neon par visite. Toute lecture passe par `"use cache"`, sinon le compute ne dort jamais (730 h x 0,25 = 182 CU-h, limite dépassée). Plafond atteint : Neon suspend le compute jusqu'au mois suivant, sans facturation ; l'écriture et `/stats` échouent sans casser le crawl.
+Règle : aucune requête Neon par visite. Toute lecture passe par `"use cache: remote"` (le `"use cache"` par défaut vit en mémoire de chaque instance Vercel : chaque instance neuve relit Neon et recrawle Twitch), sinon le compute ne dort jamais (730 h x 0,25 = 182 CU-h, limite dépassée). Plafond atteint : Neon suspend le compute jusqu'au mois suivant, sans facturation ; l'écriture et `/stats` échouent sans casser le crawl.
 
 ## Décision
 

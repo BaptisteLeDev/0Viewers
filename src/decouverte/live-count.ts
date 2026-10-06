@@ -24,7 +24,7 @@ export async function saveLiveCount(lives: number, crawledAt: number): Promise<v
 
 // Hourly like the writes: a faster read would wake Neon for nothing.
 export async function getLiveCounts(): Promise<LivePoint[]> {
-  "use cache";
+  "use cache: remote";
   cacheLife("hours");
   if (!sql) return [];
   try {
