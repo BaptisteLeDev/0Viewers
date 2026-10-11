@@ -18,12 +18,13 @@ for (const path of PAGES) {
   expectIn(path, html, '<html lang="fr"');
   expectIn(path, html, "<title>");
   expectIn(path, html, 'property="og:image"');
-  if (html.includes('name="robots" content="noindex')) failures.push(`${path} is noindex`);
+  const noindex = html.includes('name="robots" content="noindex');
+  if (path.startsWith("/categories") !== noindex) failures.push(`${path} noindex=${noindex}`);
 }
 
 const sitemap = await get("/sitemap.xml");
 const urls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) => new URL(m[1]).pathname);
-const STATIC_PAGES = PAGES.filter((p) => !p.startsWith("/categories/"));
+const STATIC_PAGES = PAGES.filter((p) => !p.startsWith("/categories"));
 for (const path of STATIC_PAGES) if (!urls.includes(path)) failures.push(`sitemap missing ${path}`);
 const strays = urls.filter((u) => !STATIC_PAGES.includes(u));
 if (strays.length) failures.push(`sitemap unexpected ${strays}`);

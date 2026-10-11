@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "Catégories Twitch en direct : petits streamers FR à 0 viewer",
   description: "Les catégories Twitch streamées en ce moment par des streamers français à 0 viewer ou presque. Choisis une catégorie et découvre ses petits lives.",
   alternates: { canonical: "/categories" },
+  robots: { index: false, follow: true },
 };
 
 export default function CategoriesPage() {
