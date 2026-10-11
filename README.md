@@ -1,52 +1,90 @@
-# 0Viewers
+<h1 align="center">0Viewers</h1>
 
-Projet Camille & Baptiste, MDS B3.
+<p align="center"><strong>Deviens leur premier spectateur.</strong><br>
+Les streamers Twitch français en direct devant 5 spectateurs ou moins.</p>
 
-## Portfolio
+<p align="center">
+  <a href="https://0-viewers.vercel.app">🎮 Site en ligne</a> &nbsp;
+  <a href="https://baptisteledev.fr/portfolio/0viewers">📁 Fiche projet</a> &nbsp;
+  🎓 Projet MDS B3
+</p>
 
-Présentation du projet sur le portfolio de Baptiste : [baptisteledev.fr/portfolio/0viewers](https://baptisteledev.fr/portfolio/0viewers). Site : [baptisteledev.fr](https://baptisteledev.fr/).
+<p align="center">
+  <a href="public/video/0viewers.mp4"><img src="public/video/0viewers.jpg" alt="Vidéo de présentation de 0Viewers : « Deviens leur premier spectateur. »" width="720"></a>
+  <br><sub>▶️ Cliquer pour voir la vidéo de présentation (10 s)</sub>
+</p>
 
-0Viewers trouve les streamers Twitch français en direct devant (presque) personne : 5 viewers ou moins, en live depuis plus de 10 minutes. L'accueil montre cinq lives pris au hasard (pile de cartes) et un carrousel des lives du moment, `/streamers` liste les 150 premiers (10 au départ, puis par 25) avec recherche et filtres (dont public tout public / adulte), `/categories` liste les catégories Twitch en live avec leur jaquette (`/jeux` redirige) ; un clic ouvre le live en mode cinéma (grand lecteur et chat).
+## Stack
 
-## Lancer
+![Next.js](https://img.shields.io/badge/Next-%23000.svg?style=for-the-badge&logo=next.js&logoColor=white)
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![Twitch](https://img.shields.io/badge/Twitch_API-%239146FF.svg?style=for-the-badge&logo=twitch&logoColor=white)
+![Neon](https://img.shields.io/badge/Neon_Postgres-%2300E599.svg?style=for-the-badge&logo=postgresql&logoColor=black)
+![Bun](https://img.shields.io/badge/Bun-%23000000.svg?style=for-the-badge&logo=bun&logoColor=white)
+![Vitest](https://img.shields.io/badge/Vitest-%23252529.svg?style=for-the-badge&logo=vitest&logoColor=FCC72B)
+![Lighthouse](https://img.shields.io/badge/Lighthouse_CI-%23F44B21.svg?style=for-the-badge&logo=lighthouse&logoColor=white)
+![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)
+
+## Le but
+
+Sur Twitch, un streamer sans audience reste invisible : pas de spectateurs, donc pas de
+découverte, donc pas de spectateurs. 0Viewers casse la boucle en montrant **uniquement** les
+lives français à 5 spectateurs ou moins, en direct depuis plus de 10 minutes.
+
+## Ce qu'on y fait
+
+- 🃏 **Accueil** : cinq lives tirés au hasard en pile de cartes, plus un carrousel des lives du moment.
+- 🔎 **Streamers** : les 150 premiers lives, avec recherche et filtres (dont tout public / adulte).
+- 🗂️ **Catégories** : les catégories Twitch en direct, avec leur jaquette.
+- 🎬 **Mode cinéma** : un clic ouvre le live et son chat en grand.
+- 💜 **Connexion Twitch** (facultative) : soutenir ou signaler un streamer, un vote par live.
+
+Tout se regarde sans compte. La connexion sert seulement aux votes.
+
+## Sous le capot
+
+- Une seule app **Next.js** (App Router). Les appels Twitch Helix restent côté serveur, les clés ne
+  partent jamais au client ([ADR 0001](docs/decisions/0001-single-nextjs-app.md)).
+- Les pages sont statiques : une visite ne déclenche ni fonction Vercel ni requête en base.
+  Seuls la connexion, le profil et les votes passent par le serveur et **Neon**.
+- Code découpé par contexte : `decouverte` (Twitch et règle de sélection), `compte`
+  (OAuth Twitch, session signée), `vote`, `ui` (composants client).
+- Qualité : typecheck, lint, tests Vitest, smoke test et **Lighthouse** (accessibilité et SEO à 1),
+  plus CodeQL et ZAP pour la sécurité. Tout tourne en local avec `gh act`.
+
+Détails : [ARCHITECTURE.md](ARCHITECTURE.md).
+
+## L'équipe
+
+| | Rôle |
+|---|---|
+| **Baptiste Dechamp** · [@BaptisteLeDev](https://github.com/BaptisteLeDev) · [portfolio](https://baptisteledev.fr) | Développeur full-stack |
+| **Camille** · [@camille56](https://github.com/camille56) | Développeuse full-stack |
+
+Projet de 3e année à MyDigitalSchool Vannes (B3).
+
+<details>
+<summary><strong>Lancer le projet en local</strong></summary>
 
 ```bash
 bun install
-cp .env.example .env.local   # renseigner TWITCH_CLIENT_ID et TWITCH_CLIENT_SECRET
+cp .env.example .env.local   # clés Twitch, DATABASE_URL, SESSION_SECRET
 bun run dev
 ```
 
 Sans clés Twitch : `TWITCH_FIXTURES=1 bun run dev` utilise un jeu de données figé.
 
-## Tests et CI
+Tests et CI :
 
 ```bash
 bun run typecheck && bun run lint && bun run test
 TWITCH_FIXTURES=1 bun run build && bun run start   # puis bun run smoke
+bun run ci         # CI complète via gh act (Podman sous Windows, Docker sous Linux)
+bun run security   # CodeQL + ZAP
 ```
 
-La CI tourne uniquement en local avec `gh act` (rien ne part sur GitHub Actions) : `bun run ci`. Elle ajoute le smoke test et Lighthouse (budgets dans `lighthouserc.json`). Prérequis : `gh extension install nektos/gh-act`, plus Podman sous Windows (le script démarre la machine) ou Docker sous Linux.
+Déploiement Vercel : les variables de `.env.example` (Twitch, Neon, session, vérifications
+Google et Bing, `OWNER_TWITCH_ID` pour `/admin`). Les previews sont en `noindex`.
 
-## Déploiement (Vercel)
-
-Variables d'environnement : `TWITCH_CLIENT_ID`, `TWITCH_CLIENT_SECRET`, `NEXT_PUBLIC_SITE_URL`, `GOOGLE_SITE_VERIFICATION`, `BING_SITE_VERIFICATION`. Les déploiements preview sont en `noindex`.
-
-Après le premier déploiement en production :
-
-1. Ajouter la propriété dans Google Search Console.
-2. Mettre le code de vérification dans `GOOGLE_SITE_VERIFICATION` et redéployer.
-3. Soumettre `/sitemap.xml`.
-4. Idem sur Bing Webmaster Tools (`BING_SITE_VERIFICATION`), ou importer le site depuis la Search Console.
-
-`/robots.txt` autorise nommément les crawlers IA (`AI_CRAWLERS` dans `src/site.ts`), `/llms.txt` décrit le site aux LLM.
-
-## Structure
-
-- `src/app` : pages et SEO
-- `src/decouverte` : contexte serveur (Twitch, règle de sélection)
-- `src/ui` : composants client
-- `docs/decisions` : ADR
-- `slide/` : présentation du projet
-- `doc/` : notes d'API et TODO
-
-Détails : [ARCHITECTURE.md](ARCHITECTURE.md), [src/decouverte/README.md](src/decouverte/README.md).
+</details>
