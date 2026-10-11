@@ -30,8 +30,8 @@ async function load(params: Props["params"]) {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, category } = await load(params);
-  const page = { alternates: { canonical: `/categories/${slug}` } };
-  if (!category) return { ...page, title: EMPTY_TITLE, robots: { index: false, follow: true } };
+  const page = { alternates: { canonical: `/categories/${slug}` }, robots: { index: false, follow: true } };
+  if (!category) return { ...page, title: EMPTY_TITLE };
   return {
     ...page,
     title: `Streamers ${category.name} FR à 0 spectateur`,
