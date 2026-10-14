@@ -7,6 +7,5 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: [{ userAgent: "*", ...rule }, { userAgent: [...AI_CRAWLERS], ...rule }],
     sitemap: `${siteUrl()}/sitemap.xml`,
-    host: siteUrl(),
   };
 }

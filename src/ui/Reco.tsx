@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { CardStack } from "./CardStack";
 import { nextIndex, sample } from "./random";
 import { StreamerCard } from "./StreamerCard";
@@ -17,13 +17,8 @@ type Props = { children: React.ReactNode; featured?: React.ReactNode };
 export function Reco({ children, featured }: Props) {
   const { crawl, failed } = useCrawl();
   const streamers = crawl?.streamers ?? [];
-  const [picks, setPicks] = useState(() => streamers.slice(0, STACK_SIZE).map((_, i) => i));
+  const picks = useMemo(() => sample(streamers.length, STACK_SIZE), [streamers.length]);
   const [theater, setTheater] = useState<{ id: string } | null>(null);
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setPicks(sample(streamers.length, STACK_SIZE));
-  }, [streamers.length]);
 
   const openTheater = (id: string) => setTheater({ id });
   const stack = picks.map((i) => streamers[i]).filter(Boolean);
