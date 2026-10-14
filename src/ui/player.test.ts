@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { thumbnailSrc, twitchChatSrc, twitchPlayerSrc } from "@/ui/player";
+import { thumbnailSrc, thumbnailSrcSet, twitchChatSrc, twitchPlayerSrc } from "@/ui/player";
 
 describe("twitchPlayerSrc", () => {
   it("embeds channel, parent host and muted autoplay flag", () => {
@@ -18,6 +18,14 @@ describe("thumbnailSrc", () => {
   });
   it("leaves plain urls alone", () => {
     expect(thumbnailSrc("/fixtures/thumb.svg", 440, 248)).toBe("/fixtures/thumb.svg");
+  });
+});
+
+describe("thumbnailSrcSet", () => {
+  it("builds 240, 320 and 440 wide candidates at 16:9", () => {
+    expect(thumbnailSrcSet("https://x/live_user_a-{width}x{height}.jpg")).toBe(
+      "https://x/live_user_a-240x135.jpg 240w, https://x/live_user_a-320x180.jpg 320w, https://x/live_user_a-440x248.jpg 440w",
+    );
   });
 });
 

@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import type { Streamer0V } from "@/decouverte/types";
-import { thumbnailSrc } from "./player";
+import { thumbnailSrc, thumbnailSrcSet } from "./player";
 import { viewerLabel } from "./search";
 import styles from "./CardStack.module.css";
 
@@ -16,7 +16,7 @@ export function CardStack({ streamers, onPick }: Props) {
         <li key={s.id} className={styles.card} style={{ "--i": i - middle } as CSSProperties}>
           <button type="button" className={styles.button} onClick={() => onPick(s.id)}>
             {/* eslint-disable-next-line @next/next/no-img-element -- Twitch resizes, URL churns every 5 min */}
-            <img src={thumbnailSrc(s.thumbnailUrl, 440, 248)} alt="" width={440} height={248} className={styles.thumb} />
+            <img src={thumbnailSrc(s.thumbnailUrl, 440, 248)} srcSet={thumbnailSrcSet(s.thumbnailUrl)} sizes="(max-width: 899px) 80vw, 26rem" alt="" width={440} height={248} className={styles.thumb} />
             <span className={styles.label}>
               <span className={styles.name}>{s.displayName}</span>
               <span className={styles.category}>{s.categoryName}</span>
