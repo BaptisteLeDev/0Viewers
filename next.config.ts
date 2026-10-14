@@ -15,6 +15,7 @@ const SECURITY_HEADERS = [
 const config: NextConfig = {
   poweredByHeader: false,
   cacheComponents: true,
+  experimental: { inlineCss: true },
   async headers() {
     return [{ source: "/:path*", headers: SECURITY_HEADERS }];
   },
