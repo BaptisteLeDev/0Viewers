@@ -31,7 +31,7 @@ jobs:
           for i in $(seq 1 30); do curl -sf http://localhost:3000 >/dev/null && exit 0; sleep 1; done
           exit 1
       - run: bun run smoke
-      - uses: browser-actions/setup-chrome@v1
+      - uses: browser-actions/setup-chrome@v2
         id: chrome
       - run: bunx lhci autorun
         env:
