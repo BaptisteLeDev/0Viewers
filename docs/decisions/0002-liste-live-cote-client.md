@@ -1,6 +1,6 @@
 # 0002. Liste live chargée côté client via un endpoint caché CDN
 
-Statut : acceptée. Remplace le point ISR de 0001.
+Statut : acceptée. Remplace le point ISR de 0001. Durée du crawl remplacée par 0004.
 
 ## Contexte
 

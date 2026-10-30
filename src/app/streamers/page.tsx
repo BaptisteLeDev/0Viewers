@@ -5,7 +5,7 @@ import { StreamerList } from "@/ui/StreamerList";
 
 export const metadata: Metadata = {
   title: "Petit streamer Twitch FR : lives à 0 viewer en direct",
-  description: "Trouve un petit streamer Twitch français à découvrir : des lives FR avec 0 viewer ou presque, liste mise à jour toutes les 15 minutes.",
+  description: "Trouve un petit streamer Twitch français à découvrir : des lives FR avec 0 viewer ou presque, liste mise à jour toutes les 30 minutes.",
   alternates: { canonical: "/streamers" },
 };
 
@@ -29,7 +29,7 @@ export default function StreamersPage() {
     <section className="container" aria-labelledby="streamers-title">
       <CategoriesLd />
       <h1 id="streamers-title">Trouve ton prochain <span className="highlight">streamer FR</span> à découvrir</h1>
-      <p>Lives Twitch en français, en direct depuis plus de {MIN_LIVE_MINUTES} minutes, avec {MAX_VIEWERS} spectateurs ou moins. Liste mise à jour toutes les 15 minutes.</p>
+      <p>Lives Twitch en français, en direct depuis plus de {MIN_LIVE_MINUTES} minutes, avec {MAX_VIEWERS} spectateurs ou moins. Liste mise à jour toutes les 30 minutes.</p>
       <StreamerList empty={<p>Aucun streamer français à 0 spectateur en ce moment. Repasse dans quelques minutes.</p>} />
     </section>
   );

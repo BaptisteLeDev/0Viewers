@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     ...page,
     title: `Streamers ${category.name} FR à 0 spectateur`,
-    description: `Regarde des streamers Twitch français en live sur ${category.name} devant 0 viewer ou presque, et deviens leur premier spectateur. Liste mise à jour toutes les 15 minutes.`,
+    description: `Regarde des streamers Twitch français en live sur ${category.name} devant 0 viewer ou presque, et deviens leur premier spectateur. Liste mise à jour toutes les 30 minutes.`,
   };
 }
 

@@ -6,7 +6,7 @@ import styles from "./page.module.css";
 
 export const metadata: Metadata = {
   title: { absolute: "Petit streamer Twitch FR : lives à 0 viewer en direct | 0Viewers" },
-  description: "Découvre un petit streamer Twitch français en live devant 0 spectateur et deviens son premier viewer. Gratuit, sans compte, mis à jour toutes les 15 minutes.",
+  description: "Découvre un petit streamer Twitch français en live devant 0 spectateur et deviens son premier viewer. Gratuit, sans compte, mis à jour toutes les 30 minutes.",
   alternates: { canonical: "/" },
 };
 
@@ -49,7 +49,7 @@ export default function Home() {
           beaucoup pour quelqu&apos;un qui streame seul. De ton côté, tu découvres des chaînes que tu ne connaissais pas.
         </p>
         <p>
-          0Viewers fait le tri pour toi, et ici les petits lives passent en premier. Toutes les 15 minutes, le site récupère les lives Twitch
+          0Viewers fait le tri pour toi, et ici les petits lives passent en premier. Toutes les 30 minutes, le site récupère les lives Twitch
           en français lancés depuis plus de {MIN_LIVE_MINUTES} minutes et qui comptent {MAX_VIEWERS} spectateurs ou moins, en commençant par ceux à 0.
           Tu choisis un live, tu le regardes ici ou sur Twitch, et tu passes dire bonjour. C&apos;est gratuit et tu n&apos;as pas besoin de compte
           sur 0Viewers. Pour écrire dans le chat, il te faut juste ton compte Twitch.
