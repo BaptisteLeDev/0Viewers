@@ -56,9 +56,9 @@ async function knownBoxArt(gameIds: string[], token: string): Promise<BoxArt> {
   return Object.fromEntries(gameIds.filter((id) => id in boxArtSeen).map((id) => [id, boxArtSeen[id]]));
 }
 
-// Full crawl: ~100 Helix pages. Same 15 min as the /api/crawl CDN cache:
-// Hobby quota (4 CPU-h). Throw never cached. ADR 0002.
-export const CRAWL_SECONDS = 900;
+// Full crawl: ~100 Helix pages. Same 30 min as the /api/crawl CDN cache:
+// Hobby quota (4 CPU-h). Throw never cached. ADR 0002, 0004.
+export const CRAWL_SECONDS = 1800;
 
 async function cachedCrawl(): Promise<Crawl> {
   "use cache: remote";
@@ -86,7 +86,7 @@ export async function getLiveCrawl(): Promise<LiveCrawl> {
 }
 
 // One write a day for pages that only need the category names (llms.txt,
-// ItemList JSON-LD): explicit outer cacheLife beats the crawl's 15 min.
+// ItemList JSON-LD): explicit outer cacheLife beats the crawl's 30 min.
 export async function getDailyCategories(): Promise<LiveCategory[]> {
   "use cache";
   cacheLife("days");

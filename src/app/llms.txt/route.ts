@@ -14,7 +14,7 @@ export async function GET() {
 
 > ${SITE_DESCRIPTION}
 
-${SITE_NAME} liste les lives Twitch en français, lancés depuis plus de ${MIN_LIVE_MINUTES} minutes et qui comptent ${MAX_VIEWERS} spectateurs ou moins, en commençant par ceux à 0. Liste mise à jour toutes les 15 minutes. Gratuit, sans compte.
+${SITE_NAME} liste les lives Twitch en français, lancés depuis plus de ${MIN_LIVE_MINUTES} minutes et qui comptent ${MAX_VIEWERS} spectateurs ou moins, en commençant par ceux à 0. Liste mise à jour toutes les 30 minutes. Gratuit, sans compte.
 
 ## Pages
 

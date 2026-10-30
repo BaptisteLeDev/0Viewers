@@ -2,7 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Iceland, Share_Tech_Mono } from "next/font/google";
 import { Footer } from "@/ui/Footer";
 import { Header } from "@/ui/Header";
-import { SITE_DESCRIPTION, SITE_NAME, isIndexable, jsonLd, siteUrl } from "@/site";
+import { SITE_DESCRIPTION, SITE_NAME, isIndexable, siteUrl } from "@/site";
+import { JsonLd } from "@/ui/JsonLd";
 import "./globals.css";
 
 const display = Iceland({ weight: "400", subsets: ["latin"], variable: "--font-display", display: "swap" });
@@ -24,12 +25,12 @@ export const metadata: Metadata = {
   },
 };
 
-const siteLd = jsonLd({
+const siteLd = {
   "@graph": [
     { "@type": "Organization", "@id": `${siteUrl()}/#org`, name: SITE_NAME, url: siteUrl() },
     { "@type": "WebSite", name: SITE_NAME, url: siteUrl(), description: SITE_DESCRIPTION, inLanguage: "fr-FR", publisher: { "@id": `${siteUrl()}/#org` } },
   ],
-});
+};
 
 export const viewport: Viewport = { themeColor: "#050508" };
 
@@ -37,7 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="fr" className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: siteLd }} />
+        <JsonLd data={siteLd} />
         <a href="#contenu" className="skip-link">Aller au contenu</a>
         <Header />
         <main id="contenu">{children}</main>
