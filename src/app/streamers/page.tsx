@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { MAX_VIEWERS, MIN_LIVE_MINUTES, getDailyCategories } from "@/decouverte";
-import { jsonLd, siteUrl } from "@/site";
+import { siteUrl } from "@/site";
+import { JsonLd } from "@/ui/JsonLd";
 import { StreamerList } from "@/ui/StreamerList";
 
 export const metadata: Metadata = {
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
 
 async function CategoriesLd() {
   const url = siteUrl();
-  const ld = jsonLd({
+  const ld = {
     "@type": "CollectionPage",
     name: "Streamers français en live à 0 spectateur",
     url: `${url}/streamers`,
@@ -20,8 +21,8 @@ async function CategoriesLd() {
       "@type": "ItemList",
       itemListElement: (await getDailyCategories()).map((c, i) => ({ "@type": "ListItem", position: i + 1, name: c.name, url: `${url}/categories/${c.slug}` })),
     },
-  });
-  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ld }} />;
+  };
+  return <JsonLd data={ld} />;
 }
 
 export default function StreamersPage() {
