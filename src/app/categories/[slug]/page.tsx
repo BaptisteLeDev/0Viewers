@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { MAX_VIEWERS, findCategory, getZeroViewersStreamers, groupByCategory } from "@/decouverte";
 import { LiveCategoryLinks } from "@/ui/CategoryLinks";
 import { StreamerList } from "@/ui/StreamerList";
-import { jsonLd, siteUrl } from "@/site";
+import { siteUrl } from "@/site";
+import { JsonLd } from "@/ui/JsonLd";
 import styles from "../categories.module.css";
 
 export const maxDuration = 60;
@@ -41,20 +42,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CategoryPage({ params }: Props) {
   const { slug, category } = await load(params);
-  const crumbs = jsonLd({
+  const crumbs = {
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Accueil", item: `${siteUrl()}/` },
       { "@type": "ListItem", position: 2, name: "Catégories", item: `${siteUrl()}/categories` },
       { "@type": "ListItem", position: 3, name: category?.name ?? "Catégorie sans live", item: `${siteUrl()}/categories/${slug}` },
     ],
-  });
+  };
   const nobody = (
     <p className={styles.intro}>Personne ne le streame avec {MAX_VIEWERS} spectateurs ou moins. Repasse dans quelques minutes, ou choisis une autre catégorie.</p>
   );
   return (
     <section className={`container ${styles.page}`} aria-labelledby="category-title">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: crumbs }} />
+      <JsonLd data={crumbs} />
       <nav aria-label="Fil d'Ariane" className={styles.crumbs}>
         <ol>
           <li><Link href="/">Accueil</Link></li>
